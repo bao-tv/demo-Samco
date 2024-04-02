@@ -15,7 +15,7 @@ const EngageWidget10 = ({className}: Props) => (
         backgroundImage: `url('${toAbsoluteUrl('/media/stock/900x600/42.png')}')`,
       }}
     >
-      <div className='mb-10'>
+      {/* <div className='mb-10'>
         <div className='fs-2hx fw-bold text-gray-800 text-center mb-13'>
           <span className='me-2'>
             Try our all new Enviroment with
@@ -38,7 +38,7 @@ const EngageWidget10 = ({className}: Props) => (
         <div className='text-center'>
           <a href='#'>Upgrade Now</a>
         </div>
-      </div>
+      </div> */}
       <img
         className='mx-auto h-150px h-lg-200px  theme-light-show'
         src={toAbsoluteUrl('/media/illustrations/misc/upgrade.svg')}
