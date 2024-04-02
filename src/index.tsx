@@ -23,6 +23,7 @@ import {AuthProvider, setupAxios} from './app/modules/auth'
 
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+import 'react-toastify/dist/ReactToastify.css';
 /**
  * Creates `axios-mock-adapter` instance for provided `axios` instance, add
  * basic Metronic mocks and returns it.
@@ -47,7 +48,7 @@ if (container) {
           <AppRoutes />
         </AuthProvider>
       </MetronicI18nProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   )
 }

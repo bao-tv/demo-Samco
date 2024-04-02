@@ -1,4 +1,5 @@
 export interface IFormInput {
+    sendDate?: any,
     sendName?: string,
     sendIdPer?: string,
     sendPhone?: number | string,

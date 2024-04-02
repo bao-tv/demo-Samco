@@ -20,6 +20,7 @@ const ThemeModeSwitcher = ({
   menuTrigger = "{default: 'click', lg: 'hover'}",
 }: Props) => {
   const {mode, menuMode, updateMode, updateMenuMode} = useThemeMode()
+  // console.log('bao menuMode: ', systemMode)
   const calculatedMode = mode === 'system' ? systemMode : mode
   const switchMode = (_mode: ThemeModeType) => {
     updateMenuMode(_mode)

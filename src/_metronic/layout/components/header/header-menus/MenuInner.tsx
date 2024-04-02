@@ -8,14 +8,13 @@ export function MenuInner() {
   return (
     <>
       <MenuItem title={intl.formatMessage({id: 'MENU.DASHBOARD'})} to='/dashboard' />
-      <MenuItem title='Layout Builder' to='/builder' />
-      <MenuInnerWithSub
+      <MenuItem title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} to='/builder' />
+      {/* <MenuInnerWithSub
         title='Crafted'
         to='/crafted'
         menuPlacement='bottom-start'
         menuTrigger='click'
       >
-        {/* PAGES */}
         <MenuInnerWithSub
           title='Pages'
           to='/crafted/pages'
@@ -55,7 +54,6 @@ export function MenuInner() {
           </MenuInnerWithSub>
         </MenuInnerWithSub>
 
-        {/* ACCOUNT */}
         <MenuInnerWithSub
           title='Accounts'
           to='/crafted/accounts'
@@ -68,7 +66,6 @@ export function MenuInner() {
           <MenuItem to='/crafted/account/settings' title='Settings' hasBullet={true} />
         </MenuInnerWithSub>
 
-        {/* ERRORS */}
         <MenuInnerWithSub
           title='Errors'
           to='/error'
@@ -81,7 +78,6 @@ export function MenuInner() {
           <MenuItem to='/error/500' title='Error 500' hasBullet={true} />
         </MenuInnerWithSub>
 
-        {/* Widgets */}
         <MenuInnerWithSub
           title='Widgets'
           to='/crafted/widgets'
@@ -100,7 +96,7 @@ export function MenuInner() {
       </MenuInnerWithSub>
 
       <MenuInnerWithSub title='Apps' to='/apps' menuPlacement='bottom-start' menuTrigger='click'>
-        {/* PAGES */}
+
         <MenuInnerWithSub
           title='Chat'
           to='/apps/chat'
@@ -124,7 +120,7 @@ export function MenuInner() {
         menuTrigger='click'
       >
         <MegaMenu />
-      </MenuInnerWithSub>
+      </MenuInnerWithSub> */}
     </>
   )
 }

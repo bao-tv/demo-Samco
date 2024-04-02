@@ -7,6 +7,7 @@ import {SidebarLogo} from './SidebarLogo'
 
 const Sidebar = () => {
   const {config} = useLayout()
+  // console.log('bao config: ', config)
   const sidebarRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Sidebar = () => {
         >
           <SidebarLogo sidebarRef={sidebarRef} />
           <SidebarMenu />
-          <SidebarFooter />
+          {/* <SidebarFooter /> */}
         </div>
       )}
     </>

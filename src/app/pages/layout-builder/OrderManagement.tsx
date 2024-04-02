@@ -1,22 +1,22 @@
-import React, {useState, useMemo, useCallback} from 'react'
+import React, {useMemo, useCallback} from 'react'
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef } from 'ag-grid-community';
-import { PageDataProvider, usePageData } from '../../../_metronic/layout/core';
+import { usePageData } from '../../../_metronic/layout/core';
+import { useThemeMode } from '../../../_metronic/partials';
 
 type Props = {}
 
 const OrderManagement = (props: Props) => {
   const {rowDataOrder} = usePageData();
-  console.log('bao rowDataOrder: ', rowDataOrder);
   const columnDefsOrderManagerment: ColDef[] = [
     {
-      headerName: 'No',
+      headerName: 'STT',
       field: 'index',
       width: 60,
     },
     {
       headerName: 'Ngày gửi',
-      field: 'sendDate',
+      field: 'moment(sendDate).format("DD - MM - YY")',
       width: 110,
     },
     {
@@ -113,21 +113,20 @@ const OrderManagement = (props: Props) => {
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const onGridReady = useCallback((params: any) => {
-    // fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-    //   .then((resp) => resp.json())
-    //   .then((data) => setRowData(data));
   }, []);
+  const {modeCurrent} = useThemeMode();
+  const cloneRowDataAddIndex = rowDataOrder?.map((item, index) => ({...item, index}))
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
         <div
           style={gridStyle}
           className={
-            "ag-theme-quartz"
+            modeCurrent === "dark" ? "ag-theme-quartz-dark" : "ag-theme-quartz"
           }
         >
           <AgGridReact
-            rowData={rowDataOrder}
+            rowData={cloneRowDataAddIndex}
             columnDefs={columnDefsOrderManagerment}
             onGridReady={onGridReady}
           />

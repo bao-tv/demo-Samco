@@ -56,7 +56,7 @@ const ToolbarClassic = () => {
           onClick={() => setShowCreateAppModal(true)}
           className='btn btn-sm fw-bold btn-primary'
         >
-          Create
+          Tạo Phiếu nhận hàng
         </a>
       )}
       <CreateAppModal

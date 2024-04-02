@@ -7,12 +7,13 @@ export const themeModelSKey = 'kt_theme_mode_value'
 export const themeMenuModeLSKey = 'kt_theme_mode_menu'
 
 const systemMode = ThemeModeComponent.getSystemMode() as 'light' | 'dark'
-
+// console.log('bao systemMode: ', systemMode)
 type ThemeModeContextType = {
   mode: ThemeModeType
   menuMode: ThemeModeType
   updateMode: (_mode: ThemeModeType) => void
   updateMenuMode: (_mode: ThemeModeType) => void
+  modeCurrent?: ThemeModeType
 }
 
 const themeModeSwitchHelper = (_mode: ThemeModeType) => {
@@ -61,10 +62,12 @@ const useThemeMode = () => useContext(ThemeModeContext)
 const ThemeModeProvider = ({children}: {children: React.ReactNode}) => {
   const [mode, setMode] = useState<ThemeModeType>(defaultThemeMode.mode)
   const [menuMode, setMenuMode] = useState<ThemeModeType>(defaultThemeMode.menuMode)
-
+  const [modeCurrent, setModeCurrent] = useState<ThemeModeType>(defaultThemeMode.mode)
+  // console.log('bao modeCurrent: ', modeCurrent);
   const updateMode = (_mode: ThemeModeType, saveInLocalStorage: boolean = true) => {
     setMode(_mode)
-    // themeModeSwitchHelper(updatedMode)
+    
+    // console.log('bao themeModeSwitchHelper: ', themeModeSwitchHelper(_mode))
     if (saveInLocalStorage && localStorage) {
       localStorage.setItem(themeModelSKey, _mode)
     }
@@ -88,9 +91,12 @@ const ThemeModeProvider = ({children}: {children: React.ReactNode}) => {
     updateMenuMode(menuMode, false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  useEffect(() => {
+    mode !== "system" ? setModeCurrent(mode) : setModeCurrent(systemMode)
+  }, [mode, systemMode])
 
   return (
-    <ThemeModeContext.Provider value={{mode, menuMode, updateMode, updateMenuMode}}>
+    <ThemeModeContext.Provider value={{mode, menuMode, updateMode, updateMenuMode, modeCurrent}}>
       {children}
     </ThemeModeContext.Provider>
   )
