@@ -3,30 +3,34 @@ import clsx from 'clsx'
 import React, {useEffect, useState} from 'react'
 import Select from 'react-select';
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
-import {InputGroup, Button, Form } from 'react-bootstrap';
+import {InputGroup, Button, Form, OverlayTrigger } from 'react-bootstrap';
 import { IFormInput } from './interface';
 import { usePageData } from '../../../_metronic/layout/core';
-import ToastError from '../../../_metronic/helpers/components/Toast';
+import ToastError from '../../../_metronic/helpers/crud-helper/Toast';
+import dayjs from 'dayjs';
+import ModalShowImport from './ModalShowImport';
+import { renderTooltip } from '../../../_metronic/helpers';
 
 const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   const optionsCoefficient: any[] = [
-    { value: 'option 1', label: 'Hàng bình thường (1)' },
-    { value: 'option 2', label: 'Hàng quá tải (1.2)' },
-    { value: 'option 3', label: 'Hàng quá khổ (1.2)' },
-    { value: 'option 4', label: 'Hàng quá tải và quá khổ (1.2)' },
+    { value: 1, label: 'Hàng bình thường (1)' },
+    { value: 1.2, label: 'Hàng quá tải (1.2)' },
+    { value: 1.2, label: 'Hàng quá khổ (1.2)' },
+    { value: 1.2, label: 'Hàng quá tải và quá khổ (1.2)' },
   ]
 
   const optionsShipName: any[] = [
-    { value: 'option 1', label: 'Samco' },
-    { value: 'option 2', label: 'Phương Trang' },
-    { value: 'option 3', label: 'Thành Bưởi' },
-    { value: 'option 4', label: 'Bus Line' },
-    { value: 'option 5', label: 'Vận chuyển siêu tốc' },
+    { value: 'option 1', label: 'Samco', fullName: 'Công ty TNHH Kumho Samco Buslines' },
+    { value: 'option 2', label: 'Phương Trang', fullName: 'Công ty TNHH Phương Trang' },
+    { value: 'option 3', label: 'Thành Bưởi', fullName: 'Công ty TNHH Thành Bưởi' },
+    { value: 'option 4', label: 'Bus Line', fullName: 'Công ty TNHH Bus Line' },
+    { value: 'option 5', label: 'Vận chuyển siêu tốc', fullName: 'Công ty TNHH Vận chuyển siêu tốc' },
 ]
   const {setRowDataOrder} = usePageData();
   const [totalPay, setTotalPay] = useState<number>(0);
+  const receiptDate = dayjs().add(3, 'day').toDate();
 
-  const { control, watch, setValue, handleSubmit, clearErrors, reset, formState: { errors }, } = useForm<IFormInput>({
+  const { control, watch, setValue, getValues, handleSubmit, clearErrors, reset, formState: { errors }, } = useForm<IFormInput>({
     mode: 'all',
     defaultValues: {
       sendDate: new Date(),
@@ -34,6 +38,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
       sendIdPer: '',
       sendPhone: '',
       sendAddress: '',
+      receiptDate: receiptDate,
       receiptName: '',
       receiptIdPer: '',
       receiptPhone: '',
@@ -52,14 +57,20 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
      },
      shouldUnregister: false,
     })
-
+    
+  const [showModalPreImport, setShowModalPreImport] = useState<any>(false);
+  const handleShowPreImport: any = () => {
+    const dataForm:any = getValues();
+    setShowModalPreImport(dataForm);
+  }
   const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
+    // console.log('bao data: ', data);
     setRowDataOrder && await setRowDataOrder((prevRowData: any) => [...prevRowData, data]);
     handleClose();
     clearErrors();
   }
-
   const onErrors = async (e: any) => {
+    // setShowModalPreImport(true);
     if (Object.keys(e).length) {
       ToastError("Bạn nhập thiếu thông tin!");
     }
@@ -489,10 +500,6 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
 
             <Controller
               control={control}
-              // rules={{
-              //   required: true,
-              //   min: 0.1
-              // }}
               defaultValue={totalPay}
               render={({ field: { onChange, onBlur, value } }) => (
               <InputGroup className="mb-3">
@@ -517,9 +524,6 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
         <div className='group card p-5 me-3'>
           <Controller
             control={control}
-            // rules={{
-            //   required: true,
-            // }}
             render={({ field: { onChange, onBlur, value } }) => (
               <InputGroup className="mb-3">
                 <InputGroup.Text className={`group-text ${errors?.sendPay && 'border-danger'}`}>
@@ -569,11 +573,23 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
         </div>
       </div>
       <div className='row mt-6'>
-        <div className='col justify-content-end d-flex'>
-          <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Reset</Button>
-          <Button type="submit" className="btn btn-primary">Add</Button>
+        <div className='col justify-content-between d-flex'>
+          <OverlayTrigger
+              placement="top"
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderTooltip}
+          >
+            <Button href="#" className="btn btn-secondary me-10" onClick={handleShowPreImport}><i className="bi bi-zoom-in"></i></Button>
+          </OverlayTrigger>
+          {/* <div>
+          </div> */}
+          <div>
+            <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Reset</Button>
+            <Button type="submit" className="btn btn-primary">Add</Button>
+          </div>
         </div>
       </div>
+      <ModalShowImport showModalPreImport={showModalPreImport} setShowModalPreImport={setShowModalPreImport}/>
     </form>
   )
 }

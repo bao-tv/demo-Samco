@@ -1,6 +1,7 @@
 import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'react'
 import qs from 'qs'
 import {ID, QueryResponseContextProps, QueryState} from './models'
+import { Tooltip } from 'react-bootstrap'
 
 function createResponseContext<T>(initialState: QueryResponseContextProps<T>) {
   return createContext(initialState)
@@ -111,6 +112,12 @@ function useDebounce(value: string | undefined, delay: number) {
   return debouncedValue
 }
 
+const renderTooltip = (props: any) => (
+  <Tooltip id="button-tooltip" {...props}>
+    Xem phiếu xuất hàng
+  </Tooltip>
+);
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -121,4 +128,5 @@ export {
   groupingOnSelectAll,
   useDebounce,
   isNotEmpty,
+  renderTooltip,
 }
