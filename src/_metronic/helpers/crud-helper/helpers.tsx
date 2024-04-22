@@ -118,6 +118,40 @@ const renderTooltip = (props: any) => (
   </Tooltip>
 );
 
+function roundToNearestHalf(value: number, step = 0.5) {
+  step || (step = 1.0);
+  const inv = 1.0 / step;
+  return Math.round(value * inv) / inv;
+}
+function customRoundKG(value: number): number {
+  const roundedValue = (Math.ceil(value * 2)) / 2;
+  return roundedValue;
+}
+
+const calculatePrice = (arrayPrice: any[], KG: number) => {
+  let totalPrice: number = 0;
+  let KGOver: number = 0;
+  arrayPrice.forEach((item: any) => {
+    const step = roundToNearestHalf(item.maxKG) - roundToNearestHalf(item.minKG);
+    if (KG > +item.minKG && KG <= +item.maxKG) {
+      KGOver = KG - roundToNearestHalf(item.minKG);
+    }
+    if (KG >= item.maxKG) {
+      if (!item.price_add) {
+        totalPrice = +item.price_number;
+      } else {
+        totalPrice += (+item.price_number)*step*2;
+      }
+    } else if (KG < item.maxKG && KG >= item.minKG && step) {
+      totalPrice += +item.price_number*KGOver*2
+    } else if (KG > 40) {
+      console.log('bao customRoundKG(KG-40): ', customRoundKG(KG-40));
+      totalPrice += +item.price_number*customRoundKG(KG-40)*2
+    }
+  })
+  return totalPrice;
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -129,4 +163,5 @@ export {
   useDebounce,
   isNotEmpty,
   renderTooltip,
+  calculatePrice,
 }

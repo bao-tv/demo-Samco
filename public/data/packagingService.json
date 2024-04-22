@@ -1,0 +1,156 @@
+[
+    {
+        "label": "Không đóng thùng",
+        "packagingName": "Không sử dụng",
+        "price": "0",
+        "uom": "",
+        "value": "TC0"
+    },
+    {
+        "label": "Thùng carton 3 lớp 12x12x10",
+        "packagingName": "CT 12x12x10",
+        "price": "38000",
+        "uom": "đồng/thùng",
+        "value": "TC1"
+    },
+    {
+        "label": "Thùng carton 3 lớp 20x15x10",
+        "packagingName": "CT 20x15x10",
+        "price": "44000",
+        "uom": "đồng/thùng",
+        "value": "TC2"
+    },
+    {
+        "label": "Thùng carton 3 lớp 20x20x15",
+        "packagingName": "CT 20x20x15",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TC3"
+    },
+    {
+        "label": "Thùng carton 3 lớp 33x20x12.5",
+        "packagingName": "CT 33x20x12.5",
+        "price": "55000",
+        "uom": "đồng/thùng",
+        "value": "TC4"
+    },
+    {
+        "label": "Thùng carton 3 lớp 28x21x17",
+        "packagingName": "CT 28x21x17",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TC5"
+    },
+    {
+        "label": "Thùng carton 3 lớp 20x15x5",
+        "packagingName": "CT 20x15x5",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TC6"
+    },
+    {
+        "label": "Thùng carton 3 lớp 70x70x70",
+        "packagingName": "CT 70x70x70",
+        "price": "121000",
+        "uom": "đồng/thùng",
+        "value": "TC7"
+    },
+    {
+        "label": "Thùng xốp 31x22x24",
+        "packagingName": "CT 31x22x24",
+        "price": "97000",
+        "uom": "đồng/thùng",
+        "value": "TX1"
+    },
+    {
+        "label": "Thùng xốp 60x45x26",
+        "packagingName": "CT 60x45x26",
+        "price": "191000",
+        "uom": "đồng/thùng",
+        "value": "TX2"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 12x12x10",
+        "packagingName": "CT tái chế 12x12x10",
+        "price": "38000",
+        "uom": "đồng/thùng",
+        "value": "TCTC1"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 20x15x10",
+        "packagingName": "CT tái chế 20x15x10",
+        "price": "44000",
+        "uom": "đồng/thùng",
+        "value": "TCTC2"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 20x20x15",
+        "packagingName": "CT tái chế 20x20x15",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TCTC3"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 33x20x12.5",
+        "packagingName": "CT tái chế 33x20x12.5",
+        "price": "55000",
+        "uom": "đồng/thùng",
+        "value": "TCTC4"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 28x21x17",
+        "packagingName": "CT tái chế 28x21x17",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TCTC5"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 20x15x5",
+        "packagingName": "CT tái chế 20x15x5",
+        "price": "52000",
+        "uom": "đồng/thùng",
+        "value": "TCTC6"
+    },
+    {
+        "label": "Thùng tái chế carton 3 lớp 70x70x70",
+        "packagingName": "CT tái chế 70x70x70",
+        "price": "121000",
+        "uom": "đồng/thùng",
+        "value": "TCTC7"
+    },
+    {
+        "label": "Thùng tái chế xốp 31x22x24",
+        "packagingName": "CT tái chế 31x22x24",
+        "price": "97000",
+        "uom": "đồng/thùng",
+        "value": "TXTC1"
+    },
+    {
+        "label": "Thùng tái chế xốp 60x45x26",
+        "packagingName": "CT tái chế 60x45x26",
+        "price": "191000",
+        "uom": "đồng/thùng",
+        "value": "TXTC2"
+    },
+    {
+        "label": "Bọc màng PE dưới 70x70x70",
+        "packagingName": "PE dưới 70x70x70",
+        "price": "22000",
+        "uom": "đồng/lần",
+        "value": "PE1"
+    },
+    {
+        "label": "Bọc màng PE trên 70x70x70",
+        "packagingName": "PE trên 70x70x70",
+        "price": "55000",
+        "uom": "đồng/lần",
+        "value": "PE1"
+    },
+    {
+        "label": "Xốp hơi gói hàng",
+        "packagingName": "Xốp hơi",
+        "price": "1200",
+        "uom": "đồng/mét",
+        "value": "XH1"
+    }
+]

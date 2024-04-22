@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {FC, createContext, useContext, useEffect, useState} from 'react'
+import React, {FC, createContext, useContext, useEffect, useState, useRef} from 'react'
 import {WithChildren} from '../../helpers'
 
 export interface PageLink {
@@ -18,6 +18,11 @@ export interface PageDataContextModel {
   setPageBreadcrumbs: (_breadcrumbs: Array<PageLink>) => void
   rowDataOrder?: any[]
   setRowDataOrder?: (_datas: any) => void
+  rowDataCouponReciept?: any
+  setRowDataCouponReciept?: (_datas: any) => void
+  showCreateAppModal?: any
+  setShowCreateAppModal?: (_datas: any) => void
+  gridRef?: any
 }
 
 const PageDataContext = createContext<PageDataContextModel>({
@@ -25,6 +30,8 @@ const PageDataContext = createContext<PageDataContextModel>({
   setPageBreadcrumbs: (_breadcrumbs: Array<PageLink>) => {},
   setPageDescription: (_description: string) => {},
   setRowDataOrder: (_datas: any) => {},
+  setRowDataCouponReciept: (_datas: any) => {},
+  setShowCreateAppModal: (_datas: any) => {},
 })
 
 const PageDataProvider: FC<WithChildren> = ({children}) => {
@@ -32,7 +39,11 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
   const [rowDataOrder, setRowDataOrder] = useState<any[]>([])
+  const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
+  const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
+  const gridRef = useRef(null);
   const value: PageDataContextModel = {
+    gridRef,
     pageTitle,
     setPageTitle,
     pageDescription,
@@ -41,6 +52,10 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setPageBreadcrumbs,
     rowDataOrder,
     setRowDataOrder,
+    rowDataCouponReciept,
+    setRowDataCouponReciept,
+    showCreateAppModal,
+    setShowCreateAppModal,
   }
   return <PageDataContext.Provider value={value}>{children}</PageDataContext.Provider>
 }

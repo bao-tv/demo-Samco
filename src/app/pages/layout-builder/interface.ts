@@ -1,5 +1,6 @@
 import { ColDef } from 'ag-grid-community';
-import { FormatsDate } from '../../../_metronic/helpers';
+import { FormatsDate, ButtonActionsRender } from '../../../_metronic/helpers';
+// import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {
     sendDate?: any,
@@ -11,7 +12,8 @@ export interface IFormInput {
     receiptName?: string,
     receiptIdPer?: string,
     receiptPhone?: number | string,
-    receiptAddress?: string,
+    receiptAddress?: any,
+    receiptProvinceAddress?: string,
     packageName?: string,
     packageValue?: string,
     packageWeight?: string,
@@ -19,16 +21,25 @@ export interface IFormInput {
     shipName?: string,
     price?: number,
     coefficient?: number,
+    packagingService?: any,
     packagingServicePrice?: number,
     totalPrice?: number,
     sendPay?: number,
     receiptPay?: number,
+    indexRow?: number,
   }
 export   const columnDefsOrderManagerment: ColDef[] = [
   {
     headerName: 'STT',
-    field: 'index',
+    field: 'indexRow',
     width: 60,
+  },
+  {
+    headerName: 'Actions',
+    field: '',
+    width: 180,
+    cellRenderer: ButtonActionsRender,
+
   },
   {
     headerName: 'Ngày gửi',

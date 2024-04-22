@@ -32,3 +32,9 @@
 .border1pxRight { 
     border-left: 1px solid #000;
 }
+
+.barcodeCSS {
+    svg {
+        height: 80px;
+    }
+}

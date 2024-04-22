@@ -93,7 +93,7 @@ const CreateAppModal = ({show, handleClose, content}: Props) => {
       dialogClassName='modal-dialog modal-dialog-centered'
       show={show}
       onHide={handleClose}
-      // onEntered={loadStepper}
+      onEntered={loadStepper}
       backdrop={true}
       size="xl"
     >

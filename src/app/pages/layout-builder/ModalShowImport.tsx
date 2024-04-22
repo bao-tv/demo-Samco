@@ -1,17 +1,9 @@
 import React, { useState }  from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { toAbsoluteUrl } from '../../../_metronic/helpers';
-import dayjs from 'dayjs';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
-import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-
-type Props = {
-    showModalPreImport?: any,
-    setShowModalPreImport?: any,
-}
+import { usePageData } from '../../../_metronic/layout/core';
 
 const options: Options = {
     filename: "advanced-example.pdf",
@@ -23,9 +15,9 @@ const options: Options = {
     // resolution: Resolution.EXTREME,
     page: {
       // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.NONE,
+      margin: Margin.MEDIUM,
       // default is 'A4'
-    //   format: "letter",
+      format: "letter",
       // default is 'portrait'
     //   orientation: "landscape"
     },
@@ -49,26 +41,27 @@ const options: Options = {
     }
   };
   
-  // you can also use a function to return the target element besides using React refs
-  const getTargetElement = () => document.getElementById("container");
-  
-  const downloadPdf = () => generatePDF(getTargetElement, options);
+// you can also use a function to return the target element besides using React refs
+const getTargetElement = () => document.getElementById("container");
 
-    const ModalShowImport = ({showModalPreImport, setShowModalPreImport}: Props) => {
-    const handleClose = () => setShowModalPreImport(false);
-    // console.log('bao showModalPreImport?: ', showModalPreImport);
+const downloadPdf = () => generatePDF(getTargetElement, options);
+
+const ModalShowImport = () => {
+  const {rowDataCouponReciept, setRowDataCouponReciept} = usePageData();
+  // console.log('bao rowDataCouponReciept: ', rowDataCouponReciept);
+  const handleClose = () => (setRowDataCouponReciept && setRowDataCouponReciept(false));
   return (
     <>
-      <Modal show={showModalPreImport} onHide={handleClose} size='xl'>
-        <Modal.Header closeButton>
+      <Modal show={rowDataCouponReciept.indexRow} onHide={handleClose} size='xl'>
+        <Modal.Header closeButton className='p-3'>
           <Modal.Title>PHIẾU NHẬN HÀNG</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Receipt data={showModalPreImport}/>
+            <Receipt data={rowDataCouponReciept}/>
         </Modal.Body>
-        <Modal.Footer>
-            <Button onClick={downloadPdf}>Download PDF</Button>
-        </Modal.Footer>
+        {/* <Modal.Footer className='p-3'>
+            <p role="button" onClick={downloadPdf}>Download PDF</p>
+        </Modal.Footer> */}
       </Modal>
     </>
   )

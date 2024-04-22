@@ -3,19 +3,21 @@ import { toAbsoluteUrl } from '../../../helpers'
 import dayjs from 'dayjs'
 import { Button } from 'react-bootstrap';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+import Barcode from 'react-barcode';
 
 type Props = {
     data?: any,
 }
 
 const Receipt = ({data}: Props) => {
+    console.log('bao data: ', data);
     
   return (
     <div id="container">
-        <div className='container' style={{padding: '30px 50px'}}>
+        <div className='container' >
             <div className='row fs-3 border border-dark'>
                 <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-30px'/>
+                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
                 </div>
                 <div className="col-8 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI CƠ KHÍ SÀI GÒN - TNHH MTV</p>
@@ -40,11 +42,18 @@ const Receipt = ({data}: Props) => {
                 <div className="col-3 text-center fw-bold border-start border-dark p-0">
                     <div className='border-bottom border-dark'>
                         <p className='pt-3'>SỐ ĐƠN HÀNG: </p>
-                        <p className='text-danger'>1</p>
+                        <p className='text-danger'>{data?.indexRow}</p>
                     </div>
                     <div>
                         <p>MÃ NHẬN HÀNG: </p>
-                        <p className='text-danger'>0000</p>
+                        <div className='d-flex barcodeCSS'>
+                            <Barcode
+                                value={`A24MDM.91.3-5377-DH${data?.indexRow}`} 
+                                // height={100}
+                                displayValue={false}
+                            />
+                        </div>
+                        <p className='text-danger'>A24MDM.91.3-5377-DH{data?.indexRow}</p>
                     </div>
                 </div>
             </div>
@@ -64,7 +73,7 @@ const Receipt = ({data}: Props) => {
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiptName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiptIdPer}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiptPhone}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.receiptAddress}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{ `${data?.receiptAddress?.label ? data?.receiptAddress?.label : ''} - ${data?.receiptProvinceAddress?.label ? data?.receiptProvinceAddress?.label : ''}`}</span></p>
                     </div>
                 </div>
                 <div className="col-7 fs-4 p-0">
@@ -108,6 +117,27 @@ const Receipt = ({data}: Props) => {
                     </div>
                     <p className='fw-bold border-bottom border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay}</span><span>đồng</span></p>
                     <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay}</span><span>đồng</span></p>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-5 p-0 border-end border-start border-bottom border-dark">
+                    <div className="container h-100">
+                        <div className="row h-100">
+                            <div className="col-8 border-end border-dark h-100">
+                                <p className='mb-0 fst-italic text-center'>Tôi đã đọc và đồng ý với các nội dung được ghi trên cả 2 mặt của Phiếu nhận hàng này</p>
+                                <p className='fw-bold text-center'>(Khách hàng ký và ghi rõ họ tên)</p>
+                            </div>
+                            <div className="col-4">
+                                <p className='mb-0 fst-italic text-center'>Nhân viên tiếp nhận</p>
+                                <p className='fw-bold text-center'>(Ký và ghi rõ họ tên)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '60px'}}>
+                    <p className='fw-bold fs-3 px-3'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
+                    <p className='mb-0 px-3'>- Ngày nhận: ......../......../ 2024</p>
+                    <p className='mb-0 px-3'>- Ký và ghi họ tên:</p>
                 </div>
             </div>
         </div>
