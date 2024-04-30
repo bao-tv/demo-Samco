@@ -143,7 +143,7 @@ const MegaMenu: FC = () => {
             <div className='fs-6 fw-bold text-gray-800'>Layout Builder</div>
             <div className='fs-7 fw-semibold text-muted'>Customize view</div>
           </div>
-          <Link to='/builder' className='btn btn-sm btn-primary fw-bold'>
+          <Link to='/phieu-nhan-hang' className='btn btn-sm btn-primary fw-bold'>
             Try Builder
           </Link>
         </div>

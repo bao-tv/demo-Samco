@@ -5,11 +5,12 @@ import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
 import { columnDefsOrderManagerment } from './interface';
 import ModalShowImport from './ModalShowImport';
 import { BuilderPage } from './BuilderPage';
+import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints';
 
 type Props = {}
 
 const OrderManagement = (props: Props) => {
-  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal} = usePageData();
+  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept} = usePageData();
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const onGridReady = useCallback((params: any) => {
@@ -21,9 +22,8 @@ const OrderManagement = (props: Props) => {
     );
   }, []);
   const handleClose = () => setShowCreateAppModal && setShowCreateAppModal(false);
-  console.log('bao rowDataOrder: ', rowDataOrder)
-  const renderRowDataOrder = rowDataOrder?.filter((item) => !item.isRemove)
-  const getRowId = useCallback((params: any) => params.data.indexRow, []);
+  const renderRowDataOrder = (rowDataOrder)?.map((item) => ({...item, receiptAddressJoin: `${item.receiptAddress.label} - ${item.receiptProvinceAddress.label}`}))
+  // const getRowId = useCallback((params: any) => params.data.indexRow, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -35,11 +35,11 @@ const OrderManagement = (props: Props) => {
         >
           <AgGridReact
             ref={gridRef}
-            rowData={renderRowDataOrder}
+            rowData={renderRowDataOrder?.filter(item => !item.isRemove)}
             columnDefs={columnDefsOrderManagerment}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
-            getRowId={getRowId}
+            // getRowId={getRowId}
           />
         </div>
       </div>
@@ -49,6 +49,7 @@ const OrderManagement = (props: Props) => {
         handleClose={handleClose} 
         content={<BuilderPage handleClose={handleClose}/>}
       />
+      {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data}/>}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
 import {useState} from 'react'
+import { useLocation } from 'react-router-dom';
 import {KTIcon} from '../../../../helpers'
 import {CreateAppModal, Dropdown1} from '../../../../partials'
 import {useLayout, usePageData} from '../../../core'
@@ -9,12 +10,12 @@ import { BuilderPage } from '../../../../../app/pages/layout-builder/BuilderPage
 const ToolbarClassic = () => {
   const {config} = useLayout();
   const {showCreateAppModal, setShowCreateAppModal} = usePageData();
+  const location = useLocation();
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
   // const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
   const daterangepickerButtonClass = config.app?.toolbar?.fixed?.desktop
     ? 'btn-light'
     : 'bg-body btn-color-gray-700 btn-active-color-primary'
-  const handleClose = () => (setShowCreateAppModal && setShowCreateAppModal(false))
   return (
     <div className='d-flex align-items-center gap-2 gap-lg-3'>
       {/* {config.app?.toolbar?.filterButton && (
@@ -52,7 +53,7 @@ const ToolbarClassic = () => {
         </a>
       )}
 
-      {config.app?.toolbar?.primaryButton && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/quan-ly-don-hang/don-hang/phieu-nhan-hang' && (
         <div
           onClick={() => (setShowCreateAppModal && setShowCreateAppModal(true))}
           className='btn btn-sm fw-bold btn-primary'

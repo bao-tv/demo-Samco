@@ -11,62 +11,36 @@ const SidebarMenuMain = () => {
   return (
     <>
       <SidebarMenuItem
-        to='/dashboard'
+        to='/thong-tin-chung'
         icon='element-11'
-        title={intl.formatMessage({id: 'MENU.DASHBOARD'})}
+        title={intl.formatMessage({id: 'MENU.THONGTINCHUNG'})}
         fontIcon='bi-app-indicator'
       />
-      <SidebarMenuItem to='/builder' icon='switch' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} fontIcon='bi-layers' />
-      {/* <div className='menu-item'>
+      {/* <SidebarMenuItem to='/builder' icon='switch' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} fontIcon='bi-layers' /> */}
+      <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Quản lý đơn hàng</span>
         </div>
       </div>
       <SidebarMenuItemWithSub
-        to='/crafted/pages'
-        title='Pages'
+        to='/quan-ly-don-hang/don-hang'
+        title='Đơn hàng'
         fontIcon='bi-archive'
-        icon='element-plus'
+        icon='bi fs-3 bi-archive'
       >
-        <SidebarMenuItemWithSub to='/crafted/pages/profile' title='Profile' hasBullet={true}>
-          <SidebarMenuItem to='/crafted/pages/profile/overview' title='Overview' hasBullet={true} />
-          <SidebarMenuItem to='/crafted/pages/profile/projects' title='Projects' hasBullet={true} />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/campaigns'
-            title='Campaigns'
-            hasBullet={true}
-          />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/documents'
-            title='Documents'
-            hasBullet={true}
-          />
-          <SidebarMenuItem
-            to='/crafted/pages/profile/connections'
-            title='Connections'
-            hasBullet={true}
-          />
-        </SidebarMenuItemWithSub>
-
-        <SidebarMenuItemWithSub to='/crafted/pages/wizards' title='Wizards' hasBullet={true}>
-          <SidebarMenuItem
-            to='/crafted/pages/wizards/horizontal'
-            title='Horizontal'
-            hasBullet={true}
-          />
-          <SidebarMenuItem to='/crafted/pages/wizards/vertical' title='Vertical' hasBullet={true} />
-        </SidebarMenuItemWithSub>
+        <SidebarMenuItem to='/quan-ly-don-hang/don-hang/phieu-nhan-hang' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} hasBullet={true} />
+        <SidebarMenuItem to='/quan-ly-don-hang/don-hang/phieu-nhan-hang-da-xoa' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANGDAXOA'})} hasBullet={true} />
       </SidebarMenuItemWithSub>
       <SidebarMenuItemWithSub
-        to='/crafted/accounts'
-        title='Accounts'
-        icon='profile-circle'
+        to='/quan-ly-don-hang/bao-cao'
+        title='Báo cáo'
+        icon='bi fs-3 bi-clipboard2-data'
         fontIcon='bi-person'
       >
-        <SidebarMenuItem to='/crafted/account/overview' title='Overview' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/account/settings' title='Settings' hasBullet={true} />
+        <SidebarMenuItem to='/quan-ly-don-hang/bao-cao/ket-ca' title={intl.formatMessage({id: 'MENU.KETCA'})} hasBullet={true} />
+        <SidebarMenuItem to='/quan-ly-don-hang/bao-cao/bao-cao' title={intl.formatMessage({id: 'MENU.BAOCAO'})} hasBullet={true} />
       </SidebarMenuItemWithSub>
-      <SidebarMenuItemWithSub to='/error' title='Errors' fontIcon='bi-sticky' icon='cross-circle'>
+      {/* <SidebarMenuItemWithSub to='/error' title='Errors' fontIcon='bi-sticky' icon='cross-circle'>
         <SidebarMenuItem to='/error/404' title='Error 404' hasBullet={true} />
         <SidebarMenuItem to='/error/500' title='Error 500' hasBullet={true} />
       </SidebarMenuItemWithSub>
@@ -82,15 +56,23 @@ const SidebarMenuMain = () => {
         <SidebarMenuItem to='/crafted/widgets/mixed' title='Mixed' hasBullet={true} />
         <SidebarMenuItem to='/crafted/widgets/tables' title='Tables' hasBullet={true} />
         <SidebarMenuItem to='/crafted/widgets/feeds' title='Feeds' hasBullet={true} />
-      </SidebarMenuItemWithSub>
+      </SidebarMenuItemWithSub> */}
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Apps</span>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Quản lý kho</span>
         </div>
       </div>
-      <SidebarMenuItemWithSub
-        to='/apps/chat'
-        title='Chat'
+      <div className='menu-item'>
+        <div className='menu-content pt-8 pb-2'>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Định nghĩa giá cước</span>
+        </div>
+      </div>
+      <SidebarMenuItem icon="bi bi-align-start" to='/gia-cuoc/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
+      <SidebarMenuItem icon="bi bi-sign-turn-right" to='/gia-cuoc/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
+      <SidebarMenuItem icon="bi bi-box-seam" to='/gia-cuoc/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
+      {/* <SidebarMenuItemWithSub
+        to='/gia-cuoc'
+        title='Định nghĩa giá cước'
         fontIcon='bi-chat-left'
         icon='message-text-2'
       >

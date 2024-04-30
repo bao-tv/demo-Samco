@@ -13,7 +13,7 @@ const Receipt = ({data}: Props) => {
     console.log('bao data: ', data);
     
   return (
-    <div id="container">
+    <div className='containerReceipt'>
         <div className='container' >
             <div className='row fs-3 border border-dark'>
                 <div className="col pt-3">

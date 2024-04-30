@@ -15,7 +15,6 @@ type Props = {
 
 const MenuItem: FC<Props> = ({to, title, icon, fontIcon, hasArrow = false, hasBullet = false}) => {
   const {pathname} = useLocation()
-
   return (
     <div className='menu-item me-lg-1'>
       <Link

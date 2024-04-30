@@ -5,9 +5,10 @@ import _ from 'lodash';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 
-export const ButtonActionsRender: React.FC<any> = (props: any) => {
+export const ButtonActionsRender = (props: any) => {
     const {setShowCreateAppModal, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept} = usePageData();
     const handleEditRow = (params: any) => {
+      console.log('bao props?.data: ', props.data)
         setShowCreateAppModal && setShowCreateAppModal(props?.data || false)
     }
     const handleRemoveRow = useCallback(() => {
@@ -33,14 +34,14 @@ export const ButtonActionsRender: React.FC<any> = (props: any) => {
           // margin is in MM, default is Margin.NONE = 0
           margin: Margin.MEDIUM,
           // default is 'A4'
-          format: "letter",
+          format: "A4",
           // default is 'portrait'
         //   orientation: "landscape"
         },
         canvas: {
           // default is 'image/jpeg' for better size performance
           mimeType: "image/jpeg",
-          qualityRatio: 1
+          qualityRatio: 2
         },
         // Customize any value passed to the jsPDF instance and html2canvas
         // function. You probably will not need this and things can break,
@@ -56,13 +57,14 @@ export const ButtonActionsRender: React.FC<any> = (props: any) => {
           }
         }
       };
-    const getTargetElement = () => document.getElementById("container");
+    const getTargetElement = () => document.getElementById("containerReceipt");
     const downloadPdf = () => generatePDF(getTargetElement, options);
-    const handlePrintRow = useCallback(() => {
-        console.log('bao props: ', props.data);
-        setRowDataCouponReciept && setRowDataCouponReciept(props.data);
-        downloadPdf();
-    }, []);
+    const handlePrintRow = async () => {
+        setRowDataCouponReciept && await setRowDataCouponReciept({print: true, data: props.data});
+        await downloadPdf();
+        setRowDataCouponReciept && setRowDataCouponReciept(false);
+        // generatePDF(getTargetElement, options);
+    }
   return (
     <div className='d-flex h-100 justify-content-center align-items-center'>
         <Button
@@ -90,9 +92,9 @@ export const ButtonActionsRender: React.FC<any> = (props: any) => {
         >
             <i className="bi bi-printer fs-2"></i>
         </Button>
-        <div className='d-none'>
-         <Receipt data={rowDataCouponReciept}/>
-        </div>
+        {/* <div className='' id="containerReceipt">
+            <Receipt data={props.data}/>
+        </div> */}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import {FC, useEffect, useRef} from 'react'
 import {useLocation} from 'react-router'
 import clsx from 'clsx'
-import {checkIsActive, KTIcon, WithChildren} from '../../../../helpers'
+import {checkIsActiveWithSub, KTIcon, WithChildren} from '../../../../helpers'
 
 type Props = {
   to: string
@@ -36,12 +36,11 @@ const MenuInnerWithSub: FC<Props & WithChildren> = ({
       menuItemRef.current.setAttribute('data-kt-menu-placement', menuPlacement)
     }
   }, [menuTrigger, menuPlacement])
-
   return (
     <div ref={menuItemRef} className='menu-item menu-lg-down-accordion me-lg-1'>
       <span
         className={clsx('menu-link py-3', {
-          active: checkIsActive(pathname, to),
+          active: checkIsActiveWithSub(pathname, to),
         })}
       >
         {hasBullet && (

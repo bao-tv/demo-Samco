@@ -156,7 +156,7 @@ const HelpDrawer = () => {
                 <div className='d-flex flex-column me-2 me-lg-5'>
                   {/* begin::Title */}
                   <Link
-                    to='/builder'
+                    to='/phieu-nhan-hang'
                     className='text-dark text-hover-primary fw-bolder fs-6 fs-lg-4 mb-1'
                   >
                     Layout Builder

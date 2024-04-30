@@ -13,7 +13,7 @@ export interface IFormInput {
     receiptIdPer?: string,
     receiptPhone?: number | string,
     receiptAddress?: any,
-    receiptProvinceAddress?: string,
+    receiptProvinceAddress?: any,
     packageName?: string,
     packageValue?: string,
     packageWeight?: string,
@@ -90,7 +90,7 @@ export   const columnDefsOrderManagerment: ColDef[] = [
   },
   {
     headerName: 'Địa chỉ người nhận',
-    field: 'receiptAddress',
+    field: 'receiptAddressJoin',
     width: 150,
   },
   {

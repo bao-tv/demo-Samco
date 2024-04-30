@@ -1,7 +1,7 @@
 import React from 'react'
 import clsx from 'clsx'
 import {useLocation} from 'react-router'
-import {checkIsActive, KTIcon, WithChildren} from '../../../../helpers'
+import {checkIsActiveWithSub, KTIcon, WithChildren} from '../../../../helpers'
 import {useLayout} from '../../../core'
 
 type Props = {
@@ -21,7 +21,7 @@ const SidebarMenuItemWithSub: React.FC<Props & WithChildren> = ({
   hasBullet,
 }) => {
   const {pathname} = useLocation()
-  const isActive = checkIsActive(pathname, to)
+  const isActive = checkIsActiveWithSub(pathname, to)
   const {config} = useLayout()
   const {app} = config
 

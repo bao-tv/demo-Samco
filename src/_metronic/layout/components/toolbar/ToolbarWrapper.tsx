@@ -31,6 +31,7 @@ const ToolbarWrapper = () => {
             'container-xxl': config.app?.toolbar?.container === 'fixed',
           }
         )}
+        style={{height: '35px'}}
       >
         {isPageTitleVisible && <PageTitleWrapper />}
         <Toolbar />

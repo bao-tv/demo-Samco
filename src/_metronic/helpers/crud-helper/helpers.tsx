@@ -145,7 +145,7 @@ const calculatePrice = (arrayPrice: any[], KG: number) => {
     } else if (KG < item.maxKG && KG >= item.minKG && step) {
       totalPrice += +item.price_number*KGOver*2
     } else if (KG > 40) {
-      console.log('bao customRoundKG(KG-40): ', customRoundKG(KG-40));
+      // console.log('bao customRoundKG(KG-40): ', customRoundKG(KG-40));
       totalPrice += +item.price_number*customRoundKG(KG-40)*2
     }
   })

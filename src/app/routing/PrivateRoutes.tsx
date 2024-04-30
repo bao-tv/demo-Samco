@@ -6,71 +6,41 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
-import BuilderPageWrapper from '../pages/layout-builder/BuilderPageWrapper'
 
 const PrivateRoutes = () => {
-  const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
-  const WizardsPage = lazy(() => import('../modules/wizards/WizardsPage'))
+  const OrderManagement = lazy(() => import('../modules/orderPage/OrderPage'))
+  const DistanceSetupPage = lazy(() => import('../modules/define/DefinePage'))
   const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
   const WidgetsPage = lazy(() => import('../modules/widgets/WidgetsPage'))
   const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
   const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
-
+  // const DistanceSetupPageWrapper = lazy(() => import('../pages/layout-distance/DistanceSetupPageWrapper'))
+  
   return (
     <Routes>
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion */}
-        <Route path='auth/*' element={<Navigate to='/dashboard' />} />
+        
+        <Route path='auth/*' element={<Navigate to='/thong-tin-chung' />} />
         {/* Pages */}
-        <Route path='dashboard' element={<DashboardWrapper />} />
-        <Route path='builder' element={<BuilderPageWrapper />} />
-        <Route path='menu-test' element={<MenuTestPage />} />
+        <Route path='thong-tin-chung' element={<DashboardWrapper />} />
+        {/* <Route path='phieu-nhan-hang' element={<BuilderPageWrapper />} />
+        <Route path='phieu-nhan-hang-da-xoa' element={<BuilderPageWrapperDelete />} /> */}
+        {/* <Route path='menu-test' element={<MenuTestPage />} /> */}
         {/* Lazy Modules */}
         <Route
-          path='crafted/pages/profile/*'
+          path='quan-ly-don-hang/don-hang/*'
           element={
             <SuspensedView>
-              <ProfilePage />
+              <OrderManagement />
             </SuspensedView>
           }
         />
         <Route
-          path='crafted/pages/wizards/*'
+          path='/gia-cuoc/*'
           element={
             <SuspensedView>
-              <WizardsPage />
-            </SuspensedView>
-          }
-        />
-        <Route
-          path='crafted/widgets/*'
-          element={
-            <SuspensedView>
-              <WidgetsPage />
-            </SuspensedView>
-          }
-        />
-        <Route
-          path='crafted/account/*'
-          element={
-            <SuspensedView>
-              <AccountPage />
-            </SuspensedView>
-          }
-        />
-        <Route
-          path='apps/chat/*'
-          element={
-            <SuspensedView>
-              <ChatPage />
-            </SuspensedView>
-          }
-        />
-        <Route
-          path='apps/user-management/*'
-          element={
-            <SuspensedView>
-              <UsersPage />
+              <DistanceSetupPage />
             </SuspensedView>
           }
         />

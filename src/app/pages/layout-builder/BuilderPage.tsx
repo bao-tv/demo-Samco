@@ -12,6 +12,7 @@ import dayjs from 'dayjs';
 import { calculatePrice, renderTooltip } from '../../../_metronic/helpers';
 import _ from 'lodash';
 import { NumericFormat } from 'react-number-format';
+import { watch } from 'fs';
 
 const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   const optionsCoefficient: any[] = [
@@ -30,10 +31,13 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
 ]
 const [provinceData, setProvinceData] = useState<any[]>([]);
 const [priceData, setPriceData] = useState<any[]>([]);
+console.log('bao priceData: ', priceData)
 const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
 const getData=(pathJson: string, setter: any)=>{
   fetch(pathJson)
-    .then(response => response.json())
+    .then(response => {
+      return response.json()
+    })
     .then(data => {
       // Process the JSON data here
       setter(data);
@@ -43,11 +47,12 @@ const getData=(pathJson: string, setter: any)=>{
     });
 }
 useEffect(()=>{
-  getData("data/province.json", setProvinceData);
-  getData("data/remainingPrice.json", setPriceData);
-  getData("data/packagingService.json", setPackingServiceData);
+  getData("/data/province.json", setProvinceData);
+  getData("/data/remainingPrice.json", setPriceData);
+  getData("/data/packagingService.json", setPackingServiceData);
 },[])
   const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showCreateAppModal} = usePageData();
+  console.log('bao showCreateAppModal: ', showCreateAppModal)
   // const [totalPay, setTotalPay] = useState<number>(0);
 
   const receiptDate = dayjs().add(3, 'day').toDate();
@@ -83,17 +88,7 @@ useEffect(()=>{
      shouldUnregister: false,
     })
   const [receiptPayValue, setRecipePayValue] = useState<number>(0);
-  const receiptProvinceAddressValue = watch("receiptProvinceAddress");
-  const [receiptAddressData, setReceiptAddressData] = useState<any[]>([]);
-  useEffect(() => {
-    setValue('receiptAddress', '')
-    const value: any = receiptProvinceAddressValue;
-    if (value.transportation_route) {
-      setReceiptAddressData(value.transportation_route);
-    } else {
-      setReceiptAddressData([]);
-    }
-  },[receiptProvinceAddressValue])
+
   const handleShowPreImport: any = () => {
     const dataForm:any = getValues();
     setRowDataCouponReciept && setRowDataCouponReciept({...dataForm, receiptPay: receiptPayValue, indexRow: (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1)});
@@ -105,34 +100,33 @@ useEffect(()=>{
       setRowDataOrder && await setRowDataOrder((prevRowData: any) => [...prevRowData, data]);
     } else {
       const cloneRowData = _.cloneDeep(rowDataOrder);
+      console.log('bao cloneRowData: ', cloneRowData);
+
       const updateRowData = cloneRowData?.map(item => {
         if (item.indexRow === data.indexRow) return data;
         return item
       });
+      console.log('bao updateRowData: ', updateRowData);
       setRowDataOrder && setRowDataOrder(updateRowData);
     }
 
     handleClose();
     clearErrors();
   }
+
   const onErrors = async (e: any) => {
     // setShowModalPreImport(true);
     if (Object.keys(e).length) {
       ToastError("Bạn nhập thiếu thông tin!");
     }
   }
-
-  // handle calc price =======================
-  const receipt: any[] = watch(['receiptAddress', 'packageWeight', 'packageQuantity', 'coefficient']);
-  // console.log('bao receipt: ', receipt);
-  const priceObject: any = priceData.filter(item => item.distance_code === receipt[0]?.value)
-  // console.log('bao priceObject: ', priceObject);
-
+  
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
     const data: any = useWatch({
       control,
-      name: ['packageWeight', 'packageQuantity']
+      name: ['packageWeight', 'packageQuantity', 'receiptAddress']
     })
+    const priceObject: any = priceData.filter(item => item.distance_code === data[2]?.value)
     let pri: number = 0;
     if (priceObject[0]?.price.length && data[0]) {
       pri = calculatePrice(priceObject[0].price, +data[0]);
@@ -150,16 +144,6 @@ useEffect(()=>{
             <InputGroup.Text className={`group-text ${errors?.price && 'border-danger'}`}>
               Giá dịch vụ
             </InputGroup.Text>
-            {/* <Form.Control
-              disabled
-              className={`text-dark ${errors?.price && 'border-danger'}`}
-              type='number'
-              aria-label="Default"
-              aria-describedby="inputGroup-sizing-default"
-              onBlur={onBlur}
-              onChange={onChange}
-              value={pri * +data[1]}
-            /> */}
             <NumericFormat
               value={pri * +data[1]}
               className={`text-dark ${errors?.price && 'border-danger'} form-control`}
@@ -200,7 +184,7 @@ useEffect(()=>{
         control={control}
         rules={{
           required: true,
-          min: 0.1
+          min: 0
         }}
         render={({ field: { onChange, onBlur, value } }) => (
           <div className='d-flex justify-content-center align-items-center'>
@@ -208,15 +192,17 @@ useEffect(()=>{
               <InputGroup.Text className={`group-text ${errors?.packagingServicePrice && 'border-danger'}`}>
                 Giá dịch vụ đóng gói
               </InputGroup.Text>
-              <Form.Control
+              <NumericFormat
+                value={calculatedPrice}
                 disabled
-                className={`text-dark ${errors?.packagingServicePrice && 'border-danger'}`}
-                type='number'
+                className={`text-dark ${errors?.packagingServicePrice && 'border-danger'} form-control`}
+                // type='number'
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
                 onBlur={onBlur}
                 onChange={onChange}
-                value={calculatedPrice}
+                allowLeadingZeros thousandSeparator=","
+                decimalScale={0}
               />
               <InputGroup.Text className={`${errors?.packagingServicePrice && 'border-danger'}`}>VND</InputGroup.Text>
             </InputGroup>
@@ -228,14 +214,6 @@ useEffect(()=>{
     );
   }
   
-
-  // total senpay ==========================
-  // useEffect(() => {
-  //   const value0 = priceValue[0] || 0;
-  //   const value1 = priceValue[1] || 0;
-  //   setTotalPay((value0*receipt[3] ? +value0*receipt[3].code : 0) + +value1);
-  //   setValue("sendPay", +value0*(receipt[3].code ? receipt[3].code : 0) + +value1);
-  // },[priceValue, receipt[3]])
   const  IsolateReRenderTotalPrice: any = ({ control }: any) => {
     const data: any = useWatch({
       control,
@@ -252,14 +230,18 @@ useEffect(()=>{
             <InputGroup.Text className={`group-text ${errors?.totalPrice && 'border-danger'}`}>
               Tổng tiền
             </InputGroup.Text>
-            <Form.Control
-              className={`text-dark ${errors?.totalPrice && 'border-danger'}`}
-              disabled={true}
-              type='number'
-              aria-label="Default"
-              aria-describedby="inputGroup-sizing-default"
-              value={value}
-            />
+            <NumericFormat
+                value={value}
+                disabled
+                className={`text-dark ${errors?.totalPrice && 'border-danger'} form-control`}
+                // type='number'
+                aria-label="Default"
+                aria-describedby="inputGroup-sizing-default"
+                onBlur={onBlur}
+                onChange={onChange}
+                allowLeadingZeros thousandSeparator=","
+                decimalScale={0}
+              />
             <InputGroup.Text>VND</InputGroup.Text>
         </InputGroup>
         )}
@@ -443,20 +425,27 @@ useEffect(()=>{
                 required: true,
                 min: 0.1
               }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptProvinceAddress && 'border-danger'}`}>
-                <label className='form-label d-block me-5'>Tỉnh nhận hàng</label>
-                  <Select 
+              render={({ field: { onChange, onBlur, value } }) => {
+                // console.log('bao value receiptProvinceAddress: ', value)
+                return (
+                  <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptProvinceAddress && 'border-danger'}`}>
+                  <label className='form-label d-block me-5'>Tỉnh nhận hàng</label>
+                    <Select 
                       className={`react-select-styled w-50 ${errors?.receiptProvinceAddress && 'rounded border border-danger'}`}
                       classNamePrefix='react-select text-dark' 
                       options={provinceData}
                       onBlur={onBlur}
-                      onChange={onChange}
+                      onChange={(selectedOption) => {
+                        onChange(selectedOption);
+                        setValue("receiptAddress", '');
+                    }}
                       value={value}
-                      placeholder='Chọn một tỉnh' 
-                  />
-                </div>
-                )}
+                      placeholder='Chọn một tỉnh'
+                    />
+                  </div>
+                  )
+              }
+              }
             />
             <Controller
               name="receiptAddress"
@@ -465,22 +454,25 @@ useEffect(()=>{
                 required: true,
                 min: 0.1
               }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptProvinceAddress && 'border-danger'}`}>
-                <label className='form-label d-block me-5'>Nơi nhận hàng</label>
-                  <Select 
-                    className={`react-select-styled w-50 ${errors?.receiptProvinceAddress && 'rounded border border-danger'}`}
-                    classNamePrefix='react-select text-dark'
-                    isDisabled={!receiptAddressData.length}
-                    options={receiptAddressData || []}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                    placeholder='Chọn nơi nhận hàng' 
-                  />
-                </div>
-                )}
-            />
+              render={({ field: { onChange, onBlur, value } }) => {
+                // console.log('bao value receiptAddress: ', value);
+                return (
+                  <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptAddress && 'border-danger'}`}>
+                  <label className='form-label d-block me-5'>Nơi nhận hàng</label>
+                    <Select 
+                      className={`react-select-styled w-50 ${errors?.receiptAddress && 'rounded border border-danger'}`}
+                      classNamePrefix='react-select text-dark'
+                      isDisabled={!watch("receiptProvinceAddress")?.transportation_route?.length}
+                      options={watch("receiptProvinceAddress")?.transportation_route}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      // defaultValue={showCreateAppModal.receiptAddress}
+                      placeholder='Chọn nơi nhận hàng' 
+                    />
+                  </div>
+                )}}
+              />
           </>
         </div>
         <div className='group card mb-5 p-5 me-3'>
@@ -672,14 +664,16 @@ useEffect(()=>{
                 <InputGroup.Text className={`group-text ${errors?.sendPay && 'border-danger'}`}>
                   Người gửi thanh toán
                 </InputGroup.Text>
-                <Form.Control
-                  className={`text-dark ${errors?.sendPay && 'border-danger'}`}
+                <NumericFormat
+                  value={value}
+                  className={`text-dark ${errors?.sendPay && 'border-danger'} form-control`}
+                  // type='number'
                   aria-label="Default"
                   aria-describedby="inputGroup-sizing-default"
-                  name='sendPay'
                   onBlur={onBlur}
                   onChange={onChange}
-                  value={value}
+                  allowLeadingZeros thousandSeparator=","
+                  decimalScale={0}
                 />
                 <InputGroup.Text>VND</InputGroup.Text>
               </InputGroup>

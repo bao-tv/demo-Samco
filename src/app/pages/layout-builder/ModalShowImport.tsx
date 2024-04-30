@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { usePageData } from '../../../_metronic/layout/core';
+import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints';
 
 const options: Options = {
     filename: "advanced-example.pdf",
@@ -52,12 +53,13 @@ const ModalShowImport = () => {
   const handleClose = () => (setRowDataCouponReciept && setRowDataCouponReciept(false));
   return (
     <>
-      <Modal show={rowDataCouponReciept.indexRow} onHide={handleClose} size='xl'>
+      <Modal show={rowDataCouponReciept.indexRow && !rowDataCouponReciept.print} onHide={handleClose} size='xl'>
         <Modal.Header closeButton className='p-3'>
           <Modal.Title>PHIẾU NHẬN HÀNG</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Receipt data={rowDataCouponReciept}/>
+            {/* <ReceiptLayoutPrints data={rowDataCouponReciept}/> */}
         </Modal.Body>
         {/* <Modal.Footer className='p-3'>
             <p role="button" onClick={downloadPdf}>Download PDF</p>
