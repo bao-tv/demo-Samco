@@ -1,13 +1,11 @@
 import React, { useState }  from 'react'
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { usePageData } from '../../../_metronic/layout/core';
-import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints';
 
 const options: Options = {
-    filename: "advanced-example.pdf",
+    filename: "goods-delivery.pdf",
     method: "save",
     // default is Resolution.MEDIUM = 3, which should be enough, higher values
     // increases the image quality but also the size of the PDF, so be careful

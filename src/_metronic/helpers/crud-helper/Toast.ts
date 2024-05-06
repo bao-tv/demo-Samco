@@ -14,9 +14,9 @@ const ToastError = (message : any) => (
   })
 )
 
-export const ToastSuccess = ({string}: any) => {
+export const ToastSuccess = (string: any) => {
     return (
-      toast.success(`${string}`, {
+      toast.success(string, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -30,9 +30,9 @@ export const ToastSuccess = ({string}: any) => {
     )
   }
 
-export const ToastWarn = ({string}: any) => {
+export const ToastWarn = (string: any) => {
 return (
-    toast.warn(`${string}`, {
+    toast.warn(string, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

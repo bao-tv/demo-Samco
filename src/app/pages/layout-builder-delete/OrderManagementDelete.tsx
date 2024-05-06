@@ -3,9 +3,6 @@ import { AgGridReact } from 'ag-grid-react';
 import { usePageData } from '../../../_metronic/layout/core';
 import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
 import { columnDefsOrderManagerment } from './interface';
-// import ModalShowImport from './ModalShowImport';
-// import { BuilderPage } from './BuilderPage';
-import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints';
 
 type Props = {}
 
@@ -43,13 +40,6 @@ const OrderManagementDelete = (props: Props) => {
           />
         </div>
       </div>
-      {/* <ModalShowImport /> */}
-      {/* <CreateAppModal
-        show={showCreateAppModal} 
-        handleClose={handleClose} 
-        content={<BuilderPage handleClose={handleClose}/>}
-      /> */}
-      {/* {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data}/>} */}
     </div>
   )
 }

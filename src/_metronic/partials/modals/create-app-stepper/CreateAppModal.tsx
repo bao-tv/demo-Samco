@@ -6,21 +6,17 @@ import {Modal} from 'react-bootstrap'
 import {defaultCreateAppData, ICreateAppData} from './IAppModels'
 import {StepperComponent} from '../../../assets/ts/components'
 import {KTIcon} from '../../../helpers'
-import {Step1} from './steps/Step1'
-import {Step2} from './steps/Step2'
-import {Step3} from './steps/Step3'
-import {Step4} from './steps/Step4'
-import {Step5} from './steps/Step5'
 
 type Props = {
   show: boolean
   handleClose: () => void
   content?: any
+  title?: string
 }
 
 const modalsRoot = document.getElementById('root-modals') || document.body
 
-const CreateAppModal = ({show, handleClose, content}: Props) => {
+const CreateAppModal = ({show, handleClose, content, title}: Props) => {
   const stepperRef = useRef<HTMLDivElement | null>(null)
   const stepper = useRef<StepperComponent | null>(null)
   const [data, setData] = useState<ICreateAppData>(defaultCreateAppData)
@@ -98,7 +94,7 @@ const CreateAppModal = ({show, handleClose, content}: Props) => {
       size="xl"
     >
       <div className='modal-header p-3'>
-        <h2>Tạo phiếu nhận hàng</h2>
+        <h2>{title || 'Tạo phiếu nhận hàng'}</h2>
         {/* begin::Close */}
         <div className='btn btn-sm btn-icon btn-active-color-primary' onClick={handleClose}>
           <KTIcon className='fs-1' iconName='cross' />

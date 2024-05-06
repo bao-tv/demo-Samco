@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {FC, createContext, useContext, useEffect, useState, useRef} from 'react'
 import {WithChildren} from '../../helpers'
+import { boolean } from 'yup'
 
 export interface PageLink {
   title: string
@@ -22,7 +23,12 @@ export interface PageDataContextModel {
   setRowDataCouponReciept?: (_datas: any) => void
   showCreateAppModal?: any
   setShowCreateAppModal?: (_datas: any) => void
+  showCreateDistanceModal?: any
+  setShowCreateDistanceModal?: (_datas: any) => void
   gridRef?: any
+  gridRefDistanceSetup?: any,
+  setIsLoading?: any,
+  isLoading?: any,
 }
 
 const PageDataContext = createContext<PageDataContextModel>({
@@ -32,6 +38,7 @@ const PageDataContext = createContext<PageDataContextModel>({
   setRowDataOrder: (_datas: any) => {},
   setRowDataCouponReciept: (_datas: any) => {},
   setShowCreateAppModal: (_datas: any) => {},
+  setIsLoading: (_datas: any) => boolean,
 })
 
 const PageDataProvider: FC<WithChildren> = ({children}) => {
@@ -41,8 +48,12 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [rowDataOrder, setRowDataOrder] = useState<any[]>([])
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
   const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
+  const [showCreateDistanceModal, setShowCreateDistanceModal] = useState<any>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const gridRef = useRef(null);
+  const gridRefDistanceSetup = useRef(null);
   const value: PageDataContextModel = {
+    gridRefDistanceSetup,
     gridRef,
     pageTitle,
     setPageTitle,
@@ -56,6 +67,10 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setRowDataCouponReciept,
     showCreateAppModal,
     setShowCreateAppModal,
+    showCreateDistanceModal,
+    setShowCreateDistanceModal,
+    setIsLoading,
+    isLoading,
   }
   return <PageDataContext.Provider value={value}>{children}</PageDataContext.Provider>
 }

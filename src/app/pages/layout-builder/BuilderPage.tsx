@@ -7,7 +7,7 @@ import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
 import {InputGroup, Button, Form, OverlayTrigger } from 'react-bootstrap';
 import { IFormInput } from './interface';
 import { usePageData } from '../../../_metronic/layout/core';
-import ToastError from '../../../_metronic/helpers/crud-helper/Toast';
+import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
 import { calculatePrice, renderTooltip } from '../../../_metronic/helpers';
 import _ from 'lodash';
@@ -31,7 +31,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
 ]
 const [provinceData, setProvinceData] = useState<any[]>([]);
 const [priceData, setPriceData] = useState<any[]>([]);
-console.log('bao priceData: ', priceData)
+// console.log('bao priceData: ', priceData)
 const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
 const getData=(pathJson: string, setter: any)=>{
   fetch(pathJson)
@@ -52,8 +52,6 @@ useEffect(()=>{
   getData("/data/packagingService.json", setPackingServiceData);
 },[])
   const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showCreateAppModal} = usePageData();
-  console.log('bao showCreateAppModal: ', showCreateAppModal)
-  // const [totalPay, setTotalPay] = useState<number>(0);
 
   const receiptDate = dayjs().add(3, 'day').toDate();
 
@@ -109,7 +107,7 @@ useEffect(()=>{
       console.log('bao updateRowData: ', updateRowData);
       setRowDataOrder && setRowDataOrder(updateRowData);
     }
-
+    ToastSuccess(showCreateAppModal.indexRow ? 'Cập nhật thành công' : 'Tạo mới thành công')
     handleClose();
     clearErrors();
   }
@@ -721,8 +719,8 @@ useEffect(()=>{
           {/* <div>
           </div> */}
           <div>
-            <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Reset</Button>
-            <Button type="submit" className="btn btn-primary">{showCreateAppModal.indexRow ? 'Update' : 'Add'}</Button>
+            <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button>
+            <Button type="submit" className="btn btn-primary">{showCreateAppModal.indexRow ? 'Cập nhật' : 'Tạo mới'}</Button>
           </div>
         </div>
       </div>

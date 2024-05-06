@@ -1,7 +1,9 @@
 import React, {useMemo, useCallback, useState, useRef} from 'react';
 import { AgGridReact } from 'ag-grid-react';
-import { useThemeMode } from '../../../_metronic/partials';
+import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
 import { columnDefsDistanceSetupPage } from './interface';
+import { usePageData } from '../../../_metronic/layout/core';
+import ModalShowAndAddDistance from './ModalShowAndAddDistance';
 
 type Props = {}
 
@@ -16,7 +18,8 @@ const DistanceSetupPage = (props: Props) => {
       "bao onCellValueChanged: " + event.colDef.field + " = " + event.newValue,
     );
   }, []);
-  const gridRefDistanceSetup = useRef(null);
+  const {gridRefDistanceSetup, showCreateDistanceModal, setShowCreateDistanceModal} = usePageData();
+  const handleClose = () => setShowCreateDistanceModal && setShowCreateDistanceModal(false);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -32,7 +35,12 @@ const DistanceSetupPage = (props: Props) => {
             columnDefs={columnDefsDistanceSetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
-            // getRowId={getRowId}
+          />
+          <CreateAppModal
+            show={showCreateDistanceModal} 
+            handleClose={handleClose} 
+            content={<ModalShowAndAddDistance handleClose={handleClose}/>}
+            title="Định nghĩa khoảnh cách"
           />
         </div>
       </div>

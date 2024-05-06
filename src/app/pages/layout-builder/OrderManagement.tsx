@@ -10,7 +10,8 @@ import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/Rec
 type Props = {}
 
 const OrderManagement = (props: Props) => {
-  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept} = usePageData();
+  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept, isLoading} = usePageData();
+  console.log('bao isLoading: ', isLoading)
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const onGridReady = useCallback((params: any) => {
@@ -24,6 +25,11 @@ const OrderManagement = (props: Props) => {
   const handleClose = () => setShowCreateAppModal && setShowCreateAppModal(false);
   const renderRowDataOrder = (rowDataOrder)?.map((item) => ({...item, receiptAddressJoin: `${item.receiptAddress.label} - ${item.receiptProvinceAddress.label}`}))
   // const getRowId = useCallback((params: any) => params.data.indexRow, []);
+  // if(isLoading) return (
+  //   <div className="h-100 d-flex justify-content-center align-items-center">
+  //     <img src={'/media/img/awating.gif'} className="img-fluid" style={{height: '100px', width: '100px'}}/>
+  //   </div>
+  // );
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -33,13 +39,27 @@ const OrderManagement = (props: Props) => {
             modeCurrent === "dark" ? "ag-theme-quartz-dark" : "ag-theme-quartz"
           }
         >
+          {isLoading &&
+            <div className="h-100 d-flex justify-content-center align-items-center bg-black bg-opacity-25"
+              style={{
+                zIndex: 999,
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                height: '100vh',
+                width: '100vw',
+              }}
+            >
+              <img src={'/media/img/awating.gif'} className="img-fluid" style={{height: '100px', width: '100px'}}/>
+            </div>
+          }
           <AgGridReact
             ref={gridRef}
             rowData={renderRowDataOrder?.filter(item => !item.isRemove)}
             columnDefs={columnDefsOrderManagerment}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
-            // getRowId={getRowId}
           />
         </div>
       </div>

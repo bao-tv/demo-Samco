@@ -33,7 +33,7 @@ const DefinePage = (props: Props) => {
             </>
           }
         />
-        <Route index element={<Navigate to='/quan-ly-don-hang/don-hang/phieu-nhan-hang' />} />
+        <Route index element={<Navigate to='/gia-cuoc/khoang-cach' />} />
       {/* <Route element={<Outlet />}> */}
       {/* </Route> */}
     </Routes>

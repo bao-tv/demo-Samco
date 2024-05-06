@@ -1,14 +1,14 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import { usePageData } from '../../layout/core';
 import _ from 'lodash';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+import { ToastSuccess } from '../crud-helper/Toast';
 
 export const ButtonActionsRender = (props: any) => {
-    const {setShowCreateAppModal, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept} = usePageData();
+    const {setShowCreateAppModal, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
     const handleEditRow = (params: any) => {
-      console.log('bao props?.data: ', props.data)
         setShowCreateAppModal && setShowCreateAppModal(props?.data || false)
     }
     const handleRemoveRow = useCallback(() => {
@@ -19,11 +19,12 @@ export const ButtonActionsRender = (props: any) => {
             }
             return item;
         });
-    
+        
         setRowDataOrder && setRowDataOrder(newRowDataOrder);
+        ToastSuccess('Xóa phiếu thành công');
     }, [rowDataOrder, props.data]);
     const options: Options = {
-        filename: "advanced-example.pdf",
+        filename: "goods-delivery.pdf",
         method: "save",
         // default is Resolution.MEDIUM = 3, which should be enough, higher values
         // increases the image quality but also the size of the PDF, so be careful
@@ -41,7 +42,7 @@ export const ButtonActionsRender = (props: any) => {
         canvas: {
           // default is 'image/jpeg' for better size performance
           mimeType: "image/jpeg",
-          qualityRatio: 2
+          qualityRatio: 0.1
         },
         // Customize any value passed to the jsPDF instance and html2canvas
         // function. You probably will not need this and things can break,
@@ -53,17 +54,28 @@ export const ButtonActionsRender = (props: any) => {
           },
           // see https://html2canvas.hertzen.com/configuration for more options
           canvas: {
-            useCORS: true
+            useCORS: false
           }
         }
       };
     const getTargetElement = () => document.getElementById("containerReceipt");
     const downloadPdf = () => generatePDF(getTargetElement, options);
     const handlePrintRow = async () => {
-        setRowDataCouponReciept && await setRowDataCouponReciept({print: true, data: props.data});
-        await downloadPdf();
-        setRowDataCouponReciept && setRowDataCouponReciept(false);
-        // generatePDF(getTargetElement, options);
+        try {
+          setIsLoading(true); // Show loading GIF
+          if (setRowDataCouponReciept) {
+            await setRowDataCouponReciept({ print: true, data: props.data });
+          }
+          await downloadPdf();
+        } catch (error) {
+          console.error('Error:', error);
+        } finally {
+          setIsLoading(false); // Hide loading GIF
+          ToastSuccess('In phiếu thành công');
+          if (setRowDataCouponReciept) {
+            setRowDataCouponReciept(false);
+          }
+        }
     }
   return (
     <div className='d-flex h-100 justify-content-center align-items-center'>
