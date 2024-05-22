@@ -10,7 +10,7 @@ import { IFormInput } from './interface';
 import { usePageData } from '../../../_metronic/layout/core';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
-import { calculatePrice, renderTooltip } from '../../../_metronic/helpers';
+import { calculatePrice, calculatePriceVehicle, renderTooltip } from '../../../_metronic/helpers';
 import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
 // import { watch } from 'fs';
@@ -41,7 +41,8 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   ]
   const [provinceData, setProvinceData] = useState<any[]>([]);
   const [priceData, setPriceData] = useState<any[]>([]);
-  // console.log('bao priceData: ', priceData)
+  const [priceVehicleData, setPriceVehicleData] = useState<any[]>([]);
+  // console.log('bao priceVehicleData: ', priceVehicleData)
   const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
   const getData=(pathJson: string, setter: any)=>{
     fetch(pathJson)
@@ -59,6 +60,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   useEffect(()=>{
     getData("/data/province.json", setProvinceData);
     getData("/data/remainingPrice.json", setPriceData);
+    getData("/data/remainingPriceForVehicle.json", setPriceVehicleData);
     getData("/data/packagingService.json", setPackingServiceData);
   },[])
 
@@ -136,14 +138,20 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
     const data: any = useWatch({
       control,
-      name: ['packageWeight', 'packageQuantity', 'receiptAddress']
+      name: ['packageWeight', 'packageQuantity', 'receiptAddress', 'vehicle']
     })
     const priceObject: any = priceData.filter(item => item.distance_code === data[2]?.value)
-    let pri: number = 0;
-    if (priceObject[0]?.price.length && data[0]) {
+    const priceObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
+    let pri: any = 0;
+    if (priceObject[0]?.price.length && data[0] && data[3] === 'D0') {
       pri = calculatePrice(priceObject[0].price, +data[0]);
+      setValue("price", pri * +data[1]);
+    } else if (priceObjectForVehicle[0]?.price.length && data[3] !== 'D0') {
+      pri = calculatePriceVehicle(priceObjectForVehicle[0].price, data[3]?.code);
+      console.log('bao pri: ', pri)
+      setValue("price", pri * +data[1]);
+
     }
-    setValue("price", pri * +data[1]);
     return (
       <Controller
         control={control}

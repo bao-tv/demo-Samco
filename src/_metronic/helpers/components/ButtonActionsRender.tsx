@@ -5,6 +5,7 @@ import _ from 'lodash';
 import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
 import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import { ToastSuccess } from '../crud-helper/Toast';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export const ButtonActionsRender = (props: any) => {
     const {setShowCreateAppModal, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
@@ -79,31 +80,57 @@ export const ButtonActionsRender = (props: any) => {
     }
   return (
     <div className='d-flex h-100 justify-content-center align-items-center'>
-        <Button
-            size='sm'
-            className='me-1'
-            style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
-            onClick={handleEditRow}
-        >
-            <i className="bi bi-pencil-square fs-2"></i>
-        </Button>
-        <Button
-            size='sm'
-            className='me-1'
-            variant="danger"
-            style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
-            onClick={handleRemoveRow}
-        >
-            <i className="bi bi-x-circle fs-2"></i>
-        </Button>
+      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Chỉnh sửa</Tooltip>}>
+        <span className="d-inline-block">
+          <Button
+              size='sm'
+              className='me-1 p-2'
+              style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
+              onClick={handleEditRow}
+          >
+              <i className="p-0 bi bi-pencil-square fs-2"></i>
+          </Button>
+        </span>
+      </OverlayTrigger>
+      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Xóa</Tooltip>}>
+        <span className="d-inline-block">
+          <Button
+              size='sm'
+              className='me-1 p-2'
+              variant="danger"
+              style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
+              onClick={handleRemoveRow}
+          >
+            <i className="p-0 bi bi-x-circle fs-2"></i>
+          </Button>
+        </span>
+      </OverlayTrigger>
+      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">In phiếu nhận</Tooltip>}>
+        <span className="d-inline-block">
+          <Button 
+              size='sm' 
+              className='me-1 p-2'
+              variant="secondary" 
+              style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
+              onClick={handlePrintRow}
+          >
+            <i className="p-0 bi bi-printer fs-2"></i>
+          </Button>
+        </span>
+      </OverlayTrigger>
+      <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">Xuất hóa đơn</Tooltip>}>
+        <span className="d-inline-block">
         <Button 
-            size='sm' 
-            variant="secondary" 
+            size='sm'
+            className='p-2'
+            variant="success"
             style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
             onClick={handlePrintRow}
         >
-            <i className="bi bi-printer fs-2"></i>
+            <i className="p-0 bi bi-receipt-cutoff fs-2"></i>
         </Button>
+        </span>
+      </OverlayTrigger>
         {/* <div className='' id="containerReceipt">
             <Receipt data={props.data}/>
         </div> */}

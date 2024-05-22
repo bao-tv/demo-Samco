@@ -152,6 +152,14 @@ const calculatePrice = (arrayPrice: any[], KG: number) => {
   return totalPrice;
 }
 
+const calculatePriceVehicle = (arrayPrice: any[], price_code: number) => {
+  // console.log('bao arrayPrice: ', arrayPrice);
+  // console.log('bao price_code: ', price_code);
+  const objectPrice = arrayPrice.filter((item: any) => item.price_code === price_code)
+  // console.log('bao objectPrice: ', objectPrice)
+  return objectPrice[0]?.price_number
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -164,4 +172,5 @@ export {
   isNotEmpty,
   renderTooltip,
   calculatePrice,
+  calculatePriceVehicle,
 }
