@@ -397,7 +397,7 @@ const ReceiptLayoutPrints = ({data}: Props) => {
             </div>
         </div>
 
-        <div className='container' style={{marginTop: '25px'}}>
+        {/* <div className='container' style={{marginTop: '25px'}}>
             <div className="row fs-4 border border-dark">
                 <div className="col pt-3">
                     <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
@@ -506,7 +506,7 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                     <p className='m-0 fs-6'>Mọi ý kiến đóng góp, phản ánh vui lòng liên hệ qua email: kinhdoanhbxmdm@gmail.com hoặc số điện thoại CSKH: 0373.501.501</p>
                 </div>
             </div>
-        </div>
+        </div> */}
 
         <div className='container mt-1'>
             <div className='row'></div>

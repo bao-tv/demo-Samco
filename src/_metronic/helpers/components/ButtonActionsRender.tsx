@@ -125,7 +125,7 @@ export const ButtonActionsRender = (props: any) => {
             className='p-2'
             variant="success"
             style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
-            onClick={handlePrintRow}
+            // onClick={handlePrintRow}
         >
             <i className="p-0 bi bi-receipt-cutoff fs-2"></i>
         </Button>
