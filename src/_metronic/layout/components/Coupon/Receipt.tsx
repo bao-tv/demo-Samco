@@ -84,9 +84,9 @@ const Receipt = ({data}: Props) => {
                             <div className="row">
                                 <div className="col-7">
                                     <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>a. Tên hàng:</p><span>{data?.packageName}</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>b. Trị giá:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageValue.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>c. Trọng lượng:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageWeight.toLocaleString()}</span><span>Kg</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>d. Số kiện:</p><span>{data?.packageQuantity.toLocaleString()}</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>b. Trị giá:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageValue?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>c. Trọng lượng:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageWeight?.toLocaleString()}</span><span>Kg</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>d. Số kiện:</p><span>{data?.packageQuantity?.toLocaleString()}</span></p>
                                 </div>
                                 <div className='col-5'>
                                     <p>e. Yêu cầu đơn vị vận chuyển</p>
@@ -100,23 +100,25 @@ const Receipt = ({data}: Props) => {
                         <div className='container px-3'>
                             <div className="row">
                                 <div className="col-7">
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>a. Giá dịch vụ:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.price.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>b. Hệ số dịch vụ:</p><span>{data?.coefficient?.value}</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>c. Giá dịch vụ đóng gói:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packagingServicePrice.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>d. Tiền dịch vụ (a*b)+c:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.totalPrice.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>a. Giá dịch vụ:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.price?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>b. Hệ số dịch vụ:</p><span>{data?.coefficient?.code}</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>c. Giá dịch vụ đóng gói:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packagingServicePrice?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>d. Giá trị hàng hóa (khách hàng khai):</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packageValue?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>e. Tiền dịch vụ (a*b)+c:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
                                 </div>
                                 <div className='col-5 fst-italic'>
-                                    <p className='mb-0'>Ghi chú hệ số dịch vụ gồm:</p>
-                                    <p className='mb-0'>- Hàng bình thường (1)</p>
-                                    <p className='mb-0'>- Hàng quá tải (1.2)</p>
-                                    <p className='mb-0'>- Hàng quá khổ (1.2)</p>
-                                    <p className='mb-0'>- Hàng quá tải và quá khổ (1.2)</p>
+                                    <p className='mb-0 fw-bold'>Ghi chú:</p>
+                                    <p className='mb-0 fw-bold'>Mục 2.b hệ số dịch vụ gồm:</p>
+                                    <p className='mb-0'>- Hàng quá tải (1,2)</p>
+                                    <p className='mb-0'>- Hàng quá khổ (1,2)</p>
+                                    <p className='mb-0'>- Hàng quá tải và quá khổ (1,2)</p>
+                                    <p className='mb-0'>- Hàng giao tận nơi (1,3)</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-bottom border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay.toLocaleString()}</span><span>đồng</span></p>
-                    <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay?.toLocaleString()}</span><span>đồng</span></p>
+                    {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay}</span><span>đồng</span></p> */}
                 </div>
             </div>
             <div className="row">

@@ -90,8 +90,10 @@ const CreateAppModal = ({show, handleClose, content, title}: Props) => {
       show={show}
       onHide={handleClose}
       onEntered={loadStepper}
-      backdrop={true}
+      // backdrop={true}
       size="xl"
+      backdrop="static"
+      keyboard={false}
     >
       <div className='modal-header p-3'>
         <h2>{title || 'Tạo phiếu nhận hàng'}</h2>

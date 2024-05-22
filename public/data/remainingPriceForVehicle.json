@@ -1,0 +1,610 @@
+[
+    {
+        "distance_name": "<100",
+        "distance_code": "A1",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "737000"
+            }
+        ],
+        "time": "6h-12h"
+    },
+    {
+        "distance_name": "100-200",
+        "distance_code": "A2",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "737000"
+            }
+        ],
+        "time": "14h-18h"
+    },
+    {
+        "distance_name": "300-350",
+        "distance_code": "A4",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "737000"
+            }
+        ],
+        "time": "14h-18h"
+    },
+    {
+        "distance_name": "351-400",
+        "distance_code": "A5",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "440000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "737000"
+            }
+        ],
+        "time": "18h-22h"
+    },
+    {
+        "distance_name": "401-500",
+        "distance_code": "A6",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "18h-22h"
+    },
+    {
+        "distance_name": "501-600",
+        "distance_code": "A7",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "20h-26h"
+    },
+    {
+        "distance_name": "601-749",
+        "distance_code": "A8",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "20h-26h"
+    },
+    {
+        "distance_name": "750-850",
+        "distance_code": "A9",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "20h-26h"
+    },
+    {
+        "distance_name": "851-900",
+        "distance_code": "A10",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "20h-26h"
+    },
+    {
+        "distance_name": "901-1000",
+        "distance_code": "A11",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "44h-50h"
+    },
+    {
+        "distance_name": "1001-1100",
+        "distance_code": "A12",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "792000"
+            }
+        ],
+        "time": "44h-56h"
+    },
+    {
+        "distance_name": "1101-1500",
+        "distance_code": "A13",
+        "price": [
+            {
+                "price_name": "0-0.5",
+                "price_number": "31500",
+                "minKG": 0,
+                "maxKG": 0.5
+            },
+            {
+                "price_name": "0.6-1",
+                "price_number": "49000",
+                "minKG": 0.6,
+                "maxKG": 1
+            },
+            {
+                "price_name": "1.1-2",
+                "price_number": "52500",
+                "minKG": 1.1,
+                "maxKG": 2
+            },
+            {
+                "price_name": "2.1-3",
+                "price_number": "56000",
+                "minKG": 2.1,
+                "maxKG": 3
+            },
+            {
+                "price_name": "3.1-40",
+                "price_number": "2700",   
+                "minKG": 3.1,
+                "maxKG": 40,
+                "price_add": true       
+            },
+            {
+                "price_name": "<40",
+                "price_number": "3400",   
+                "minKG": 40.1,
+                "price_add": true        
+            }
+        ],
+        "time": "44h-56h"
+    },
+    {
+        "distance_name": "1501-2000",
+        "distance_code": "A14",
+        "price": [
+            {
+                "price_name": "Không sử dụng",
+                "price_code": "D0",
+                "price_number": "0"
+            },
+            {
+                "price_name": "Xe đạp < 5tr",
+                "price_code": "D1",
+                "price_number": "220000"
+            },
+            {
+                "price_name": "Xe đạp >= 5tr",
+                "price_code": "D2",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện < 5tr",
+                "price_code": "D3",
+                "price_number": "330000"
+            },
+            {
+                "price_name": "Xe đạp điện ≥ 5tr",
+                "price_code": "D4",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe máy số",
+                "price_code": "D5",
+                "price_number": "495000"
+            },
+            {
+                "price_name": "Xe tay ga loại 1 ",
+                "price_code": "D6",
+                "price_number": "550000"
+            },
+            {
+                "price_name": "Xe tay ga loại 2 ",
+                "price_code": "D7",
+                "price_number": "2092000"
+            }
+        ],
+        "time": "44h-56h"
+    }
+]  

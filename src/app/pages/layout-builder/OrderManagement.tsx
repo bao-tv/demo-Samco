@@ -68,6 +68,8 @@ const OrderManagement = (props: Props) => {
         show={showCreateAppModal} 
         handleClose={handleClose} 
         content={<BuilderPage handleClose={handleClose}/>}
+        // backdrop="static"
+        // keyboard={false}
       />
       {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data}/>}
     </div>

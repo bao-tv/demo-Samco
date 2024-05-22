@@ -2,7 +2,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
 import React, {useEffect, useState, useRef} from 'react'
-import Select from 'react-select';
+import Select, { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
+// import { ColourOption, colourOptions } from '../data';
 import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
 import {InputGroup, Button, Form, OverlayTrigger } from 'react-bootstrap';
 import { IFormInput } from './interface';
@@ -10,16 +11,25 @@ import { usePageData } from '../../../_metronic/layout/core';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
 import { calculatePrice, renderTooltip } from '../../../_metronic/helpers';
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
-import { watch } from 'fs';
+// import { watch } from 'fs';
 
 const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   const optionsCoefficient: any[] = [
-    { value: 1, label: 'Hàng bình thường (1)', code: 1 },
-    { value: 2, label: 'Hàng quá tải (1.2)', code: 1.2 },
-    { value: 3, label: 'Hàng quá khổ (1.2)', code: 1.2 },
-    { value: 4, label: 'Hàng quá tải và quá khổ (1.2)', code: 1.2 },
+    { value: 1, label: 'Không', code: 1 },
+    { value: 2, label: 'Có', code: 1.3 },
+  ]
+
+  const optionsVehicle: any[] = [
+    { value: 1, label: 'Không sử dụng', code: 'D0' },
+    { value: 2, label: 'Xe đạp < 5tr', code: 'D1' },
+    { value: 3, label: 'Xe đạp ≥ 5tr', code: 'D2' },
+    { value: 4, label: 'Xe đạp điện < 5tr', code: 'D3' },
+    { value: 5, label: 'Xe đạp điện ≥ 5tr', code: 'D4' },
+    { value: 6, label: 'Xe máy số', code: 'D5' },
+    { value: 7, label: 'Xe tay ga loại 1' , code: 'D6' },
+    { value: 8, label: 'Xe tay ga loại 2 ' , code: 'D7' },
   ]
 
   const optionsShipName: any[] = [
@@ -28,29 +38,30 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
     { value: 'option 3', label: 'Thành Bưởi', fullName: 'Công ty TNHH Thành Bưởi' },
     { value: 'option 4', label: 'Bus Line', fullName: 'Công ty TNHH Bus Line' },
     { value: 'option 5', label: 'Vận chuyển siêu tốc', fullName: 'Công ty TNHH Vận chuyển siêu tốc' },
-]
-const [provinceData, setProvinceData] = useState<any[]>([]);
-const [priceData, setPriceData] = useState<any[]>([]);
-// console.log('bao priceData: ', priceData)
-const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
-const getData=(pathJson: string, setter: any)=>{
-  fetch(pathJson)
-    .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      // Process the JSON data here
-      setter(data);
-    })
-    .catch(error => {
-      console.error('Error fetching JSON:', error);
-    });
-}
-useEffect(()=>{
-  getData("/data/province.json", setProvinceData);
-  getData("/data/remainingPrice.json", setPriceData);
-  getData("/data/packagingService.json", setPackingServiceData);
-},[])
+  ]
+  const [provinceData, setProvinceData] = useState<any[]>([]);
+  const [priceData, setPriceData] = useState<any[]>([]);
+  // console.log('bao priceData: ', priceData)
+  const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
+  const getData=(pathJson: string, setter: any)=>{
+    fetch(pathJson)
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        // Process the JSON data here
+        setter(data);
+      })
+      .catch(error => {
+        console.error('Error fetching JSON:', error);
+      });
+  }
+  useEffect(()=>{
+    getData("/data/province.json", setProvinceData);
+    getData("/data/remainingPrice.json", setPriceData);
+    getData("/data/packagingService.json", setPackingServiceData);
+  },[])
+
   const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showCreateAppModal} = usePageData();
 
   const receiptDate = dayjs().add(3, 'day').toDate();
@@ -70,13 +81,16 @@ useEffect(()=>{
       receiptProvinceAddress: showCreateAppModal.receiptProvinceAddress || '',
       receiptAddress: showCreateAppModal.receiptAddress || '',
       packageName: showCreateAppModal.packageName || '',
+      vehicle: showCreateAppModal.vehicle || '',
       packageValue: showCreateAppModal.packageValue || '',
       packageWeight: showCreateAppModal.packageWeight || 0,
       packageQuantity: showCreateAppModal.packageQuantity || 0,
       shipName: showCreateAppModal.shipName || '',
       price: showCreateAppModal.price || 0,
-      coefficient: showCreateAppModal.coefficient || { value: 1, label: 'Hàng bình thường (1)', code: 1 },
+      coefficient: showCreateAppModal.coefficient || '',
       packagingService: showCreateAppModal?.packagingService,
+      numberOfPackagingService: showCreateAppModal?.numberOfPackagingService || 1,
+      packagingServiceData: showCreateAppModal?.packagingServiceData,
       packagingServicePrice: showCreateAppModal?.packagingServicePrice?.price || 0,
       totalPrice: showCreateAppModal.totalPrice || 0,
       sendPay: showCreateAppModal.sendPay || 0,
@@ -98,7 +112,7 @@ useEffect(()=>{
       setRowDataOrder && await setRowDataOrder((prevRowData: any) => [...prevRowData, data]);
     } else {
       const cloneRowData = _.cloneDeep(rowDataOrder);
-      console.log('bao cloneRowData: ', cloneRowData);
+      // console.log('bao cloneRowData: ', cloneRowData);
 
       const updateRowData = cloneRowData?.map(item => {
         if (item.indexRow === data.indexRow) return data;
@@ -159,27 +173,88 @@ useEffect(()=>{
     )
   }
 
-  // price dịch vụ ddoings gói
-  const IsolateReRenderPricePackingService: React.FC<{ control: any }> = ({ control }) => {
+  const [packagingServiceData, setPackagingServiceData] = useState<any[]>([]);
+  const IsolateReRenderOptionsPackingService: React.FC<{ control: any }> = ({ control }) => {
+  
     const packagingService = useWatch({
       control,
       name: 'packagingService',
     });
-  
-    const packageQuantity = useWatch({
-      control,
-      name: 'packageQuantity',
-    });
 
-    
-    // Calculate the price based on the watched fields
-    const calculatedPrice: number = (+packagingService?.price || 0) * +packageQuantity;
+    const clonepackagingService = _.cloneDeep(packagingService);
+
     useEffect(() => {
-      setValue("packagingServicePrice", calculatedPrice)
-    }, [calculatedPrice])
+      if (clonepackagingService?.value) {
+        // Check if packagingService is already present in packagingServiceData
+        const isExists = packagingServiceData.some(item => item.value === clonepackagingService.value);
+        
+        // If packagingService doesn't exist, add it to packagingServiceData
+        const number = _.cloneDeepWith(+getValues("numberOfPackagingService"));
+        if (!isExists) {
+          setPackagingServiceData(prevData => [...prevData, {...clonepackagingService, quality: number}]);
+          setValue('packagingService', '');
+        }
+      }
+    }, [clonepackagingService]);
+
+    // console.log('bao packagingServiceData: ', packagingServiceData)
+  
+    const orderOptions = (values: readonly any[]) => {
+      const fixedOptions = values.filter((v) => v.isFixed);
+      const nonFixedOptions = values.filter((v) => !v.isFixed);
+      return [...fixedOptions, ...nonFixedOptions];
+    };
+  
+    const onChange = (newValue: any, actionMeta: any) => {
+      let updatedData = newValue;
+      switch (actionMeta.action) {
+        case 'remove-value':
+        case 'pop-value':
+          if (actionMeta.removedValue.isFixed) {
+            return;
+          }
+          break;
+        case 'clear':
+          newValue = packagingServiceData.filter((v) => v.isFixed);
+          break;
+      }
+      setPackagingServiceData(orderOptions(updatedData));
+    };
+    
     return (
       <Controller
         control={control}
+        name='packagingServiceData'
+        render={({ field }) => (
+          <Select
+            className='mb-3 basic-multi-select'
+            classNamePrefix='select'
+            isMulti
+            components={{ DropdownIndicator:() => null, IndicatorSeparator:() => null }}
+            isClearable={packagingServiceData.some((v) => !v.isFixed)}
+            value={packagingServiceData}
+            onChange={(newValue, actionMeta) => {
+              field.onChange(newValue);
+              onChange(newValue, actionMeta);
+            }}
+            getOptionLabel={(option) => `${option.packagingName} (SL: ${option.quality})`}
+          />
+        )}
+      />
+    );
+  };
+  
+
+  // price dịch vụ ddoings gói
+  const IsolateReRenderPricePackingService: React.FC<{ control: any }> = ({ control }) => {
+    // Calculate the price based on the watched fields
+    let calculatedPrice: number = 0
+    packagingServiceData.length && packagingServiceData?.forEach((item: any) => calculatedPrice += (+item.price * +item.quality));
+    setValue("packagingServicePrice", +calculatedPrice)
+    return (
+      <Controller
+        control={control}
+        name="packagingServicePrice"
         rules={{
           required: true,
           min: 0
@@ -191,10 +266,9 @@ useEffect(()=>{
                 Giá dịch vụ đóng gói
               </InputGroup.Text>
               <NumericFormat
-                value={calculatedPrice}
+                value={+calculatedPrice}
                 disabled
                 className={`text-dark ${errors?.packagingServicePrice && 'border-danger'} form-control`}
-                // type='number'
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
                 onBlur={onBlur}
@@ -204,25 +278,29 @@ useEffect(()=>{
               />
               <InputGroup.Text className={`${errors?.packagingServicePrice && 'border-danger'}`}>VND</InputGroup.Text>
             </InputGroup>
-            {/* <Button variant="light" className='mb-3 px-3'><i className="bi bi-box-arrow-in-up-left fs-2"></i></Button> */}
           </div>
         )}
-        name='packagingServicePrice'
       />
     );
   }
   
-  const  IsolateReRenderTotalPrice: any = ({ control }: any) => {
+  const  IsolateReRenderTotalPrice: React.FC<{ control: any }> = ({ control }) => {
     const data: any = useWatch({
-      control,
+      control: control,
       name: ['coefficient', 'price', 'packagingServicePrice'],
+      exact: true,
     })
-    setValue("sendPay", data[1]*data[0].code + data[2]);
-    setValue("totalPrice", data[1]*data[0].code + data[2]);
+    // console.log('bao data: ', data)
+    // setValue("sendPay", data[1]*data[0].code + data[2]);
+    setValue("totalPrice", data[1]*data[0].code + data[2] || 0);
     return (
       <Controller
         control={control}
         // defaultValue={totalPay}
+        rules={{
+          required: true,
+          min: 0.1
+        }}
         render={({ field: { onChange, onBlur, value } }) => (
         <InputGroup className="mb-3">
             <InputGroup.Text className={`group-text ${errors?.totalPrice && 'border-danger'}`}>
@@ -279,6 +357,9 @@ useEffect(()=>{
 
             <Controller
               control={control}
+              rules={{
+                required: true,
+              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
                   <InputGroup.Text className={`group-text ${errors?.sendIdPer && 'border-danger'}`}>
@@ -374,6 +455,9 @@ useEffect(()=>{
 
             <Controller
               control={control}
+              rules={{
+                required: true,
+              }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
                   <InputGroup.Text className={`group-text ${errors?.receiptIdPer && 'border-danger'}`}>
@@ -428,7 +512,7 @@ useEffect(()=>{
                 return (
                   <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptProvinceAddress && 'border-danger'}`}>
                   <label className='form-label d-block me-5'>Tỉnh nhận hàng</label>
-                    <Select 
+                    <Select
                       className={`react-select-styled w-50 ${errors?.receiptProvinceAddress && 'rounded border border-danger'}`}
                       classNamePrefix='react-select text-dark' 
                       options={provinceData}
@@ -465,6 +549,7 @@ useEffect(()=>{
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value}
+                      getOptionValue={(option) => `${option['transportation_route_code']}`}
                       // defaultValue={showCreateAppModal.receiptAddress}
                       placeholder='Chọn nơi nhận hàng' 
                     />
@@ -499,6 +584,30 @@ useEffect(()=>{
               name='packageName'
             />
 
+            <InputGroup className="mb-3">
+              <Controller
+                name="vehicle"
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <div className={`d-flex align-items-center w-100 ${errors?.vehicle && 'border-danger'}`}>
+                  <label className='form-label d-block me-5'>Loại xe</label>
+                  <Select 
+                      className={`react-select-styled w-50 ${errors?.vehicle && 'rounded border border-danger'}`}
+                      classNamePrefix='react-select' 
+                      options={optionsVehicle} 
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder='Chọn một loại xe' 
+                  />
+                  </div>
+                )}
+              />
+            </InputGroup>
+
             <Controller
               name="packageValue"
               control={control}
@@ -525,8 +634,8 @@ useEffect(()=>{
               name="packageWeight"
               control={control}
               rules={{
-                required: true,
-                min: 0.001
+                required: watch('vehicle')?.code == 'D0' ? true : false,
+                min: watch('vehicle')?.code == 'D0' ? 0.001 : 0,
               }}
               render={({ field: { onChange, onBlur, value } }) => (
               <InputGroup className="mb-3">
@@ -536,6 +645,7 @@ useEffect(()=>{
                   <Form.Control
                       className={`text-dark ${errors?.packageWeight && 'border-danger'}`}
                       type='number'
+                      disabled={watch('vehicle')?.code == 'D0' ? false : true}
                       aria-label="Default"
                       aria-describedby="inputGroup-sizing-default"
                       onBlur={onBlur}
@@ -585,18 +695,18 @@ useEffect(()=>{
                     required: true,
                   }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                      <div className={`d-flex align-items-center w-100 ${errors?.shipName && 'border-danger'}`}>
-                      <label className='form-label d-block me-5'>Đơn vị vận chuyển</label>
-                      <Select 
-                          className={`react-select-styled w-50 ${errors?.shipName && 'rounded border border-danger'}`}
-                          classNamePrefix='react-select' 
-                          options={optionsShipName} 
-                          onBlur={onBlur}
-                          onChange={onChange}
-                          value={value}
-                          placeholder='Chọn một đơn vị vận chuyển' 
-                      />
-                      </div>
+                    <div className={`d-flex align-items-center w-100 ${errors?.shipName && 'border-danger'}`}>
+                    <label className='form-label d-block me-5'>Đơn vị vận chuyển</label>
+                    <Select 
+                        className={`react-select-styled w-50 ${errors?.shipName && 'rounded border border-danger'}`}
+                        classNamePrefix='react-select' 
+                        options={optionsShipName} 
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
+                        placeholder='Chọn một đơn vị vận chuyển' 
+                    />
+                    </div>
                   )}
                 />
             </InputGroup>
@@ -615,7 +725,7 @@ useEffect(()=>{
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <div className={`d-flex align-items-center w-100 mb-3 ${errors?.coefficient && 'border-danger'}`}>
-                <label className='form-label d-block me-5'>Hệ số dịch vụ</label>
+                <label className='form-label d-block me-5'>Giao hàng tận nơi</label>
                   <Select 
                     className={`react-select-styled w-50 ${errors?.coefficient && 'rounded border border-danger'}`}
                     classNamePrefix='react-select text-dark' 
@@ -623,38 +733,62 @@ useEffect(()=>{
                     onBlur={onBlur}
                     onChange={onChange}
                     value={value}
-                    placeholder='Chọn một hệ số dịch vụ' 
+                    placeholder='Dịch vụ giao hàng tận nơi' 
                   />
                 </div>
                 )}
             />
-            <Controller
-              name="packagingService"
-              control={control}
-              rules={{
-                required: true,
-                min: 0.1
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <div className={`d-flex align-items-center w-100 mb-3 ${errors?.packagingService && 'border-danger'}`}>
-                <label className='form-label d-block me-5'>Dịch vụ đóng gói</label>
-                  <Select 
-                    className={`react-select-styled w-50 ${errors?.packagingService && 'rounded border border-danger'}`}
-                    classNamePrefix='react-select text-dark' 
-                    options={packingServiceData}
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                    placeholder='Chọn dịch vụ đóng gói'
-                  />
-                </div>
-                )}
-            />
+            <div className='d-flex'>
+              <Controller
+                name="packagingService"
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <div className={`d-flex align-items-center w-75 mb-3 ${errors?.packagingService && 'border-danger'}`}>
+                  <label className='form-label d-block me-1'>Dịch vụ đóng gói</label>
+                    <Select
+                      className={`react-select-styled w-100 ${errors?.packagingService && 'rounded border border-danger'}`}
+                      classNamePrefix='react-select text-dark' 
+                      options={packingServiceData}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder='Chọn dịch vụ đóng gói'
+                    />
+                  </div>
+                  )}
+              />
+              <Controller
+                name="numberOfPackagingService"
+                control={control}
+                rules={{
+                  required: true,
+                  // min: 1
+                }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <div className={`d-flex align-items-center w-25 mb-3 ${errors?.numberOfPackagingService && 'border-danger'}`}>
+                  {/* <span className='ms-3'>x</span> */}
+                  <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
+                    <InputGroup className='ms-3 w-100'>
+                      <Form.Control
+                          className={`text-dark ${errors?.numberOfPackagingService && 'border-danger'}`}
+                          type='number'
+                          aria-label="Default"
+                          aria-describedby="inputGroup-sizing-default"
+                          onBlur={onBlur}
+                          onChange={onChange}
+                          value={value}
+                      />
+                    </InputGroup>
+                  </div>
+                  )}
+              />
+            </div>
+            <IsolateReRenderOptionsPackingService control={control} />
             <IsolateReRenderPricePackingService control={control} />
             <IsolateReRenderTotalPrice control={control} />
           </>
         </div>
-        <div className='group card p-5 me-3'>
+        {/* <div className='group card p-5 me-3'>
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -705,7 +839,7 @@ useEffect(()=>{
               )}
             name="receiptPay"
           />
-        </div>
+        </div> */}
       </div>
       <div className='row mt-6'>
         <div className='col justify-content-between d-flex'>
@@ -719,7 +853,7 @@ useEffect(()=>{
           {/* <div>
           </div> */}
           <div>
-            <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button>
+            {/* <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button> */}
             <Button type="submit" className="btn btn-primary">{showCreateAppModal.indexRow ? 'Cập nhật' : 'Tạo mới'}</Button>
           </div>
         </div>
