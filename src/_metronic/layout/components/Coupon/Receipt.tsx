@@ -15,11 +15,11 @@ const Receipt = ({data}: Props) => {
   return (
     <div className='containerReceipt'>
         <div className='container' >
-            <div className='row fs-3 border border-dark'>
-                <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
+            <div className='row fs-4 border border-dark'>
+                <div className="col-2 pt-3">
+                    <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt="Logo" className='w-100'/>
                 </div>
-                <div className="col-8 text-center pt-3">
+                <div className="col-7 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI CƠ KHÍ SÀI GÒN - TNHH MTV</p>
                     <p className='fw-bold m-0 mb-2'>BẾN XE MIỀN ĐÔNG MỚI</p>
                     <p className='m-0 fs-5'>Địa chỉ: 501 Hoàng Hữu Nam, P.Long Bình, Tp.Thủ Đức, Tp.Hồ Chí Minh</p>
@@ -117,7 +117,7 @@ const Receipt = ({data}: Props) => {
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay?.toLocaleString()}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
                     {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay}</span><span>đồng</span></p> */}
                 </div>
             </div>
@@ -141,6 +141,9 @@ const Receipt = ({data}: Props) => {
                     <p className='mb-0 px-3'>- Ngày nhận: ......../......../ 2024</p>
                     <p className='mb-0 px-3'>- Ký và ghi họ tên:</p>
                 </div>
+            </div>
+            <div className="row border-start border-end border-bottom border-dark">
+                <span className='py-2 fst-italic fw-bold text-center'>Khi có khiếu nại hoặc đến nhận tiền thu hộ (COD), Quý khách vui lòng mang theo Phiếu gửi hàng này và xuất trình các giấy tờ có liên quan</span>
             </div>
         </div>
     </div>

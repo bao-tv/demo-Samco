@@ -25,10 +25,15 @@ export interface PageDataContextModel {
   setShowCreateAppModal?: (_datas: any) => void
   showCreateDistanceModal?: any
   setShowCreateDistanceModal?: (_datas: any) => void
+  showCreateProvinceModal?: any
+  setShowCreateProvinceModal?: (_datas: any) => void
   gridRef?: any
   gridRefDistanceSetup?: any,
+  gridRefProvinceSetup?: any,
   setIsLoading?: any,
   isLoading?: any,
+  rowDataProvince?: any[]
+  setRowDataProvince?: (_datas: any) => void
 }
 
 const PageDataContext = createContext<PageDataContextModel>({
@@ -39,6 +44,7 @@ const PageDataContext = createContext<PageDataContextModel>({
   setRowDataCouponReciept: (_datas: any) => {},
   setShowCreateAppModal: (_datas: any) => {},
   setIsLoading: (_datas: any) => boolean,
+  setRowDataProvince: (_datas: any) => {},
 })
 
 const PageDataProvider: FC<WithChildren> = ({children}) => {
@@ -46,14 +52,18 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
   const [rowDataOrder, setRowDataOrder] = useState<any[]>([])
+  const [rowDataProvince, setRowDataProvince] = useState<any[]>([])
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
   const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
   const [showCreateDistanceModal, setShowCreateDistanceModal] = useState<any>(false)
+  const [showCreateProvinceModal, setShowCreateProvinceModal] = useState<any>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const gridRef = useRef(null);
   const gridRefDistanceSetup = useRef(null);
+  const gridRefProvinceSetup = useRef<any>(null);
   const value: PageDataContextModel = {
     gridRefDistanceSetup,
+    gridRefProvinceSetup,
     gridRef,
     pageTitle,
     setPageTitle,
@@ -63,12 +73,16 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setPageBreadcrumbs,
     rowDataOrder,
     setRowDataOrder,
+    rowDataProvince,
+    setRowDataProvince,
     rowDataCouponReciept,
     setRowDataCouponReciept,
     showCreateAppModal,
     setShowCreateAppModal,
     showCreateDistanceModal,
     setShowCreateDistanceModal,
+    showCreateProvinceModal,
+    setShowCreateProvinceModal,
     setIsLoading,
     isLoading,
   }

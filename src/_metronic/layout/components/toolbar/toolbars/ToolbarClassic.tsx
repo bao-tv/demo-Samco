@@ -9,7 +9,7 @@ import { BuilderPage } from '../../../../../app/pages/layout-builder/BuilderPage
 
 const ToolbarClassic = () => {
   const {config} = useLayout();
-  const {showCreateAppModal, setShowCreateAppModal, setShowCreateDistanceModal} = usePageData();
+  const {showCreateAppModal, setShowCreateAppModal, setShowCreateDistanceModal, setShowCreateProvinceModal} = usePageData();
   const location = useLocation();
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
   // const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
@@ -61,12 +61,20 @@ const ToolbarClassic = () => {
           Tạo Phiếu nhận hàng
         </div>
       )}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/gia-cuoc/khoang-cach' && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/khoang-cach' && (
         <div
           onClick={() => (setShowCreateDistanceModal && setShowCreateDistanceModal(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
           Tạo Khoảng cách
+        </div>
+      )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/tinh-nhan-hang' && (
+        <div
+          onClick={() => (setShowCreateProvinceModal && setShowCreateProvinceModal(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          Tạo Tỉnh nhận hàng
         </div>
       )}
       {/* <CreateAppModal

@@ -67,11 +67,12 @@ const SidebarMenuMain = () => {
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Định nghĩa giá cước</span>
         </div>
       </div>
-      <SidebarMenuItem icon="bi bi-align-start" to='/gia-cuoc/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
-      <SidebarMenuItem icon="bi bi-sign-turn-right" to='/gia-cuoc/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
-      <SidebarMenuItem icon="bi bi-box-seam" to='/gia-cuoc/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
+      <SidebarMenuItem icon="bi bi-align-start" to='/dinh-nghia/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
+      <SidebarMenuItem icon="bi bi-sign-turn-right" to='/dinh-nghia/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
+      <SidebarMenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
+      <SidebarMenuItem icon="bi bi-box-seam" to='/dinh-nghia/tinh-nhan-hang' title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>
       {/* <SidebarMenuItemWithSub
-        to='/gia-cuoc'
+        to='/dinh-nghia'
         title='Định nghĩa giá cước'
         fontIcon='bi-chat-left'
         icon='message-text-2'

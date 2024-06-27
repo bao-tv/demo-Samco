@@ -2,7 +2,6 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {AgGridReact} from 'ag-grid-react'
 import {useForm, SubmitHandler, Controller, useWatch} from 'react-hook-form'
 import {InputGroup, Button, Form, OverlayTrigger} from 'react-bootstrap'
-import {columnDefsPriceInDistance} from './interface'
 import { useThemeMode } from '../../../_metronic/partials'
 import ModalAddPriceObject from './ModalAddPriceObject'
 
@@ -107,7 +106,7 @@ const ModalShowAndAddDistance = (props: any) => {
                         <AgGridReact
                             ref={gridRefPriceInDistance}
                             rowData={rowDataPriceObject}
-                            columnDefs={columnDefsPriceInDistance}
+                            // columnDefs={columnDefsPriceInDistance}
                             onGridReady={onGridReady}
                             onCellValueChanged={onCellValueChanged}
                             // getRowId={getRowId}
@@ -116,6 +115,14 @@ const ModalShowAndAddDistance = (props: any) => {
                     </div>
                 </div>
             </div>
+        </div>
+      </div>
+      <div className='row'>
+        <div className='col justify-content-end d-flex'>
+          <div>
+            {/* <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button> */}
+            <Button type="submit" className="btn btn-primary">{`Tạo mới ${props.title}`}</Button>
+          </div>
         </div>
       </div>
       <ModalAddPriceObject

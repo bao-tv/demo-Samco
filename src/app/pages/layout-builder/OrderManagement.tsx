@@ -11,7 +11,7 @@ type Props = {}
 
 const OrderManagement = (props: Props) => {
   const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept, isLoading} = usePageData();
-  console.log('bao isLoading: ', isLoading)
+  // console.log('bao isLoading: ', isLoading)
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const onGridReady = useCallback((params: any) => {

@@ -27,8 +27,8 @@ export interface IFormInput {
     packagingServiceData?:any,
     packagingServicePrice?: number,
     totalPrice?: number,
-    sendPay?: number,
-    receiptPay?: number,
+    // sendPay?: number,
+    // receiptPay?: number,
     indexRow?: number,
   }
 export   const columnDefsOrderManagerment: ColDef[] = [

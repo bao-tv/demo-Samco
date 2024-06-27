@@ -34,11 +34,11 @@ export const ButtonActionsRender = (props: any) => {
         // resolution: Resolution.EXTREME,
         page: {
           // margin is in MM, default is Margin.NONE = 0
-          margin: Margin.MEDIUM,
+          margin: Margin.SMALL,
           // default is 'A4'
-          format: "A4",
+          format: "A5",
           // default is 'portrait'
-        //   orientation: "landscape"
+          orientation: "landscape"
         },
         canvas: {
           // default is 'image/jpeg' for better size performance

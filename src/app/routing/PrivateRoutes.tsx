@@ -37,7 +37,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='/gia-cuoc/*'
+          path='/dinh-nghia/*'
           element={
             <SuspensedView>
               <DistanceSetupPage />

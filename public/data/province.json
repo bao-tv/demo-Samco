@@ -7,7 +7,7 @@
             {
                 "label": "Thành phố Hồ Chí Minh",
                 "transportation_route_code": "SG_HCM",
-                "distance_name": "99",
+                "distance": "99",
                 "value": "A1"
             }
         ]
@@ -20,28 +20,28 @@
             {
                 "label": "Châu Đức (Ngãi Giao)",
                 "transportation_route_code": "BV_CDNG",
-                "distance_name": "85",
+                "distance": "85",
                 "value": "A1"
             }
             ,
             {
                 "label": "Châu Đức (Quảng Thành)",
                 "transportation_route_code": "BV_CDQT",
-                "distance_name": "95",
+                "distance": "95",
                 "value": "A1"
             }
             ,
             {
                 "label": "Bà Rịa",
                 "transportation_route_code": "BV_BR",
-                "distance_name": "99",
+                "distance": "99",
                 "value": "A1"
             }
             ,
             {
                 "label": "Bà Rịa (Châu Pha)",
                 "transportation_route_code": "BV_BRCP",
-                "distance_name": "100",
+                "distance": "100",
                 "value": "A2"
 
             }
@@ -55,21 +55,21 @@
             {
                 "label": "Mỏ Cày Nam",
                 "transportation_route_code": "BT_MCN",
-                "distance_name": "115",
+                "distance": "115",
                 "value": "A2"
             }
             ,
             {
                 "label": "Ba Tri",
                 "transportation_route_code": "BT_BT",
-                "distance_name": "<100",
+                "distance": "<100",
                 "value": "A1"
             }
             ,
             {
                 "label": "Thạnh Phú",
                 "transportation_route_code": "BT_TP",
-                "distance_name": "142",
+                "distance": "142",
                 "value": "A2"
 
             }
@@ -83,21 +83,21 @@
             {
                 "label": "Quy Nhơn",
                 "transportation_route_code": "BD_QN",
-                "distance_name": "660",
+                "distance": "660",
                 "value": "A8"
             }
             ,
             {
                 "label": "An Nhơn",
                 "transportation_route_code": "BD_AN",
-                "distance_name": "688",
+                "distance": "688",
                 "value": "A8"
             }
             ,
             {
                 "label": "Phù Cát",
                 "transportation_route_code": "BD_PC",
-                "distance_name": "708",
+                "distance": "708",
                 "value": "A8"
 
             }
@@ -111,21 +111,21 @@
             {
                 "label": "Đức Linh",
                 "transportation_route_code": "BTH_DL",
-                "distance_name": "135",
+                "distance": "135",
                 "value": "A2"
             }
             ,
             {
                 "label": "Tánh Linh",
                 "transportation_route_code": "BTH_TL",
-                "distance_name": "150",
+                "distance": "150",
                 "value": "A2"
             }
             ,
             {
                 "label": "Bắc Ruộng (Mê Pu)",
                 "transportation_route_code": "BTH_BRMP",
-                "distance_name": "160",
+                "distance": "160",
                 "value": "A2"
 
             }
@@ -139,21 +139,21 @@
             {
                 "label": "Đồng Tâm",
                 "transportation_route_code": "CM_DT",
-                "distance_name": "335",
+                "distance": "335",
                 "value": "A4"
             }
             ,
             {
                 "label": "Cà Mau",
                 "transportation_route_code": "CM_CM",
-                "distance_name": "337",
+                "distance": "337",
                 "value": "A4"
             }
             ,
             {
                 "label": "Năm Căn",
                 "transportation_route_code": "CM_NC",
-                "distance_name": "360",
+                "distance": "360",
                 "value": "A5"
 
             }
@@ -167,7 +167,7 @@
             {
                 "label": "Trung tâm TP Cần Thơ",
                 "transportation_route_code": "CT_TTCT",
-                "distance_name": "225",
+                "distance": "225",
                 "value": "A3"
 
             }
@@ -181,7 +181,7 @@
             {
                 "label": "Trung tâm Đà Nẵng",
                 "transportation_route_code": "DNA_TTDN",
-                "distance_name": "952",
+                "distance": "952",
                 "value": "A10"
 
             }
@@ -195,7 +195,7 @@
             {
                 "label": "Phước An",
                 "transportation_route_code": "DL_PA",
-                "distance_name": "395",
+                "distance": "395",
                 "value": "A5"
 
             }
@@ -209,21 +209,21 @@
             {
                 "label": "Long Khánh (Cẩm Đường)",
                 "transportation_route_code": "DN_LKCD",
-                "distance_name": "60",
+                "distance": "60",
                 "value": "A1"
             }
             ,
             {
                 "label": "Long Khánh",
                 "transportation_route_code": "DN_LK",
-                "distance_name": "60",
+                "distance": "60",
                 "value": "A1"
             }
             ,
             {
                 "label": "Phú Túc",
                 "transportation_route_code": "DN_PT",
-                "distance_name": "73",
+                "distance": "73",
                 "value": "A1"
 
             }
@@ -237,7 +237,7 @@
             {
                 "label": "Kbang",
                 "transportation_route_code": "GL_KB",
-                "distance_name": "645",
+                "distance": "645",
                 "value": "A8"
 
             }
@@ -251,14 +251,14 @@
             {
                 "label": "Nước Ngầm",
                 "transportation_route_code": "HN_NN",
-                "distance_name": "1710",
+                "distance": "1710",
                 "value": "A12"
             }
             ,
             {
                 "label": "Giáp Bát",
                 "transportation_route_code": "HN_GB",
-                "distance_name": "1735",
+                "distance": "1735",
                 "value": "A12"
 
             }
@@ -272,7 +272,7 @@
             {
                 "label": "Hà Tĩnh",
                 "transportation_route_code": "HT_HT",
-                "distance_name": "1435",
+                "distance": "1435",
                 "value": "A12"
 
             }
@@ -286,7 +286,7 @@
             {
                 "label": "Hải Dương",
                 "transportation_route_code": "HD_HD",
-                "distance_name": "1795",
+                "distance": "1795",
                 "value": "A12"
 
             }
@@ -300,7 +300,7 @@
             {
                 "label": "Hải Phòng (thượng Lý)",
                 "transportation_route_code": "HP_HPTL",
-                "distance_name": "1885",
+                "distance": "1885",
                 "value": "A12"
 
             }
@@ -314,7 +314,7 @@
             {
                 "label": "Triều Dương (hưng Yên)",
                 "transportation_route_code": "HY_TDHY",
-                "distance_name": "1785",
+                "distance": "1785",
                 "value": "A12"
 
             }
@@ -328,21 +328,21 @@
             {
                 "label": "Cam Ranh",
                 "transportation_route_code": "KH_CR",
-                "distance_name": "375",
+                "distance": "375",
                 "value": "A5"
             }
             ,
             {
                 "label": "Phía Nam Nha Trang",
                 "transportation_route_code": "KH_PNNT",
-                "distance_name": "435",
+                "distance": "435",
                 "value": "A6"
             }
             ,
             {
                 "label": "Phía Bắc Nha Trang",
                 "transportation_route_code": "KH_PBNT",
-                "distance_name": "440",
+                "distance": "440",
                 "value": "A6"
 
             }
@@ -356,14 +356,14 @@
             {
                 "label": "Đạ Tẻh",
                 "transportation_route_code": "LD_DT",
-                "distance_name": "160",
+                "distance": "160",
                 "value": "A2"
             }
             ,
             {
                 "label": "Liên tỉnh Đà Lạt",
                 "transportation_route_code": "LD_LTDT",
-                "distance_name": "295",
+                "distance": "295",
                 "value": "A3"
 
             }
@@ -377,7 +377,7 @@
             {
                 "label": "Bắc Hà",
                 "transportation_route_code": "LCA_BH",
-                "distance_name": "2000",
+                "distance": "2000",
                 "value": "A12"
 
             }
@@ -391,14 +391,14 @@
             {
                 "label": "Phía Bắc Thành phố Vinh",
                 "transportation_route_code": "SG_PBTPV",
-                "distance_name": "1465",
+                "distance": "1465",
                 "value": "A12"
             }
             ,
             {
                 "label": "Vinh",
                 "transportation_route_code": "SG_V",
-                "distance_name": "1465",
+                "distance": "1465",
                 "value": "A12"
 
             }
@@ -412,7 +412,7 @@
             {
                 "label": "Liên tỉnh Ninh Thuận (Phan Rang)",
                 "transportation_route_code": "NT_PR",
-                "distance_name": "331",
+                "distance": "331",
                 "value": "A4"
 
             }
@@ -426,7 +426,7 @@
             {
                 "label": "Ấm Thượng",
                 "transportation_route_code": "PT_AT",
-                "distance_name": "1900",
+                "distance": "1900",
                 "value": "A12"
 
             }
@@ -440,14 +440,14 @@
             {
                 "label": "Nam Tuy Hòa",
                 "transportation_route_code": "PY_NTH",
-                "distance_name": "552",
+                "distance": "552",
                 "value": "A7"
             }
             ,
             {
                 "label": "Sông Hinh",
                 "transportation_route_code": "PY_SH",
-                "distance_name": "615",
+                "distance": "615",
                 "value": "A8"
 
             }
@@ -461,14 +461,14 @@
             {
                 "label": "Ba Đồn",
                 "transportation_route_code": "QB_BD",
-                "distance_name": "1265",
+                "distance": "1265",
                 "value": "A12"
             }
             ,
             {
                 "label": "Đồng Lê",
                 "transportation_route_code": "QB_DL",
-                "distance_name": "1298",
+                "distance": "1298",
                 "value": "A12"
 
             }
@@ -482,7 +482,7 @@
             {
                 "label": "Phía Bắc Quảng Nam",
                 "transportation_route_code": "QNA_PBQN",
-                "distance_name": "935",
+                "distance": "935",
                 "value": "A10"
 
             }
@@ -496,14 +496,14 @@
             {
                 "label": "Chín Nghĩa (Quảng Ngãi)",
                 "transportation_route_code": "QNA_CNQN",
-                "distance_name": "824",
+                "distance": "824",
                 "value": "A9"
             }
             ,
             {
                 "label": "Quảng Ngãi",
                 "transportation_route_code": "QNA_QN",
-                "distance_name": "824",
+                "distance": "824",
                 "value": "A9"
 
             }
@@ -517,7 +517,7 @@
             {
                 "label": "Đông Hà",
                 "transportation_route_code": "QT_HD",
-                "distance_name": "1130",
+                "distance": "1130",
                 "value": "A12"
 
             }
@@ -531,7 +531,7 @@
             {
                 "label": "Hoàng Hà (Thái Bình)",
                 "transportation_route_code": "TB_HHTB",
-                "distance_name": "1567",
+                "distance": "1567",
                 "value": "A12"
 
             }
@@ -545,7 +545,7 @@
             {
                 "label": "Phía Nam Thanh Hóa",
                 "transportation_route_code": "TH_PNTH",
-                "distance_name": "1585",
+                "distance": "1585",
                 "value": "A12"
 
             }
@@ -559,7 +559,7 @@
             {
                 "label": "Phía Nam Huế",
                 "transportation_route_code": "TTH_PNH",
-                "distance_name": "1055",
+                "distance": "1055",
                 "value": "A11"
 
             }
@@ -573,7 +573,7 @@
             {
                 "label": "Tuyên Quang",
                 "transportation_route_code": "TQ_TQ",
-                "distance_name": "1885",
+                "distance": "1885",
                 "value": "A12"
 
             }
@@ -587,7 +587,7 @@
             {
                 "label": "Lập Thạch (Vĩnh Phúc)",
                 "transportation_route_code": "VP_LTVP",
-                "distance_name": "1785",
+                "distance": "1785",
                 "value": "A12"
 
             }

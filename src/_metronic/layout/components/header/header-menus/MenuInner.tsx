@@ -41,14 +41,15 @@ export function MenuInner() {
         </MenuInnerWithSub>
       </MenuInnerWithSub>
 
-      <MenuInnerWithSub title='Định nghĩa giá cước' to='/gia-cuoc' menuPlacement='bottom-start' menuTrigger='click'>
+      <MenuInnerWithSub title='Định nghĩa giá cước' to='/dinh-nghia' menuPlacement='bottom-start' menuTrigger='click'>
 
-        <MenuItem icon="bi bi-align-start" to='/gia-cuoc/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
-        <MenuItem icon="bi bi-sign-turn-right" to='/gia-cuoc/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
-        <MenuItem icon="bi bi-box-seam" to='/gia-cuoc/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
+        <MenuItem icon="bi bi-align-start" to='/dinh-nghia/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
+        <MenuItem icon="bi bi-sign-turn-right" to='/dinh-nghia/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
+        <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
+        <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/tinh-nhan-hang' title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>
         {/* <MenuInnerWithSub
           title='Khoản cách'
-          to='/gia-cuoc/khoan-cach'
+          to='/dinh-nghia/khoan-cach'
           icon='message-text-2'
           hasArrow={true}
           menuPlacement='right-start'

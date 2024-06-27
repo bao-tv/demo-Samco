@@ -14,11 +14,11 @@ const ReceiptLayoutPrints = ({data}: Props) => {
   return (
     <div className='' style={{width: '1240px'}} id='containerReceipt'>
         <div className='container' >
-            <div className='row fs-3 border border-dark'>
-                <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
+            <div className='row fs-4 border border-dark'>
+                <div className="col-2 pt-3">
+                    <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt="Logo" className='w-100'/>
                 </div>
-                <div className="col-8 text-center pt-3">
+                <div className="col-7 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI CƠ KHÍ SÀI GÒN - TNHH MTV</p>
                     <p className='fw-bold m-0 mb-2'>BẾN XE MIỀN ĐÔNG MỚI</p>
                     <p className='m-0 fs-5'>Địa chỉ: 501 Hoàng Hữu Nam, P.Long Bình, Tp.Thủ Đức, Tp.Hồ Chí Minh</p>
@@ -114,8 +114,8 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-bottom border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay.toLocaleString()}</span><span>đồng</span></p>
-                    <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
+                    {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p> */}
                 </div>
             </div>
             <div className="row">
@@ -133,26 +133,29 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '114px'}}>
-                    <p className='fw-bold fs-3 px-3'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
+                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '109px'}}>
+                    <p className='fw-bold fs-3 px-3 mb-1'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
                     <p className='mb-0 px-3'>- Ngày nhận: ......../......../ 2024</p>
                     <p className='mb-0 px-3'>- Ký và ghi họ tên:</p>
                 </div>
             </div>
+            <div className="row border-start border-end border-bottom border-dark">
+                <span className='py-2 fst-italic fw-bold text-center'>Khi có khiếu nại hoặc đến nhận tiền thu hộ (COD), Quý khách vui lòng mang theo Phiếu gửi hàng này và xuất trình các giấy tờ có liên quan</span>
+            </div>
         </div>
 
-        <div className='container' style={{marginTop: '70px'}}>
-            <div className='row fs-3 border border-dark'>
-                <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
+        <div className='container' style={{marginTop: '2px'}}>
+            <div className='row fs-4 border border-dark'>
+                <div className="col-2 pt-3">
+                    <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt="Logo" className='w-100'/>
                 </div>
-                <div className="col-8 text-center pt-3">
+                <div className="col-7 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI CƠ KHÍ SÀI GÒN - TNHH MTV</p>
                     <p className='fw-bold m-0 mb-2'>BẾN XE MIỀN ĐÔNG MỚI</p>
                     <p className='m-0 fs-5'>Địa chỉ: 501 Hoàng Hữu Nam, P.Long Bình, Tp.Thủ Đức, Tp.Hồ Chí Minh</p>
                     <p className='m-0 fs-5 mb-2'>MST: 0300 481 551 - Điện thoại: 0373.501.501</p>
                     <p className='fw-bolder m-0 ' style={{fontSize: '30px'}}>PHIẾU NHẬN HÀNG</p>
-                    <p className='fst-italic fs-5 m-0'>(Liên 2: Lưu)</p>
+                    <p className='fst-italic fs-5 m-0'>(Liên 2: Theo kiện hàng)</p>
                     <div className='container'>
                         <div className="row">
                             <div className="col-6 text-start">
@@ -242,8 +245,8 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-bottom border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay.toLocaleString()}</span><span>đồng</span></p>
-                    <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
+                    {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p> */}
                 </div>
             </div>
             <div className="row">
@@ -261,26 +264,29 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '114px'}}>
-                    <p className='fw-bold fs-3 px-3'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
+                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '109px'}}>
+                    <p className='fw-bold fs-3 px-3 mb-1'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
                     <p className='mb-0 px-3'>- Ngày nhận: ......../......../ 2024</p>
                     <p className='mb-0 px-3'>- Ký và ghi họ tên:</p>
                 </div>
             </div>
+            <div className="row border-start border-end border-bottom border-dark">
+                <span className='py-2 fst-italic fw-bold text-center'>Khi có khiếu nại hoặc đến nhận tiền thu hộ (COD), Quý khách vui lòng mang theo Phiếu gửi hàng này và xuất trình các giấy tờ có liên quan</span>
+            </div>
         </div>
 
-        <div className='container mt-1' >
-            <div className='row fs-3 border border-dark'>
-                <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
+        <div className='container' style={{marginTop: '2px'}} >
+            <div className='row fs-4 border border-dark'>
+                <div className="col-2 pt-3">
+                    <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt="Logo" className='w-100'/>
                 </div>
-                <div className="col-8 text-center pt-3">
+                <div className="col-7 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI CƠ KHÍ SÀI GÒN - TNHH MTV</p>
                     <p className='fw-bold m-0 mb-2'>BẾN XE MIỀN ĐÔNG MỚI</p>
                     <p className='m-0 fs-5'>Địa chỉ: 501 Hoàng Hữu Nam, P.Long Bình, Tp.Thủ Đức, Tp.Hồ Chí Minh</p>
                     <p className='m-0 fs-5 mb-2'>MST: 0300 481 551 - Điện thoại: 0373.501.501</p>
                     <p className='fw-bolder m-0 ' style={{fontSize: '30px'}}>PHIẾU NHẬN HÀNG</p>
-                    <p className='fst-italic fs-5 m-0'>(Liên 3: Nội bộ)</p>
+                    <p className='fst-italic fs-5 m-0'>(Liên 3: Lưu)</p>
                     <div className='container'>
                         <div className="row">
                             <div className="col-6 text-start">
@@ -370,8 +376,8 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-bottom border-dark px-3 pb-4 m-0 d-flex'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.sendPay.toLocaleString()}</span><span>đồng</span></p>
-                    <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
+                    {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay.toLocaleString()}</span><span>đồng</span></p> */}
                 </div>
             </div>
             <div className="row">
@@ -389,18 +395,21 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         </div>
                     </div>
                 </div>
-                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '114px'}}>
-                    <p className='fw-bold fs-3 px-3'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
+                <div className="col-7 border-end border-bottom border-dark" style={{paddingBottom: '109px'}}>
+                    <p className='fw-bold fs-3 px-3 mb-1'>C. XÁC NHẬN CỦA NGƯỜI NHẬN HÀNG</p>
                     <p className='mb-0 px-3'>- Ngày nhận: ......../......../ 2024</p>
                     <p className='mb-0 px-3'>- Ký và ghi họ tên:</p>
                 </div>
+            </div>
+            <div className="row border-start border-end border-bottom border-dark">
+                <span className='py-2 fst-italic fw-bold text-center'>Khi có khiếu nại hoặc đến nhận tiền thu hộ (COD), Quý khách vui lòng mang theo Phiếu gửi hàng này và xuất trình các giấy tờ có liên quan</span>
             </div>
         </div>
 
         {/* <div className='container' style={{marginTop: '25px'}}>
             <div className="row fs-4 border border-dark">
                 <div className="col pt-3">
-                    <img src={toAbsoluteUrl('/media/logos/logo.png')} alt="Logo" className='h-45px'/>
+                    <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt="Logo" className='h-45px'/>
                 </div>
                 <div className="col-11 text-center pt-3">
                     <p className='fw-bold m-0'>TỔNG CÔNG TY CƠ KHÍ GIAO THÔNG VẬN TẢI SÀI GÒN - TNHH MTV</p>
@@ -508,9 +517,6 @@ const ReceiptLayoutPrints = ({data}: Props) => {
             </div>
         </div> */}
 
-        <div className='container mt-1'>
-            <div className='row'></div>
-        </div>
     </div>
   )
 }

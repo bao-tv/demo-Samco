@@ -42,7 +42,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
   const [provinceData, setProvinceData] = useState<any[]>([]);
   const [priceData, setPriceData] = useState<any[]>([]);
   const [priceVehicleData, setPriceVehicleData] = useState<any[]>([]);
-  // console.log('bao priceVehicleData: ', priceVehicleData)
+  console.log('bao priceData: ', priceData)
   const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
   const getData=(pathJson: string, setter: any)=>{
     fetch(pathJson)
@@ -68,7 +68,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
 
   const receiptDate = dayjs().add(3, 'day').toDate();
 
-  const { control, watch, setValue, getValues, handleSubmit, clearErrors, reset, formState: { errors }, } = useForm<IFormInput>({
+  const { control, watch, setValue, getValues, handleSubmit, clearErrors, formState: { errors }, } = useForm<IFormInput>({
     mode: 'all',
     defaultValues: {
       sendDate: showCreateAppModal.sendDate || new Date(),
@@ -95,17 +95,14 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
       packagingServiceData: showCreateAppModal?.packagingServiceData,
       packagingServicePrice: showCreateAppModal?.packagingServicePrice?.price || 0,
       totalPrice: showCreateAppModal.totalPrice || 0,
-      sendPay: showCreateAppModal.sendPay || 0,
-      receiptPay: showCreateAppModal.receiptPay || 0,
       indexRow: showCreateAppModal.indexRow || (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1),
      },
      shouldUnregister: false,
     })
-  const [receiptPayValue, setRecipePayValue] = useState<number>(0);
 
   const handleShowPreImport: any = () => {
     const dataForm:any = getValues();
-    setRowDataCouponReciept && setRowDataCouponReciept({...dataForm, receiptPay: receiptPayValue, indexRow: (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1)});
+    setRowDataCouponReciept && setRowDataCouponReciept({...dataForm, indexRow: (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1)});
   }
   // handle form ====================
   const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
@@ -143,10 +140,12 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
     const priceObject: any = priceData.filter(item => item.distance_code === data[2]?.value)
     const priceObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
     let pri: any = 0;
-    if (priceObject[0]?.price.length && data[0] && data[3] === 'D0') {
+    console.log('bao data: ', data);
+    if (priceObject[0]?.price.length && data[0] && data[3]?.code === 'D0') {
       pri = calculatePrice(priceObject[0].price, +data[0]);
+      console.log('bao pri nor: ', pri)
       setValue("price", pri * +data[1]);
-    } else if (priceObjectForVehicle[0]?.price.length && data[3] !== 'D0') {
+    } else if (priceObjectForVehicle[0]?.price.length && data[3]?.code !== 'D0') {
       pri = calculatePriceVehicle(priceObjectForVehicle[0].price, data[3]?.code);
       console.log('bao pri: ', pri)
       setValue("price", pri * +data[1]);
