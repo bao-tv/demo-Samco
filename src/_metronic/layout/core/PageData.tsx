@@ -25,11 +25,18 @@ export interface PageDataContextModel {
   setShowCreateAppModal?: (_datas: any) => void
   showCreateDistanceModal?: any
   setShowCreateDistanceModal?: (_datas: any) => void
-  showCreateProvinceModal?: any
-  setShowCreateProvinceModal?: (_datas: any) => void
+  showModalProvince?: any
+  setShowModalProvince?: (_datas: any) => void
+  dataModalProvince?: any
+  setDataModalProvince?: (_datas: any) => void
+  showModalProvinceObject?: any
+  setShowModalProvinceObject?: (_datas: any) => void
+  dataModalProvinceObject?: any
+  setDataModalProvinceObject?: (_datas: any) => void
   gridRef?: any
   gridRefDistanceSetup?: any,
   gridRefProvinceSetup?: any,
+  gridRefProvinceObjectSetup?: any,
   setIsLoading?: any,
   isLoading?: any,
   rowDataProvince?: any[]
@@ -56,14 +63,19 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
   const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
   const [showCreateDistanceModal, setShowCreateDistanceModal] = useState<any>(false)
-  const [showCreateProvinceModal, setShowCreateProvinceModal] = useState<any>(false)
+  const [showModalProvince, setShowModalProvince] = useState<boolean>(false);
+  const [dataModalProvince, setDataModalProvince] = useState<any>({})
+  const [showModalProvinceObject, setShowModalProvinceObject] = useState<boolean>(false);
+  const [dataModalProvinceObject, setDataModalProvinceObject] = useState<any>({})
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const gridRef = useRef(null);
   const gridRefDistanceSetup = useRef(null);
   const gridRefProvinceSetup = useRef<any>(null);
+  const gridRefProvinceObjectSetup= useRef(null)
   const value: PageDataContextModel = {
     gridRefDistanceSetup,
     gridRefProvinceSetup,
+    gridRefProvinceObjectSetup,
     gridRef,
     pageTitle,
     setPageTitle,
@@ -81,8 +93,14 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setShowCreateAppModal,
     showCreateDistanceModal,
     setShowCreateDistanceModal,
-    showCreateProvinceModal,
-    setShowCreateProvinceModal,
+    showModalProvince,
+    setShowModalProvince,
+    dataModalProvince,
+    setDataModalProvince,
+    showModalProvinceObject,
+    setShowModalProvinceObject,
+    dataModalProvinceObject,
+    setDataModalProvinceObject,
     setIsLoading,
     isLoading,
   }

@@ -7,6 +7,10 @@ const ButtonActionAddAndEditPriceObject = (props: Props) => {
     const handleEditRow = () => {
         
     }
+
+    const handleRemoveRow = () => {
+        
+    }
   return (
     <div className='d-flex h-100 justify-content-center align-items-center'>
         <Button
@@ -22,7 +26,7 @@ const ButtonActionAddAndEditPriceObject = (props: Props) => {
             className='me-1'
             variant="danger"
             style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
-            // onClick={handleRemoveRow}
+            onClick={handleRemoveRow}
         >
             <i className="bi bi-x-circle fs-2"></i>
         </Button>

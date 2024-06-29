@@ -8,15 +8,16 @@ import {StepperComponent} from '../../../assets/ts/components'
 import {KTIcon} from '../../../helpers'
 
 type Props = {
-  show: boolean
+  show: any
   handleClose: () => void
   content?: any
   title?: string
+  size?: 'xl' | 'sm' | 'lg';
 }
 
 const modalsRoot = document.getElementById('root-modals') || document.body
 
-const CreateAppModal = ({show, handleClose, content, title}: Props) => {
+const CreateAppModal = ({show, handleClose, content, title, size}: Props) => {
   const stepperRef = useRef<HTMLDivElement | null>(null)
   const stepper = useRef<StepperComponent | null>(null)
   const [data, setData] = useState<ICreateAppData>(defaultCreateAppData)
@@ -80,7 +81,7 @@ const CreateAppModal = ({show, handleClose, content, title}: Props) => {
   const submit = () => {
     window.location.reload()
   }
-
+  const modalSize: 'xl' | 'sm' | 'lg' | undefined = size || 'xl';
   return createPortal(
     <Modal
       id='kt_modal_create_app'
@@ -91,12 +92,12 @@ const CreateAppModal = ({show, handleClose, content, title}: Props) => {
       onHide={handleClose}
       onEntered={loadStepper}
       // backdrop={true}
-      size="xl"
+      size={modalSize}
       backdrop="static"
       keyboard={false}
     >
       <div className='modal-header p-3'>
-        <h2>{`Định nghĩa ${title}` || 'Tạo phiếu nhận hàng'}</h2>
+        <h2>{`${show?.id ? "Cập nhật" : "Định nghĩa"} ${title}` || 'Tạo phiếu nhận hàng'}</h2>
         {/* begin::Close */}
         <div className='btn btn-sm btn-icon btn-active-color-primary' onClick={handleClose}>
           <KTIcon className='fs-1' iconName='cross' />

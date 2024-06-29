@@ -9,7 +9,7 @@ import { BuilderPage } from '../../../../../app/pages/layout-builder/BuilderPage
 
 const ToolbarClassic = () => {
   const {config} = useLayout();
-  const {showCreateAppModal, setShowCreateAppModal, setShowCreateDistanceModal, setShowCreateProvinceModal} = usePageData();
+  const {showCreateAppModal, setShowCreateAppModal, setShowCreateDistanceModal, setShowModalProvince} = usePageData();
   const location = useLocation();
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
   // const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
@@ -71,7 +71,7 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/tinh-nhan-hang' && (
         <div
-          onClick={() => (setShowCreateProvinceModal && setShowCreateProvinceModal(true))}
+          onClick={() => (setShowModalProvince && setShowModalProvince(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
           Tạo Tỉnh nhận hàng

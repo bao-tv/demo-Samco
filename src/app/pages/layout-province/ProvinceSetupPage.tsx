@@ -6,6 +6,7 @@ import { usePageData } from '../../../_metronic/layout/core';
 import ModalShowAndAddProvince from './ModalShowAndAddProvince';
 import { log } from 'console';
 import { useSelector } from 'react-redux';
+import ModalAddProvinceAreaObject from './ModalAddProvinceAreaObject';
 
 type Props = {}
 
@@ -21,8 +22,15 @@ const ProvinceSetupPage = (props: Props) => {
     );
   }, []);
   const {listProvince} = useSelector((state:any) => state.provinces);  
-  const {gridRefProvinceSetup, showCreateProvinceModal, setShowCreateProvinceModal} = usePageData();
-  const handleClose = () => setShowCreateProvinceModal && setShowCreateProvinceModal(false);
+  const {gridRefProvinceSetup, showModalProvince, setShowModalProvince, dataModalProvince, setDataModalProvince, showModalProvinceObject, setShowModalProvinceObject, dataModalProvinceObject, setDataModalProvinceObject} = usePageData();
+  const handleCloseModalProvince = () => {
+    setShowModalProvince && setShowModalProvince(false);
+    setDataModalProvince && setDataModalProvince({});
+  }
+  const handleCloseModalProvinceObject = () => {
+    setShowModalProvinceObject && setShowModalProvinceObject(false);
+    setDataModalProvinceObject && setDataModalProvinceObject({});
+  }
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -39,14 +47,21 @@ const ProvinceSetupPage = (props: Props) => {
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />
-          <CreateAppModal
-            show={showCreateProvinceModal} 
-            handleClose={handleClose} 
-            content={<ModalShowAndAddProvince title="Tỉnh nhận hàng" handleClose={handleClose}/>}
-            title="Tỉnh nhận hàng"
-          />
         </div>
       </div>
+      <CreateAppModal
+        show={showModalProvince} 
+        handleClose={handleCloseModalProvince} 
+        content={<ModalShowAndAddProvince title="Tỉnh nhận hàng"/>}
+        title="Tỉnh nhận hàng"
+      />
+      <CreateAppModal
+        show={showModalProvinceObject}
+        handleClose={handleCloseModalProvinceObject} 
+        content={<ModalAddProvinceAreaObject title="Khu vực nhận hàng"/>}
+        title="Khu vực nhận hàng"
+        size="lg"
+      />
     </div>
   )
 }

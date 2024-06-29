@@ -14,3 +14,8 @@ export const provinceAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/province/${id}`);
     return data;
 };
+
+export const provinceEditAPIByID = async (value) => {
+    const {data} = await axiosClient.put('/province', value);
+    return data;
+};
