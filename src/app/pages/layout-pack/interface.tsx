@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { packageAPIDeleteById } from '../../../apis/packageAPI';
 import { packages } from '../../../slices/packSlices';
 
-const ButtonActionProvince = (props: any) => {
+const ButtonActionPackge = (props: any) => {
   const intl = useIntl();
   const dispath = useDispatch();
   const {setDataModalPackage, setShowModalPackage} = usePageData();
@@ -17,9 +17,9 @@ const ButtonActionProvince = (props: any) => {
     setDataModalPackage && setDataModalPackage(props?.data);
     setShowModalPackage && setShowModalPackage(true);
   }
-  const [titleProvince, setTitleProvince] = useState<any>('');
+  const [titlePackage, setTitlePackage] = useState<any>('');
   const handleRemoveRow =  () => {
-    setTitleProvince(`Bạn có muốn xóa ${intl.formatMessage({id: 'MENU.DONGGOI'})} ${props?.data?.label}`);
+    setTitlePackage(`Bạn có muốn xóa ${intl.formatMessage({id: 'MENU.DONGGOI'})} ${props?.data?.label}`);
 }
 const buttonOK = async () => {
     try {
@@ -33,7 +33,7 @@ const buttonOK = async () => {
   return (
     <>
       <ButtonActionEdit_Delete handleEditRow={handleEditRow} handleRemoveRow={handleRemoveRow}/>
-      <ModalToasts title={titleProvince} onClickOK={buttonOK} handleClose={() => setTitleProvince('')} />
+      <ModalToasts title={titlePackage} onClickOK={buttonOK} handleClose={() => setTitlePackage('')} />
     </>
   );
 }
@@ -46,7 +46,7 @@ export   const columnDefsPackageSetupPage: ColDef[] = [
   },
   {
     headerName: 'Hành động',
-    cellRenderer: ButtonActionProvince,
+    cellRenderer: ButtonActionPackge,
     width: 150,
   },
   {

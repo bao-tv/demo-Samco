@@ -33,7 +33,7 @@ export interface PageDataContextModel {
   dataModalDistancePriceObject?: any
   setDataModalDistancePriceObject?: (_datas: any) => void
   gridRefDistanceSetup?: any,
-  gridRefDistanPriceObjectSetup?: any,
+  gridRefDistancePricebjectSetup?: any,
 
   showModalProvince?: any
   setShowModalProvince?: (_datas: any) => void
@@ -98,10 +98,6 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const gridRef = useRef(null);
 
   const value: PageDataContextModel = {
-    gridRefDistanceSetup,
-    gridRefProvinceSetup,
-    gridRefProvinceObjectSetup,
-    gridRefPackageSetup,
     gridRef,
     pageTitle,
     setPageTitle,
@@ -124,7 +120,11 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setShowModalDistancePriceObject,
     dataModalDistancePriceObject,
     setDataModalDistancePriceObject,
+    gridRefDistanceSetup,
+    gridRefDistancePricebjectSetup,
 
+    gridRefProvinceSetup,
+    gridRefProvinceObjectSetup,
     showModalProvince,
     setShowModalProvince,
     dataModalProvince,
@@ -134,6 +134,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     dataModalProvinceObject,
     setDataModalProvinceObject,
 
+    gridRefPackageSetup,
     showModalPackage,
     setShowModalPackage,
     dataModalPackage,

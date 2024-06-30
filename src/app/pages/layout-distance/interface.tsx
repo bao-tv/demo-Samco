@@ -86,7 +86,7 @@ export   const columnDefsDistanceSetupPage: ColDef[] = [
     width: 150,
   },
   {
-    headerName: 'Tên khoảng cách',
+    headerName: 'Tên loại giá',
     field: 'distanceName',
     width: 150,
   },
@@ -107,7 +107,7 @@ export   const columnDefsDistanceSetupPage: ColDef[] = [
   // },
 ];
 
-export   const columnDefsAreaInProvince: ColDef[] = [
+export   const columnDefsPricesInDistance: ColDef[] = [
     {
       headerName: 'ID',
       field: 'id',
@@ -120,25 +120,37 @@ export   const columnDefsAreaInProvince: ColDef[] = [
       cellRenderer: ButtonActionProvinceObject
     },
     {
-      headerName: 'Khu vực nhận hàng',
-      field: 'label',
+      headerName: 'Tên loại giá',
+      field: 'priceName',
       width: 110,
     },
     {
-      headerName: 'Mã khu vực',
-      field: 'transportationRouteCode',
+      headerName: 'Mã loại giá',
+      field: 'priceCode',
       width: 140,
     },
     {
-        headerName: 'Khoảng cách',
-        field: 'distanceName',
-        width: 140,
-      },
-      {
-        headerName: 'Mã đơn vi',
-        field: 'value',
-        width: 140,
-      },
+      headerName: 'Giá',
+      field: 'priceNumber',
+      width: 140,
+    },
+    {
+      headerName: 'Số KG nhỏ nhất',
+      field: 'minKG',
+      width: 140,
+    },
+    {
+      headerName: 'Số KG lớn nhất',
+      field: 'maxKG',
+      width: 140,
+    },
+    {
+      headerName: 'Lũy tiến',
+      field: 'priceAdd',
+      width: 140,
+      // cellRenderer: 'agCheckboxCellRenderer',
+      // cellEditor: 'agCheckboxCellEditor',
+    },
   ];
 
   export interface IFormAreaInput {

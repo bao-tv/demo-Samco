@@ -6,7 +6,7 @@ import { usePageData } from '../../../_metronic/layout/core';
 import ModalShowAndAddDistance from './ModalShowAndAddDistance';
 import { log } from 'console';
 import { useSelector } from 'react-redux';
-import ModalAddProvinceAreaObject from './ModalAddDistancePriceObject';
+import ModalAddDistancePriceObject from './ModalAddDistancePriceObject';
 import { useIntl } from 'react-intl';
 
 type Props = {}
@@ -60,8 +60,8 @@ const DistanceSetupPage = (props: Props) => {
       <CreateAppModal
         show={showModalDistancePriceObject}
         handleClose={handleCloseModalDistancePriceObject} 
-        content={<ModalAddProvinceAreaObject title="Khu vực nhận hàng"/>}
-        title="Khu vực nhận hàng"
+        content={<ModalAddDistancePriceObject title="Giá tại khoảng cách"/>}
+        title="Giá tại khoảng cách"
         size="lg"
       />
     </div>

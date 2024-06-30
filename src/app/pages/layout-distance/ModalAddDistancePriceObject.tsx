@@ -11,47 +11,51 @@ type Props = {
 }
 
 const ModalAddDistancePriceObject = ({title}: Props) => {
-    const {gridRefProvinceObjectSetup, setShowModalProvinceObject, dataModalProvince, setDataModalProvince, dataModalProvinceObject, setDataModalProvinceObject} = usePageData();
+    const {gridRefDistancePricebjectSetup, setShowModalDistancePriceObject, setDataModalDistance, dataModalDistancePriceObject} = usePageData();
     const { control, handleSubmit, reset, formState: { errors }, } = useForm<any>({
         mode: 'all',
         defaultValues: {
-            label: dataModalProvinceObject?.data?.label || '',
-            transportationRouteCode: dataModalProvinceObject?.data?.transportationRouteCode || '',
-            distanceName: dataModalProvinceObject?.data?.distanceName || '',
-            value: dataModalProvinceObject?.data?.value || '',
-            id: dataModalProvinceObject?.data?.id || 0,
+            priceName: dataModalDistancePriceObject?.data?.priceName || '',
+            priceNumber: dataModalDistancePriceObject?.data?.priceNumber || 0,
+            priceCode: dataModalDistancePriceObject?.data?.priceCode || '',
+            minKG: dataModalDistancePriceObject?.data?.minKG || 0,
+            maxKG: dataModalDistancePriceObject?.data?.maxKG || 0,
+            priceAdd: dataModalDistancePriceObject?.data?.priceAdd || false,
+            id: dataModalDistancePriceObject?.data?.id || 0,
         },
         shouldUnregister: false,
     })
     const onSubmit: SubmitHandler<IFormAreaInput> = (data: IFormAreaInput) =>{
-        if (!dataModalProvinceObject?.rowIndex) {
+        // console.log('bao data: ', data)
+        if (!dataModalDistancePriceObject?.rowIndex) {
             const rowData: any[] = [];
-            gridRefProvinceObjectSetup.current!.api.forEachNode((node: any) => {
+            console.log('bao gridRefDistancePricebjectSetup: ', gridRefDistancePricebjectSetup)
+            gridRefDistancePricebjectSetup.current!.api.forEachNode((node: any) => {
                 rowData.push(node.data);
             })!;
             rowData.push(data);
-            setDataModalProvince &&
-            setDataModalProvince((preData: any) => ({
+            setDataModalDistance &&
+            setDataModalDistance((preData: any) => ({
               ...preData,
-              transportationRoutes: rowData,
+              prices: rowData,
             }));
         } else {
             const rowData: any[] = [];
-            gridRefProvinceObjectSetup.current!.api.forEachNode((node: any) => {
-                if(node?.rowIndex === dataModalProvinceObject?.rowIndex) {
+            gridRefDistancePricebjectSetup.current!.api.forEachNode((node: any) => {
+                if(node?.rowIndex === dataModalDistancePriceObject?.rowIndex) {
                     rowData.push(data);
                 } else {
                     rowData.push(node.data);
                 }
             })!;
-            setDataModalProvince &&
-            setDataModalProvince((preData: any) => ({
+            setDataModalDistance &&
+            setDataModalDistance((preData: any) => ({
               ...preData,
-              transportationRoutes: rowData,
+              prices: rowData,
             }));
         }
         reset();
-        setShowModalProvinceObject && setShowModalProvinceObject(false);
+        setShowModalDistancePriceObject && setShowModalDistancePriceObject(false);
     }
     const onErrors = async (e: any) => {
         if (Object.keys(e).length) {
@@ -65,11 +69,11 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                     <InputGroup className="mb-3">
-                        <InputGroup.Text className={`group-text ${errors?.label && 'border-danger'}`}>
-                            Tên Khu vực
+                        <InputGroup.Text className={`group-text ${errors?.priceName && 'border-danger'}`}>
+                        Tên loại giá
                         </InputGroup.Text>
                         <Form.Control
-                        className={`text-dark ${errors?.label && 'border-danger'}`}
+                        className={`text-dark ${errors?.priceName && 'border-danger'}`}
                         aria-label="Default"
                         aria-describedby="inputGroup-sizing-default"
                         onBlur={onBlur}
@@ -78,18 +82,18 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                         />
                     </InputGroup>
                 )}
-                name='label'
+                name='priceName'
             />
             <Controller
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
-                    <InputGroup.Text className={`group-text ${errors?.transportationRouteCode && 'border-danger'}`}>
-                        Mã
+                    <InputGroup.Text className={`group-text ${errors?.priceCode && 'border-danger'}`}>
+                        Mã loại giá
                     </InputGroup.Text>
                     <Form.Control
-                        className={`text-dark ${errors?.transportationRouteCode && 'border-danger'}`}
+                        className={`text-dark ${errors?.priceCode && 'border-danger'}`}
                         aria-label="Default"
                         aria-describedby="inputGroup-sizing-default"
                         onBlur={onBlur}
@@ -98,28 +102,29 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                         />
                 </InputGroup>
                 )}
-                name='transportationRouteCode'
+                name='priceCode'
             />
+            
             <Controller
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
-                    <InputGroup.Text className={`group-text ${errors?.distanceName && 'border-danger'}`}>
-                        Khoản cách
+                    <InputGroup.Text className={`group-text ${errors?.priceNumber && 'border-danger'}`}>
+                        Giá
                     </InputGroup.Text>
                     <NumericFormat
                         value={value}
-                        className={`text-dark ${errors?.distanceName && 'border-danger'} form-control`}
+                        className={`text-dark ${errors?.priceNumber && 'border-danger'} form-control`}
                         onBlur={onBlur}
                         onChange={onChange}
                         allowLeadingZeros thousandSeparator=","
                         decimalScale={0}
                     />
-                    <InputGroup.Text className={`${errors?.distanceName && 'border-danger'}`}>KM</InputGroup.Text>
+                    <InputGroup.Text className={`${errors?.priceNumber && 'border-danger'}`}>VND</InputGroup.Text>
                 </InputGroup>
                 )}
-                name='distanceName'
+                name='priceNumber'
             />
 
             <Controller
@@ -127,25 +132,64 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
-                    <InputGroup.Text className={`group-text ${errors?.value && 'border-danger'}`}>
-                        Mã khoản cách
+                    <InputGroup.Text className={`group-text ${errors?.minKG && 'border-danger'}`}>
+                        Số KG nhỏ nhất
                     </InputGroup.Text>
-                    <Form.Control
-                        className={`text-dark ${errors?.value && 'border-danger'}`}
-                        aria-label="Default"
-                        aria-describedby="inputGroup-sizing-default"
+                    <NumericFormat
+                        value={value}
+                        className={`text-dark ${errors?.minKG && 'border-danger'} form-control`}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        allowLeadingZeros thousandSeparator=","
+                        decimalScale={0}
+                    />
+                    <InputGroup.Text className={`${errors?.minKG && 'border-danger'}`}>KG</InputGroup.Text>
+                </InputGroup>
+                )}
+                name='minKG'
+            />
+            <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                <InputGroup className="mb-3">
+                    <InputGroup.Text className={`group-text ${errors?.maxKG && 'border-danger'}`}>
+                        Số KG lớn nhất
+                    </InputGroup.Text>
+                    <NumericFormat
+                        value={value}
+                        className={`text-dark ${errors?.maxKG && 'border-danger'} form-control`}
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        allowLeadingZeros thousandSeparator=","
+                        decimalScale={0}
+                    />
+                    <InputGroup.Text className={`${errors?.maxKG && 'border-danger'}`}>KG</InputGroup.Text>
+                </InputGroup>
+                )}
+                name='maxKG'
+            />
+            <Controller
+                control={control}
+                rules={{ required: false }}
+                render={({ field: { onChange, onBlur, value } }) => (
+                <InputGroup className="mb-3">
+                    <Form.Check
+                        type="checkbox"
+                        label={<span className='fs-4 text-dark'>Giá lũy tiến</span>}
+                        id="disabled-default-checkbox"
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        />
+                    />
                 </InputGroup>
                 )}
-                name='value'
+                name='priceAdd'
             />
             <div className='row'>
                 <div className='col justify-content-end d-flex'>
                 <div>
-                    <Button type='submit' className="btn btn-primary">{`${dataModalProvinceObject?.rowIndex ? "Cập nhật" : "Tạo mới"} ${title}`}</Button>
+                    <Button type='submit' className="btn btn-primary">{`${dataModalDistancePriceObject?.rowIndex ? "Cập nhật" : "Tạo mới"} ${title}`}</Button>
                 </div>
                 </div>
             </div>
