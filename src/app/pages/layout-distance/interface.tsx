@@ -74,7 +74,7 @@ const buttonOK = async () => {
     </>
   );
 }
-export   const columnDefsProvinceSetupPage: ColDef[] = [
+export   const columnDefsDistanceSetupPage: ColDef[] = [
   {
     headerName: 'ID',
     field: 'id',
@@ -85,26 +85,26 @@ export   const columnDefsProvinceSetupPage: ColDef[] = [
     cellRenderer: ButtonActionProvince,
     width: 150,
   },
-  // {
-  //   headerName: 'ID',
-  //   field: 'id',
-  //   width: 140,
-  // },
   {
-    headerName: 'Mã',
-    field: 'value',
+    headerName: 'Tên khoảng cách',
+    field: 'distanceName',
+    width: 150,
+  },
+  {
+    headerName: 'Mã khoảng cách',
+    field: 'distanceCode',
     width: 140,
   },
   {
-    headerName: 'Tỉnh',
-    field: 'label',
+    headerName: 'Thời gian giao hàng',
+    field: 'time',
     width: 150,
   },
-  {
-    headerName: 'Mã biển số',
-    field: 'licenseplates',
-    width: 150,
-  },
+  // {
+  //   headerName: 'Số ngày giao',
+  //   field: 'licenseplates',
+  //   width: 150,
+  // },
 ];
 
 export   const columnDefsAreaInProvince: ColDef[] = [

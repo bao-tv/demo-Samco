@@ -23,8 +23,18 @@ export interface PageDataContextModel {
   setRowDataCouponReciept?: (_datas: any) => void
   showCreateAppModal?: any
   setShowCreateAppModal?: (_datas: any) => void
-  showCreateDistanceModal?: any
-  setShowCreateDistanceModal?: (_datas: any) => void
+
+  showModalDistance?: any
+  setShowModalDistance?: (_datas: any) => void
+  dataModalDistance?: any
+  setDataModalDistance?: (_datas: any) => void
+  showModalDistancePriceObject?: any
+  setShowModalDistancePriceObject?: (_datas: any) => void
+  dataModalDistancePriceObject?: any
+  setDataModalDistancePriceObject?: (_datas: any) => void
+  gridRefDistanceSetup?: any,
+  gridRefDistanPriceObjectSetup?: any,
+
   showModalProvince?: any
   setShowModalProvince?: (_datas: any) => void
   dataModalProvince?: any
@@ -33,14 +43,18 @@ export interface PageDataContextModel {
   setShowModalProvinceObject?: (_datas: any) => void
   dataModalProvinceObject?: any
   setDataModalProvinceObject?: (_datas: any) => void
-  gridRef?: any
-  gridRefDistanceSetup?: any,
   gridRefProvinceSetup?: any,
   gridRefProvinceObjectSetup?: any,
+
+  showModalPackage?: any
+  setShowModalPackage?: (_datas: any) => void
+  dataModalPackage?: any
+  setDataModalPackage?: (_datas: any) => void
+  gridRefPackageSetup?: any,
+
+  gridRef?: any
   setIsLoading?: any,
   isLoading?: any,
-  rowDataProvince?: any[]
-  setRowDataProvince?: (_datas: any) => void
 }
 
 const PageDataContext = createContext<PageDataContextModel>({
@@ -51,7 +65,6 @@ const PageDataContext = createContext<PageDataContextModel>({
   setRowDataCouponReciept: (_datas: any) => {},
   setShowCreateAppModal: (_datas: any) => {},
   setIsLoading: (_datas: any) => boolean,
-  setRowDataProvince: (_datas: any) => {},
 })
 
 const PageDataProvider: FC<WithChildren> = ({children}) => {
@@ -59,23 +72,36 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
   const [rowDataOrder, setRowDataOrder] = useState<any[]>([])
-  const [rowDataProvince, setRowDataProvince] = useState<any[]>([])
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
   const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
-  const [showCreateDistanceModal, setShowCreateDistanceModal] = useState<any>(false)
+
+  const [showModalDistance, setShowModalDistance] = useState<any>(false)
+  const [dataModalDistance, setDataModalDistance] = useState<any>({})
+  const [showModalDistancePriceObject, setShowModalDistancePriceObject] = useState<boolean>(false);
+  const [dataModalDistancePriceObject, setDataModalDistancePriceObject] = useState<any>({})
+  const gridRefDistanceSetup = useRef(null);
+  const gridRefDistancePricebjectSetup= useRef(null);
+
+
   const [showModalProvince, setShowModalProvince] = useState<boolean>(false);
   const [dataModalProvince, setDataModalProvince] = useState<any>({})
   const [showModalProvinceObject, setShowModalProvinceObject] = useState<boolean>(false);
   const [dataModalProvinceObject, setDataModalProvinceObject] = useState<any>({})
+  const gridRefProvinceSetup = useRef<any>(null);
+  const gridRefProvinceObjectSetup= useRef(null);
+
+  const [showModalPackage, setShowModalPackage] = useState<boolean>(false);
+  const [dataModalPackage, setDataModalPackage] = useState<any>({})
+  const gridRefPackageSetup = useRef<any>(null);
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const gridRef = useRef(null);
-  const gridRefDistanceSetup = useRef(null);
-  const gridRefProvinceSetup = useRef<any>(null);
-  const gridRefProvinceObjectSetup= useRef(null)
+
   const value: PageDataContextModel = {
     gridRefDistanceSetup,
     gridRefProvinceSetup,
     gridRefProvinceObjectSetup,
+    gridRefPackageSetup,
     gridRef,
     pageTitle,
     setPageTitle,
@@ -85,14 +111,20 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setPageBreadcrumbs,
     rowDataOrder,
     setRowDataOrder,
-    rowDataProvince,
-    setRowDataProvince,
     rowDataCouponReciept,
     setRowDataCouponReciept,
     showCreateAppModal,
     setShowCreateAppModal,
-    showCreateDistanceModal,
-    setShowCreateDistanceModal,
+
+    showModalDistance,
+    setShowModalDistance,
+    dataModalDistance,
+    setDataModalDistance,
+    showModalDistancePriceObject,
+    setShowModalDistancePriceObject,
+    dataModalDistancePriceObject,
+    setDataModalDistancePriceObject,
+
     showModalProvince,
     setShowModalProvince,
     dataModalProvince,
@@ -101,6 +133,12 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setShowModalProvinceObject,
     dataModalProvinceObject,
     setDataModalProvinceObject,
+
+    showModalPackage,
+    setShowModalPackage,
+    dataModalPackage,
+    setDataModalPackage,
+    
     setIsLoading,
     isLoading,
   }

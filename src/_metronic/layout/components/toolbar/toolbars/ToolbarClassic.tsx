@@ -6,10 +6,12 @@ import {KTIcon} from '../../../../helpers'
 import {CreateAppModal, Dropdown1} from '../../../../partials'
 import {useLayout, usePageData} from '../../../core'
 import { BuilderPage } from '../../../../../app/pages/layout-builder/BuilderPage'
+import { useIntl } from 'react-intl';
 
 const ToolbarClassic = () => {
   const {config} = useLayout();
-  const {showCreateAppModal, setShowCreateAppModal, setShowCreateDistanceModal, setShowModalProvince} = usePageData();
+  const intl = useIntl();
+  const {showCreateAppModal, setShowCreateAppModal, setShowModalDistance, setShowModalProvince, setShowModalPackage} = usePageData();
   const location = useLocation();
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
   // const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
@@ -63,10 +65,10 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/khoang-cach' && (
         <div
-          onClick={() => (setShowCreateDistanceModal && setShowCreateDistanceModal(true))}
+          onClick={() => (setShowModalDistance && setShowModalDistance(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
-          Tạo Khoảng cách
+          {`Tạo ${intl.formatMessage({id: 'MENU.KHOANGCACH'})}`}
         </div>
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/tinh-nhan-hang' && (
@@ -74,7 +76,15 @@ const ToolbarClassic = () => {
           onClick={() => (setShowModalProvince && setShowModalProvince(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
-          Tạo Tỉnh nhận hàng
+          {`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
+        </div>
+      )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi' && (
+        <div
+          onClick={() => (setShowModalPackage && setShowModalPackage(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOI'})}`}
         </div>
       )}
       {/* <CreateAppModal

@@ -2,28 +2,39 @@ import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {AgGridReact} from 'ag-grid-react'
 import {useForm, SubmitHandler, Controller, useWatch} from 'react-hook-form'
 import {InputGroup, Button, Form, OverlayTrigger} from 'react-bootstrap'
-import { useThemeMode } from '../../../_metronic/partials'
-import ModalAddPriceObject from './ModalAddPriceObject'
+import {IFormProvinceInput, columnDefsAreaInProvince} from './interface'
+import { CreateAppModal, useThemeMode } from '../../../_metronic/partials'
+import ModalAddProvinceAreaObject from './ModalAddDistancePriceObject'
+import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast'
+import { provinceCreatedAPI, provinceEditAPIByID } from '../../../apis/provinceAPI';
+import { usePageData } from '../../../_metronic/layout/core'
+import { province } from '../../../slices/provinceSlices'
+import { useDispatch } from 'react-redux'
 
 type Props = {}
 
 const ModalShowAndAddDistance = (props: any) => {
+  const {gridRefProvinceObjectSetup, setShowModalProvince, dataModalProvince, setDataModalProvince, setShowModalProvinceObject, dataModalProvinceObject, setDataModalProvinceObject} = usePageData();
+  const dispath = useDispatch();
   const {
     control,
-    watch,
-    setValue,
-    getValues,
     handleSubmit,
-    clearErrors,
-    reset,
     formState: {errors},
+    reset,
   } = useForm<any>({
     mode: 'all',
-    defaultValues: {},
+    defaultValues: {
+      label: dataModalProvince.label || '',
+      value: dataModalProvince.value || '',
+      licenseplates: dataModalProvince.licenseplates || '',
+      transportationRoutes: dataModalProvince.transportationRoutes || [],
+      id: dataModalProvince.id || 0,
+     },
     shouldUnregister: false,
   })
-  const gridRefPriceInDistance = useRef(null)
-  const onGridReady = useCallback((params: any) => {}, [])
+  // const gridRefProvinceInProvince = useRef(null)
+  const onGridReady = useCallback((params: any) => {
+  }, [])
   const onCellValueChanged = useCallback((event: any) => {
     console.log('bao onCellValueChanged: ' + event.colDef.field + ' = ' + event.newValue)
   }, [])
@@ -33,105 +44,150 @@ const ModalShowAndAddDistance = (props: any) => {
     flex: 1,
   }
   const {modeCurrent} = useThemeMode();
-  const [showModalAddPriceObject, setShowModalAddPriceObject] = useState<any>(false);
-  const [rowDataPriceObject, setRowDataPriceObject] = useState<any[]>([])
-  const handleSubmitModalAddPriceObject = async (data: any) => {
-    setRowDataPriceObject && await setRowDataPriceObject((prevRowData: any) => [...prevRowData, data]);
+  const onSubmit: SubmitHandler<IFormProvinceInput> = async(data: IFormProvinceInput) =>{
+    const rowData: any[] = [];
+    gridRefProvinceObjectSetup.current!.api.forEachNode(function (node: any) {
+      rowData.push(node.data);
+    });
+    const provinceObjectUpdate = {...data, transportationRoutes: rowData}
+    if(!dataModalProvinceObject?.id) {
+      try{
+        if(data.id) {
+          await provinceEditAPIByID(provinceObjectUpdate);
+          ToastSuccess("Bạn đã cập nhật thành công");
+        } else {
+          await provinceCreatedAPI(provinceObjectUpdate);
+          ToastSuccess("Bạn đã tạo mới thành công");
+        }
+        dispath(province());
+        setShowModalProvince && setShowModalProvince(false);
+        setDataModalProvince && setDataModalProvince({});
+      }catch (err) {
+      ToastError("Có lỗi xảy ra!");
+
+      }
+
+    }
+    reset();
+  }
+  const onErrors = async (e: any) => {
+    if (Object.keys(e).length) {
+      ToastError("Bạn nhập thiếu thông tin!");
+    }
   }
   return (
-    <form>
-      <div className='row'>
-        <div className='group card mb-5 p-5 pt-0 me-3'>
-          <>
-            <p className='list-unstyled text-gray-700 fw-bold fs-3'>Tên Khoảng cách</p>
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text className={`group-text ${errors?.sendName && 'border-danger'}`}>
-                    Tên
-                  </InputGroup.Text>
-                  <Form.Control
-                    className={`text-dark ${errors?.sendName && 'border-danger'}`}
-                    aria-label='Default'
-                    aria-describedby='inputGroup-sizing-default'
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                  />
-                </InputGroup>
-              )}
-              name='distanceName'
-            />
-            <Controller
-              control={control}
-              rules={{
-                required: true,
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <InputGroup className='mb-3'>
-                  <InputGroup.Text className={`group-text ${errors?.sendName && 'border-danger'}`}>
-                    Mã
-                  </InputGroup.Text>
-                  <Form.Control
-                    className={`text-dark ${errors?.sendName && 'border-danger'}`}
-                    aria-label='Default'
-                    aria-describedby='inputGroup-sizing-default'
-                    onBlur={onBlur}
-                    onChange={onChange}
-                    value={value}
-                  />
-                </InputGroup>
-              )}
-              name='distanceCode'
-            />
-          </>
-        </div>
-      </div>
-      <div className='row'>
-        <div className='mb-5 p-5 pt-0 me-3'>
-            <div className='d-flex justify-content-between align-items-center mb-3'>
-                <p className='list-unstyled text-gray-700 fw-bold fs-3 mb-0'>Giá</p>
-                <Button onClick={()=> setShowModalAddPriceObject(true)} className='btn btn-primary'>Thêm</Button>
-            </div>
-            <div style={containerStyle}>
-                <div style={{height: '100%', minHeight: '100px' , boxSizing: 'border-box'}}>
-                    <div
-                        style={gridStyle}
-                        className={modeCurrent === 'dark' ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
-                    >
-                        <AgGridReact
-                            ref={gridRefPriceInDistance}
-                            rowData={rowDataPriceObject}
-                            // columnDefs={columnDefsPriceInDistance}
-                            onGridReady={onGridReady}
-                            onCellValueChanged={onCellValueChanged}
-                            // getRowId={getRowId}
-                            defaultColDef={defaultColDef}
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div className='row'>
-        <div className='col justify-content-end d-flex'>
-          <div>
-            {/* <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button> */}
-            <Button type="submit" className="btn btn-primary">{`Tạo mới ${props.title}`}</Button>
+    <>
+      <form onSubmit={handleSubmit(onSubmit, onErrors)}>
+        <div className='row'>
+          <div className='group card mb-5 p-5 pt-0 me-3'>
+            <>
+              <p className='list-unstyled text-gray-700 fw-bold fs-3'>{`Tên ${props.title}`}</p>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text className={`group-text ${errors?.label && 'border-danger'}`}>
+                      Tên khoảng cách
+                    </InputGroup.Text>
+                    <Form.Control
+                      className={`text-dark ${errors?.label && 'border-danger'}`}
+                      aria-label='Default'
+                      aria-describedby='inputGroup-sizing-default'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  </InputGroup>
+                )}
+                name='label'
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text className={`group-text ${errors?.value && 'border-danger'}`}>
+                      Mã khoảng cách
+                    </InputGroup.Text>
+                    <Form.Control
+                      className={`text-dark ${errors?.value && 'border-danger'}`}
+                      aria-label='Default'
+                      aria-describedby='inputGroup-sizing-default'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  </InputGroup>
+                )}
+                name='value'
+              />
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text className={`group-text ${errors?.licenseplates && 'border-danger'}`}>
+                      Thời gian giao
+                    </InputGroup.Text>
+                    <Form.Control
+                      className={`text-dark ${errors?.licenseplates && 'border-danger'}`}
+                      aria-label='Default'
+                      aria-describedby='inputGroup-sizing-default'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  </InputGroup>
+                )}
+                name='licenseplates'
+              />
+            </>
           </div>
         </div>
-      </div>
-      <ModalAddPriceObject
-        isShow={showModalAddPriceObject} 
-        setShow={setShowModalAddPriceObject}
-        handleSubmmit={handleSubmitModalAddPriceObject}
-        />
-    </form>
+        <div className='row'>
+          <div className='mb-5 p-5 pt-0 me-3'>
+              <div className='d-flex justify-content-between align-items-center mb-3'>
+                  <p className='list-unstyled text-gray-700 fw-bold fs-3 mb-0'>Giá giao tại Khoảng cách</p>
+                  <a onClick={()=> setShowModalProvinceObject && setShowModalProvinceObject(true)} className='btn btn-primary'>Thêm</a>
+              </div>
+              <div style={containerStyle}>
+                  <div style={{height: '400px', minHeight: '100px' , boxSizing: 'border-box'}}>
+                      <div
+                          style={gridStyle}
+                          className={modeCurrent === 'dark' ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
+                      >
+                          <AgGridReact
+                              ref={gridRefProvinceObjectSetup}
+                              rowData={dataModalProvince?.transportationRoutes || []}
+                              columnDefs={columnDefsAreaInProvince}
+                              onGridReady={onGridReady}
+                              onCellValueChanged={onCellValueChanged}
+                              // getRowId={getRowId}
+                              defaultColDef={defaultColDef}
+                          />
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col justify-content-end d-flex'>
+            <div>
+              <Button type="submit" className="btn btn-primary">{`${dataModalProvince.id ? "Cập nhật" : "Tạo mới"} ${props.title}`}</Button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </>
   )
 }
 
 export default ModalShowAndAddDistance
+

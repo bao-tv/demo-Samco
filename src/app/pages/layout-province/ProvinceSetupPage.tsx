@@ -7,10 +7,12 @@ import ModalShowAndAddProvince from './ModalShowAndAddProvince';
 import { log } from 'console';
 import { useSelector } from 'react-redux';
 import ModalAddProvinceAreaObject from './ModalAddProvinceAreaObject';
+import { useIntl } from 'react-intl';
 
 type Props = {}
 
 const ProvinceSetupPage = (props: Props) => {
+  const intl = useIntl();
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const {modeCurrent} = useThemeMode();
@@ -52,8 +54,8 @@ const ProvinceSetupPage = (props: Props) => {
       <CreateAppModal
         show={showModalProvince} 
         handleClose={handleCloseModalProvince} 
-        content={<ModalShowAndAddProvince title="Tỉnh nhận hàng"/>}
-        title="Tỉnh nhận hàng"
+        content={<ModalShowAndAddProvince title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>}
+        title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}
       />
       <CreateAppModal
         show={showModalProvinceObject}

@@ -13,9 +13,11 @@ import dayjs from 'dayjs';
 import { calculatePrice, calculatePriceVehicle, renderTooltip } from '../../../_metronic/helpers';
 import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
+import { useIntl } from 'react-intl';
 // import { watch } from 'fs';
 
 const BuilderPage: React.FC<any> = ({handleClose}: any) => {
+  const intl = useIntl();
   const optionsCoefficient: any[] = [
     { value: 1, label: 'Không', code: 1 },
     { value: 2, label: 'Có', code: 1.3 },
@@ -518,7 +520,7 @@ const BuilderPage: React.FC<any> = ({handleClose}: any) => {
                 // console.log('bao value receiptProvinceAddress: ', value)
                 return (
                   <div className={`d-flex align-items-center w-100 mb-3 ${errors?.receiptProvinceAddress && 'border-danger'}`}>
-                  <label className='form-label d-block me-5'>Tỉnh nhận hàng</label>
+                  <label className='form-label d-block me-5'>{intl.formatMessage({id: 'MENU.TINHNHANHANG'})}</label>
                     <Select
                       className={`react-select-styled w-50 ${errors?.receiptProvinceAddress && 'rounded border border-danger'}`}
                       classNamePrefix='react-select text-dark' 

@@ -3,10 +3,11 @@ import {Navigate, Route, Routes, Outlet} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
 import DistanceSetupPage from '../../pages/layout-distance/DistanceSetupPage'
 import ProvinceSetupPage from '../../pages/layout-province/ProvinceSetupPage'
+import PackSetupPage from '../../pages/layout-pack/PackageSetupPage'
+import { useIntl } from 'react-intl'
 
 
 type Props = {}
-
 const DefinePagesBreadCrumbs: Array<PageLink> = [
     {
       title: 'Khoảng cách',
@@ -20,6 +21,12 @@ const DefinePagesBreadCrumbs: Array<PageLink> = [
       isSeparator: false,
       isActive: false,
     },
+    {
+      title: 'Đóng gói',
+      path: '/dinh-nghia/dong-goi',
+      isSeparator: false,
+      isActive: false,
+    },
   ]
 
 const DefinePage = (props: Props) => {
@@ -29,7 +36,7 @@ const DefinePage = (props: Props) => {
           path='khoang-cach'
           element={
             <>
-              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>Khoảnh cách</PageTitle>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>Khoảng cách</PageTitle>
               <DistanceSetupPage />
             </>
           }
@@ -40,6 +47,15 @@ const DefinePage = (props: Props) => {
             <>
               <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>Tỉnh nhận hàng</PageTitle>
               <ProvinceSetupPage />
+            </>
+          }
+        />
+        <Route
+          path='dong-goi'
+          element={
+            <>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>Đóng gói</PageTitle>
+              <PackSetupPage />
             </>
           }
         />

@@ -7,11 +7,15 @@ import {AuthInit} from './modules/auth'
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux'
 import { province } from '../slices/provinceSlices'
+import { packages } from '../slices/packSlices'
+import { distance } from '../slices/distanceSlices'
 
 const App = () => {
   const dispath = useDispatch();
   useEffect(() => {
     dispath( province());
+    dispath( packages());
+    dispath( distance());
   }, []);
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
