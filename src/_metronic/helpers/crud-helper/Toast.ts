@@ -46,4 +46,6 @@ return (
 )
 }
 
+export const covertNumberWithReject = (number: string|number) => (`${number}`).replace(/,/g, '');
+
 export default ToastError

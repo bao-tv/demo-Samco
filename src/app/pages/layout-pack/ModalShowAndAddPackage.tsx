@@ -2,7 +2,7 @@ import {useForm, SubmitHandler, Controller} from 'react-hook-form'
 import {InputGroup, Button, Form} from 'react-bootstrap'
 import {IFormPackageInput} from './interface'
 import { useThemeMode } from '../../../_metronic/partials'
-import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
+import ToastError, { ToastSuccess, covertNumberWithReject } from '../../../_metronic/helpers/crud-helper/Toast';
 import { usePageData } from '../../../_metronic/layout/core'
 import { useDispatch } from 'react-redux'
 import { NumericFormat } from 'react-number-format'
@@ -22,7 +22,7 @@ const ModalShowAndAddPackage = (props: any) => {
     defaultValues: {
       label: dataModalPackage.label || '',
       packagingName: dataModalPackage.packagingName || '',
-      price: dataModalPackage.price || 0,
+      price: dataModalPackage.price || "",
       uom: dataModalPackage.uom || '',
       value: dataModalPackage.value || '',
       id: dataModalPackage.id || 0,
@@ -30,13 +30,14 @@ const ModalShowAndAddPackage = (props: any) => {
     shouldUnregister: false,
   })
   const onSubmit: SubmitHandler<IFormPackageInput> = async(data: IFormPackageInput) =>{
-    console.log('bao data: ', data)
+    // console.log('bao data: ', (`${data?.price}`).replace(/,/g, ''))
+    const objectConvert = {...data, price: covertNumberWithReject(`${data?.price}`)} ;
     try{
       if(data.id) {
-        await packageEditAPIByID(data);
+        await packageEditAPIByID(objectConvert);
         ToastSuccess("Bạn đã cập nhật thành công");
       } else {
-        await packageCreatedAPI(data);
+        await packageCreatedAPI(objectConvert);
         ToastSuccess("Bạn đã tạo mới thành công");
       }
       dispath(packages());
