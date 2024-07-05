@@ -2,64 +2,63 @@ import { ColDef } from 'ag-grid-community';
 import ButtonActionEdit_Delete from '../../../_metronic/helpers/components/ButtonActionEdit_Delete';
 import { usePageData } from '../../../_metronic/layout/core';
 import { useState } from 'react';
-import { provinceAPIDeleteById } from '../../../apis/provinceAPI';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import { province } from '../../../slices/provinceSlices';
 import { useDispatch } from 'react-redux';
 import ModalToasts from '../../../_metronic/helpers/components/ModalToasts';
 import { useIntl } from 'react-intl';
+import { distanceAPIDeleteById } from '../../../apis/distanceAPI';
+import { distance } from '../../../slices/distanceSlices';
 // import ButtonActionAddEditProvince from '../../../_metronic/helpers/components/ButtonActionAddEditProvince';
 
-const ButtonActionProvince = (props: any) => {
+const ButtonActionDistance = (props: any) => {
   const intl = useIntl();
   const dispath = useDispatch();
-  const {setDataModalProvince, setShowModalProvince} = usePageData();
+  const {setDataModalDistance, setShowModalDistance} = usePageData();
   const handleEditRow = () => {
-    setDataModalProvince && setDataModalProvince(props?.data);
-    setShowModalProvince && setShowModalProvince(true);
+    setDataModalDistance && setDataModalDistance(props?.data);
+    setShowModalDistance && setShowModalDistance(true);
   }
-  const [titleProvince, setTitleProvince] = useState<any>('');
+  const [titleDistance, setTitleDistance] = useState<any>('');
   const handleRemoveRow =  () => {
-    setTitleProvince(`Bạn có muốn xóa )} ${props?.data?.label}`);
+    setTitleDistance(`Bạn có muốn xóa )} ${props?.data?.label}`);
 }
 const buttonOK = async () => {
     try {
-        const response = props?.data?.id && await provinceAPIDeleteById(props?.data?.id)
+        const response = props?.data?.id && await distanceAPIDeleteById(props?.data?.id)
         response.status === "OK" && ToastSuccess("Bạn đã xóa thành công!");
-        dispath(province());
+        dispath(distance());
       }catch (err) {
-        // setErr(err.response?.data?.content)
         ToastError("Bạn xóa không thành công!")
       }
 }
   return (
     <>
       <ButtonActionEdit_Delete handleEditRow={handleEditRow} handleRemoveRow={handleRemoveRow}/>
-      <ModalToasts title={titleProvince} onClickOK={buttonOK} handleClose={() => setTitleProvince('')} />
+      <ModalToasts title={titleDistance} onClickOK={buttonOK} handleClose={() => setTitleDistance('')} />
     </>
   );
 }
 
-const ButtonActionProvinceObject = (props: any) => {
-  const dispath = useDispatch();
-  const {gridRefProvinceObjectSetup, setDataModalProvinceObject, dataModalProvinceObject, setShowModalProvinceObject} = usePageData();
+const ButtonActionDistanceObject = (props: any) => {
+  console.log('bao props: ', props)
+  const {gridRefDistancePricebjectSetup, setDataModalDistancePriceObject, setShowModalDistancePriceObject} = usePageData();
   const handleEditRow = () => {
-    // console.log('bao props: ', props)
-    setShowModalProvinceObject && setShowModalProvinceObject(true);
-    setDataModalProvinceObject && setDataModalProvinceObject(props);
+    setShowModalDistancePriceObject && setShowModalDistancePriceObject(true);
+    setDataModalDistancePriceObject && setDataModalDistancePriceObject(props);
   }
-  const [titleProvinceObject, setTitleProvinceObject] = useState<any>('');
+  const [titleDistanceObject, setTitlesetDataModalDistancePriceObject] = useState<any>('');
   const handleRemoveRow =  () => {
-    setTitleProvinceObject('Bạn có muốn xóa Khu vực nhận hàng');
+    setTitlesetDataModalDistancePriceObject('Bạn có muốn xóa Giá cho khoản cách này!');
 }
 const buttonOK = async () => {
     try {
         console.log('bao props: ', props);
         const rowData: any[] = [];
-        gridRefProvinceObjectSetup.current!.api.forEachNode(function (node: any) {
+        gridRefDistancePricebjectSetup.current!.api.forEachNode(function (node: any) {
           node.rowIndex === props.rowIndex && rowData.push(node.data);
         });
-        const res = gridRefProvinceObjectSetup.current!.api.applyTransaction({
+        const res = gridRefDistancePricebjectSetup.current!.api.applyTransaction({
           remove: rowData,
         })!;
         res.remove.length && ToastSuccess("Bạn đã xóa thành công!");
@@ -70,7 +69,7 @@ const buttonOK = async () => {
   return (
     <>
       <ButtonActionEdit_Delete handleEditRow={handleEditRow} handleRemoveRow={handleRemoveRow}/>
-      <ModalToasts title={titleProvinceObject} onClickOK={buttonOK} handleClose={() => setTitleProvinceObject('')} />
+      <ModalToasts title={titleDistanceObject} onClickOK={buttonOK} handleClose={() => setTitlesetDataModalDistancePriceObject('')} />
     </>
   );
 }
@@ -82,7 +81,7 @@ export   const columnDefsDistanceSetupPage: ColDef[] = [
   },
   {
     headerName: 'Hành động',
-    cellRenderer: ButtonActionProvince,
+    cellRenderer: ButtonActionDistance,
     width: 150,
   },
   {
@@ -117,7 +116,7 @@ export   const columnDefsPricesInDistance: ColDef[] = [
       headerName: 'Hành động',
       field: '',
       width: 100,
-      cellRenderer: ButtonActionProvinceObject
+      cellRenderer: ButtonActionDistanceObject
     },
     {
       headerName: 'Tên loại giá',
@@ -153,11 +152,14 @@ export   const columnDefsPricesInDistance: ColDef[] = [
     },
   ];
 
-  export interface IFormAreaInput {
-    areaName?: string,
-    transportation_route_code?: number | string,
-    distance?: number | string,
-    distanceCode?: number | string,
+  export interface DistancePriceObject {
+    priceName?: string,
+    priceNumber?: number | string,
+    priceCode?: string,
+    minKG?: number | string,
+    maxKG?: number | string,
+    priceAdd?: boolean,
+    id?: number,
   }
 
   export interface IFormProvinceInput {

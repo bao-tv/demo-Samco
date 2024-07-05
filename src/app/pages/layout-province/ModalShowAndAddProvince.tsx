@@ -1,10 +1,9 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {AgGridReact} from 'ag-grid-react'
-import {useForm, SubmitHandler, Controller, useWatch} from 'react-hook-form'
-import {InputGroup, Button, Form, OverlayTrigger} from 'react-bootstrap'
+import {useForm, SubmitHandler, Controller} from 'react-hook-form'
+import {InputGroup, Button, Form} from 'react-bootstrap'
 import {IFormProvinceInput, columnDefsAreaInProvince} from './interface'
 import { CreateAppModal, useThemeMode } from '../../../_metronic/partials'
-import ModalAddProvinceAreaObject from './ModalAddProvinceAreaObject'
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast'
 import { provinceCreatedAPI, provinceEditAPIByID } from '../../../apis/provinceAPI';
 import { usePageData } from '../../../_metronic/layout/core'

@@ -77,7 +77,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
 
   const [showModalDistance, setShowModalDistance] = useState<any>(false)
   const [dataModalDistance, setDataModalDistance] = useState<any>({})
-  const [showModalDistancePriceObject, setShowModalDistancePriceObject] = useState<boolean>(false);
+  const [showModalDistancePriceObject, setShowModalDistancePriceObject] = useState<boolean | string>(false);
   const [dataModalDistancePriceObject, setDataModalDistancePriceObject] = useState<any>({})
   const gridRefDistanceSetup = useRef(null);
   const gridRefDistancePricebjectSetup= useRef(null);

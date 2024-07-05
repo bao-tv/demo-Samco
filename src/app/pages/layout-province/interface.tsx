@@ -42,7 +42,7 @@ const buttonOK = async () => {
 
 const ButtonActionProvinceObject = (props: any) => {
   const dispath = useDispatch();
-  const {gridRefProvinceObjectSetup, setDataModalProvinceObject, dataModalProvinceObject, setShowModalProvinceObject} = usePageData();
+  const {gridRefProvinceObjectSetup, setDataModalProvinceObject, setShowModalProvinceObject} = usePageData();
   const handleEditRow = () => {
     // console.log('bao props: ', props)
     setShowModalProvinceObject && setShowModalProvinceObject(true);

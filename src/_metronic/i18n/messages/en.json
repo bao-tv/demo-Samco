@@ -2,6 +2,8 @@
   "TRANSLATOR.SELECT": "Select your language",
   "MENU.NEW": "new",
   "MENU.ACTIONS": "Actions",
+  "MENU.ADD": "Add",
+  "MENU.EDIT": "Edit",
   "MENU.CREATE_POST": "Create New Post",
   "MENU.PAGES": "Pages",
   "MENU.FEATURES": "Features",

@@ -12,10 +12,12 @@ import { province } from '../../../slices/provinceSlices'
 import { useDispatch } from 'react-redux'
 import { distanceCreatedAPI, distanceEditAPIByID } from '../../../apis/distanceAPI'
 import { distance } from '../../../slices/distanceSlices'
+import { useIntl } from 'react-intl'
 
 type Props = {}
 
 const ModalShowAndAddDistance = (props: any) => {
+  const intl = useIntl();
   const {gridRefDistancePricebjectSetup, setShowModalDistance, dataModalDistance, setDataModalDistance, setShowModalDistancePriceObject, dataModalDistancePriceObject} = usePageData();
   const dispath = useDispatch();
   const {
@@ -90,11 +92,11 @@ const ModalShowAndAddDistance = (props: any) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
-                    <InputGroup.Text className={`group-text ${errors?.label && 'border-danger'}`}>
+                    <InputGroup.Text className={`group-text ${errors?.distanceName && 'border-danger'}`}>
                       Tên khoảng cách
                     </InputGroup.Text>
                     <Form.Control
-                      className={`text-dark ${errors?.label && 'border-danger'}`}
+                      className={`text-dark ${errors?.distanceName && 'border-danger'}`}
                       aria-label='Default'
                       aria-describedby='inputGroup-sizing-default'
                       onBlur={onBlur}
@@ -112,11 +114,11 @@ const ModalShowAndAddDistance = (props: any) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
-                    <InputGroup.Text className={`group-text ${errors?.value && 'border-danger'}`}>
+                    <InputGroup.Text className={`group-text ${errors?.distanceCode && 'border-danger'}`}>
                       Mã khoảng cách
                     </InputGroup.Text>
                     <Form.Control
-                      className={`text-dark ${errors?.value && 'border-danger'}`}
+                      className={`text-dark ${errors?.distanceCode && 'border-danger'}`}
                       aria-label='Default'
                       aria-describedby='inputGroup-sizing-default'
                       onBlur={onBlur}
@@ -134,11 +136,11 @@ const ModalShowAndAddDistance = (props: any) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
-                    <InputGroup.Text className={`group-text ${errors?.licenseplates && 'border-danger'}`}>
+                    <InputGroup.Text className={`group-text ${errors?.time && 'border-danger'}`}>
                       Thời gian giao
                     </InputGroup.Text>
                     <Form.Control
-                      className={`text-dark ${errors?.licenseplates && 'border-danger'}`}
+                      className={`text-dark ${errors?.time && 'border-danger'}`}
                       aria-label='Default'
                       aria-describedby='inputGroup-sizing-default'
                       onBlur={onBlur}
@@ -156,7 +158,7 @@ const ModalShowAndAddDistance = (props: any) => {
           <div className='mb-5 p-5 pt-0 me-3'>
               <div className='d-flex justify-content-between align-items-center mb-3'>
                   <p className='list-unstyled text-gray-700 fw-bold fs-3 mb-0'>Giá giao tại Khoảng cách</p>
-                  <a onClick={()=> setShowModalDistancePriceObject && setShowModalDistancePriceObject(true)} className='btn btn-primary'>Thêm</a>
+                  <a onClick={()=> setShowModalDistancePriceObject && setShowModalDistancePriceObject(intl.formatMessage({id: 'MENU.ADD'}))} className='btn btn-primary'>Thêm</a>
               </div>
               <div style={containerStyle}>
                   <div style={{height: '400px', minHeight: '100px' , boxSizing: 'border-box'}}>

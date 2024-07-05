@@ -4,7 +4,6 @@ import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
 import { columnDefsProvinceSetupPage } from './interface';
 import { usePageData } from '../../../_metronic/layout/core';
 import ModalShowAndAddProvince from './ModalShowAndAddProvince';
-import { log } from 'console';
 import { useSelector } from 'react-redux';
 import ModalAddProvinceAreaObject from './ModalAddProvinceAreaObject';
 import { useIntl } from 'react-intl';

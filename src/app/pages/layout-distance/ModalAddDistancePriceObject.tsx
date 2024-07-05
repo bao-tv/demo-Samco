@@ -2,34 +2,37 @@ import React from 'react'
 import { Button, Form, InputGroup, Modal } from 'react-bootstrap'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import ToastError from '../../../_metronic/helpers/crud-helper/Toast'
-import { IFormAreaInput } from './interface'
+import { DistancePriceObject } from './interface'
 import { NumericFormat } from 'react-number-format'
 import { usePageData } from '../../../_metronic/layout/core'
+import { NumberConverterRejectSystax } from '../../../_metronic/helpers'
+import { useIntl } from 'react-intl'
 
 type Props = {
     title: string,
 }
 
 const ModalAddDistancePriceObject = ({title}: Props) => {
-    const {gridRefDistancePricebjectSetup, setShowModalDistancePriceObject, setDataModalDistance, dataModalDistancePriceObject} = usePageData();
+    const intl = useIntl();
+    const {gridRefDistancePricebjectSetup, showModalDistancePriceObject,setShowModalDistancePriceObject, setDataModalDistance, dataModalDistancePriceObject, setDataModalDistancePriceObject} = usePageData();
+   console.log('bao showModalDistancePriceObject: ', showModalDistancePriceObject)
+    // console.log('bao NumberConverterRejectSystax(+dataModalDistancePriceObject?.data?.priceNumber): ', NumberConverterRejectSystax(+dataModalDistancePriceObject?.data?.priceNumber))
     const { control, handleSubmit, reset, formState: { errors }, } = useForm<any>({
         mode: 'all',
         defaultValues: {
             priceName: dataModalDistancePriceObject?.data?.priceName || '',
-            priceNumber: dataModalDistancePriceObject?.data?.priceNumber || 0,
+            priceNumber: NumberConverterRejectSystax(dataModalDistancePriceObject?.data?.priceNumber) || 0,
             priceCode: dataModalDistancePriceObject?.data?.priceCode || '',
-            minKG: dataModalDistancePriceObject?.data?.minKG || 0,
-            maxKG: dataModalDistancePriceObject?.data?.maxKG || 0,
+            minKG: +dataModalDistancePriceObject?.data?.minKG || 0,
+            maxKG: +dataModalDistancePriceObject?.data?.maxKG || 0,
             priceAdd: dataModalDistancePriceObject?.data?.priceAdd || false,
             id: dataModalDistancePriceObject?.data?.id || 0,
         },
         shouldUnregister: false,
     })
-    const onSubmit: SubmitHandler<IFormAreaInput> = (data: IFormAreaInput) =>{
-        // console.log('bao data: ', data)
-        if (!dataModalDistancePriceObject?.rowIndex) {
+    const onSubmit: SubmitHandler<DistancePriceObject> = (data: DistancePriceObject) =>{
+        if (showModalDistancePriceObject === intl.formatMessage({id: 'MENU.ADD'})) {
             const rowData: any[] = [];
-            console.log('bao gridRefDistancePricebjectSetup: ', gridRefDistancePricebjectSetup)
             gridRefDistancePricebjectSetup.current!.api.forEachNode((node: any) => {
                 rowData.push(node.data);
             })!;
@@ -54,7 +57,7 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
               prices: rowData,
             }));
         }
-        reset();
+        setDataModalDistancePriceObject && setDataModalDistancePriceObject({});
         setShowModalDistancePriceObject && setShowModalDistancePriceObject(false);
     }
     const onErrors = async (e: any) => {
@@ -108,22 +111,27 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
             <Controller
                 control={control}
                 rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                <InputGroup className="mb-3">
-                    <InputGroup.Text className={`group-text ${errors?.priceNumber && 'border-danger'}`}>
-                        Giá
-                    </InputGroup.Text>
-                    <NumericFormat
-                        value={value}
-                        className={`text-dark ${errors?.priceNumber && 'border-danger'} form-control`}
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        allowLeadingZeros thousandSeparator=","
-                        decimalScale={0}
-                    />
-                    <InputGroup.Text className={`${errors?.priceNumber && 'border-danger'}`}>VND</InputGroup.Text>
-                </InputGroup>
-                )}
+                render={({ field: { onChange, onBlur, value } }) => {
+                    // console.log('bao NumberConverterRejectSystax: ', NumberConverterRejectSystax(+value))
+                    return (
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text className={`group-text ${errors?.priceNumber && 'border-danger'}`}>
+                            Giá
+                        </InputGroup.Text>
+                        <NumericFormat
+                            // defaultValue={NumberConverterRejectSystax(value)}
+                            value={value}
+                            className={`text-dark ${errors?.priceNumber && 'border-danger'} form-control`}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            allowLeadingZeros thousandSeparator=","
+                            decimalScale={0}
+                        />
+                        <InputGroup.Text className={`${errors?.priceNumber && 'border-danger'}`}>VND</InputGroup.Text>
+                    </InputGroup>
+                    )
+                }
+            }
                 name='priceNumber'
             />
 
@@ -136,12 +144,13 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                         Số KG nhỏ nhất
                     </InputGroup.Text>
                     <NumericFormat
+                        // defaultValue={+value}
                         value={value}
                         className={`text-dark ${errors?.minKG && 'border-danger'} form-control`}
                         onBlur={onBlur}
                         onChange={onChange}
                         allowLeadingZeros thousandSeparator=","
-                        decimalScale={0}
+                        decimalScale={2}
                     />
                     <InputGroup.Text className={`${errors?.minKG && 'border-danger'}`}>KG</InputGroup.Text>
                 </InputGroup>
@@ -157,12 +166,13 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
                         Số KG lớn nhất
                     </InputGroup.Text>
                     <NumericFormat
+                        // defaultValue={+value}
                         value={value}
                         className={`text-dark ${errors?.maxKG && 'border-danger'} form-control`}
                         onBlur={onBlur}
                         onChange={onChange}
                         allowLeadingZeros thousandSeparator=","
-                        decimalScale={0}
+                        decimalScale={2}
                     />
                     <InputGroup.Text className={`${errors?.maxKG && 'border-danger'}`}>KG</InputGroup.Text>
                 </InputGroup>
@@ -172,24 +182,28 @@ const ModalAddDistancePriceObject = ({title}: Props) => {
             <Controller
                 control={control}
                 rules={{ required: false }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                <InputGroup className="mb-3">
-                    <Form.Check
-                        type="checkbox"
-                        label={<span className='fs-4 text-dark'>Giá lũy tiến</span>}
-                        id="disabled-default-checkbox"
-                        onBlur={onBlur}
-                        onChange={onChange}
-                        value={value}
-                    />
-                </InputGroup>
-                )}
+                render={({ field: { onChange, onBlur, value } }) => {
+                    console.log('bao priceAdd: ', value)
+                    return (
+                    <InputGroup className="mb-3">
+                        <Form.Check
+                            type="checkbox"
+                            label={<span className='fs-4 text-dark'>Giá lũy tiến</span>}
+                            id="disabled-default-checkbox"
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            value={value}
+                            defaultChecked={value}
+                        />
+                    </InputGroup>
+                    )}
+                }
                 name='priceAdd'
             />
             <div className='row'>
                 <div className='col justify-content-end d-flex'>
                 <div>
-                    <Button type='submit' className="btn btn-primary">{`${dataModalDistancePriceObject?.rowIndex ? "Cập nhật" : "Tạo mới"} ${title}`}</Button>
+                    <Button type='submit' className="btn btn-primary">{`${showModalDistancePriceObject !== intl.formatMessage({id: 'MENU.ADD'}) ? "Cập nhật" : "Tạo mới"} ${title}`}</Button>
                 </div>
                 </div>
             </div>

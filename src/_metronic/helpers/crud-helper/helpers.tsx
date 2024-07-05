@@ -160,6 +160,11 @@ const calculatePriceVehicle = (arrayPrice: any[], price_code: number) => {
   return objectPrice[0]?.price_number
 }
 
+const NumberConverterRejectSystax = (number: any) => {
+  if(!number) return "";
+  return Number(number?.toString()?.replace(/,/g, ''));
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -173,4 +178,5 @@ export {
   renderTooltip,
   calculatePrice,
   calculatePriceVehicle,
+  NumberConverterRejectSystax,
 }

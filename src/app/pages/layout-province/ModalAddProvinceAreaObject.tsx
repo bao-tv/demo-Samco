@@ -5,12 +5,15 @@ import ToastError from '../../../_metronic/helpers/crud-helper/Toast'
 import { IFormAreaInput } from './interface'
 import { NumericFormat } from 'react-number-format'
 import { usePageData } from '../../../_metronic/layout/core'
+import { useSelector } from 'react-redux'
+import Select, { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
 
 type Props = {
     title: string,
 }
 
 const ModalAddProvinceAreaObject = ({title}: Props) => {
+    const {listDistance} = useSelector((state:any) => state.distances);  
     const {gridRefProvinceObjectSetup, setShowModalProvinceObject, dataModalProvince, setDataModalProvince, dataModalProvinceObject, setDataModalProvinceObject} = usePageData();
     const { control, handleSubmit, reset, formState: { errors }, } = useForm<any>({
         mode: 'all',
@@ -127,17 +130,26 @@ const ModalAddProvinceAreaObject = ({title}: Props) => {
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value } }) => (
                 <InputGroup className="mb-3">
-                    <InputGroup.Text className={`group-text ${errors?.value && 'border-danger'}`}>
-                        Mã khoản cách
-                    </InputGroup.Text>
-                    <Form.Control
+                    <div className={`d-flex align-items-center w-100 ${errors?.shipName && 'border-danger'}`}>
+                    <label className='form-label d-block me-5'>Mã khu vực</label>
+                    {/* <Form.Control
                         className={`text-dark ${errors?.value && 'border-danger'}`}
                         aria-label="Default"
                         aria-describedby="inputGroup-sizing-default"
                         onBlur={onBlur}
                         onChange={onChange}
                         value={value}
-                        />
+                        /> */}
+                     <Select 
+                      className={`react-select-styled w-50 ${errors?.value && 'rounded border border-danger'}`}
+                      classNamePrefix='react-select' 
+                      options={listDistance.map((item: any) => ({label: item.distanceName, value: item.distanceCode, id: item.id}))} 
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                      placeholder='Chọn một mã khu vực' 
+                  />
+                  </div>
                 </InputGroup>
                 )}
                 name='value'
