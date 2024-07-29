@@ -8,8 +8,6 @@ export function MenuInner() {
   return (
     <>
       <MenuItem title={intl.formatMessage({id: 'MENU.THONGTINCHUNG'})} to='/thong-tin-chung' />
-      {/* <MenuItem title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} to='/phieu-nhan-hang' /> */}
-      {/* <MenuItem title={intl.formatMessage({id: 'MENU.PHIEUNHANHANGDAXOA'})} to='/phieu-nhan-hang-da-xoa' /> */}
       <MenuInnerWithSub
         title='Quản lý đơn hàng'
         to='/quan-ly-don-hang'
@@ -41,24 +39,54 @@ export function MenuInner() {
         </MenuInnerWithSub>
       </MenuInnerWithSub>
 
-      <MenuInnerWithSub title='Định nghĩa giá cước' to='/dinh-nghia' menuPlacement='bottom-start' menuTrigger='click'>
+      <MenuInnerWithSub
+        title='Quản lý kho'
+        to='/quan-ly-kho'
+        menuPlacement='bottom-start'
+        menuTrigger='click'
+      >
+        KHO
+      </MenuInnerWithSub>
 
-        <MenuItem icon="bi bi-align-start" to='/dinh-nghia/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
-        <MenuItem icon="bi bi-sign-turn-right" to='/dinh-nghia/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
-        <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
-        <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/tinh-nhan-hang' title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>
-        {/* <MenuInnerWithSub
-          title='Khoản cách'
-          to='/dinh-nghia/khoan-cach'
-          icon='message-text-2'
+      <MenuInnerWithSub title='Thông tin đầu vào' to='/dinh-nghia' menuPlacement='bottom-start' menuTrigger='click'>
+        <MenuInnerWithSub
+          title='Vị trí'
+          to='/dinh-nghia/vi-tri'
+          icon='bi bi-geo-alt'
           hasArrow={true}
           menuPlacement='right-start'
           menuTrigger={`{default:'click', lg: 'hover'}`}
         >
-          <MenuItem to='/apps/chat/group-chat' title='Group Chart' hasBullet={true} />
-          <MenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
-        </MenuInnerWithSub> */}
-        {/* <MenuItem icon='abstract-28' to='/apps/user-management/users' title='User management' /> */}
+          <MenuItem icon="bi bi-pin-map" to='/dinh-nghia/vi-tri/khu-vuc' title={intl.formatMessage({id: 'MENU.KHUVUC'})}/>
+          <MenuItem icon="bi bi-map" to='/dinh-nghia/vi-tri/tinh' title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>
+          <MenuItem icon="bi bi-compass" to='/dinh-nghia/vi-tri/huyen' title={intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}/>
+          <MenuItem icon="bi bi-crosshair" to='/dinh-nghia/vi-tri/xa' title={intl.formatMessage({id: 'MENU.XANHANHANG'})}/>
+        </MenuInnerWithSub>
+
+        <MenuInnerWithSub 
+          icon="bi bi-cash-coin" 
+          to='/dinh-nghia/gia' 
+          title={intl.formatMessage({id: 'MENU.GIA'})}
+          hasArrow={true}
+          menuPlacement='right-start'
+          menuTrigger={`{default:'click', lg: 'hover'}`}
+        >
+          <MenuItem icon="bi bi-radar" to='/dinh-nghia/gia/vung' title={intl.formatMessage({id: 'MENU.VUNGGIA'})}/>
+          <MenuItem icon="bi bi-cash-coin" to='/dinh-nghia/gia/kg' title={intl.formatMessage({id: 'MENU.GIAKG'})}/>
+          <MenuItem icon="bi bi-cash-coin" to='/dinh-nghia/gia/cbm' title={intl.formatMessage({id: 'MENU.GIACBM'})}/>
+        </MenuInnerWithSub>
+
+        <MenuInnerWithSub
+          icon="bi bi-box-seam" 
+          to='/dinh-nghia/dong-goi' 
+          title={intl.formatMessage({id: 'MENU.DONGGOI'})}
+          hasArrow={true}
+          menuPlacement='right-start'
+          menuTrigger={`{default:'click', lg: 'hover'}`}
+        >
+          <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi/thuong' title={intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}/>
+          <MenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi/cbm' title={intl.formatMessage({id: 'MENU.DONGGOICBM'})}/>
+        </MenuInnerWithSub>
       </MenuInnerWithSub>
 
       {/* <MenuInnerWithSub

@@ -1,5 +1,5 @@
 import { ColDef } from 'ag-grid-community';
-import { FormatsDate, ButtonActionsRender } from '../../../_metronic/helpers';
+import { FormatsDate, ButtonActionsRender } from '../../../../_metronic/helpers';
 // import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {
@@ -12,13 +12,16 @@ export interface IFormInput {
     receiptName?: string,
     receiptIdPer?: string,
     receiptPhone?: number | string,
-    receiptAddress?: any,
-    receiptProvinceAddress?: any,
+    receiptProvincesAddress?: any,
+    receiptDistrictsAddress?: any,
+    receiptCommunesAddress?: any,
     packageName?: string,
-    vehicle?: any,
-    packageValue?: string,
-    packageWeight?: string,
-    packageQuantity?: string,
+    packageValue?: number,
+    packageWeight?: number,
+    packageHeight?: number,
+    packageWidth?: number,
+    packageLength?: number,
+    packageQuantity?: number,
     shipName?: string,
     price?: number,
     coefficient?: number,

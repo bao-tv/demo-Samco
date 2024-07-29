@@ -2,15 +2,17 @@ import React, {useMemo, useCallback, useState} from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { usePageData } from '../../../_metronic/layout/core';
 import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
-import { columnDefsOrderManagerment } from './interface';
+import { columnDefsOrderManagerment } from './component/interface';
 import ModalShowImport from './ModalShowImport';
-import { BuilderPage } from './BuilderPage';
+import OrderPage from './ModalOrderPage';
 import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints';
+import { useIntl } from 'react-intl';
 
 type Props = {}
 
-const OrderManagement = (props: Props) => {
-  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept, isLoading} = usePageData();
+const OrderSetupPage = (props: Props) => {
+  const intl = useIntl();
+  const {rowDataOrder, gridRefOrderSetup, showModalOrder, setShowModalOrder, rowDataCouponReciept, isLoading} = usePageData();
   // console.log('bao isLoading: ', isLoading)
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
@@ -22,7 +24,7 @@ const OrderManagement = (props: Props) => {
       "bao onCellValueChanged: " + event.colDef.field + " = " + event.newValue,
     );
   }, []);
-  const handleClose = () => setShowCreateAppModal && setShowCreateAppModal(false);
+  const handleClose = () => setShowModalOrder && setShowModalOrder(false);
   const renderRowDataOrder = (rowDataOrder)?.map((item) => ({...item, receiptAddressJoin: `${item.receiptAddress.label} - ${item.receiptProvinceAddress.label}`}))
   // const getRowId = useCallback((params: any) => params.data.indexRow, []);
   // if(isLoading) return (
@@ -55,7 +57,7 @@ const OrderManagement = (props: Props) => {
             </div>
           }
           <AgGridReact
-            ref={gridRef}
+            ref={gridRefOrderSetup}
             rowData={renderRowDataOrder?.filter(item => !item.isRemove)}
             columnDefs={columnDefsOrderManagerment}
             onGridReady={onGridReady}
@@ -65,15 +67,15 @@ const OrderManagement = (props: Props) => {
       </div>
       <ModalShowImport />
       <CreateAppModal
-        show={showCreateAppModal} 
+        show={showModalOrder} 
         handleClose={handleClose} 
-        content={<BuilderPage handleClose={handleClose}/>}
-        // backdrop="static"
-        // keyboard={false}
+        content={<OrderPage handleClose={handleClose} title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})}/>}
+        title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})}
+
       />
       {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data}/>}
     </div>
   )
 }
 
-export default OrderManagement
+export default OrderSetupPage

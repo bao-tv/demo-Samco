@@ -1,11 +1,5 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import { usePageData } from '../../layout/core';
-import { provinceAPIDeleteById } from '../../../apis/provinceAPI';
-import ToastError, {ToastSuccess} from '../crud-helper/Toast';
-import { useDispatch } from 'react-redux';
-import { province } from '../../../slices/provinceSlices';
-import ModalToasts from './ModalToasts';
 
 type Props = {
     handleEditRow?: () => void,

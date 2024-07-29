@@ -28,8 +28,16 @@ const SidebarMenuMain = () => {
         fontIcon='bi-archive'
         icon='bi fs-3 bi-archive'
       >
-        <SidebarMenuItem to='/quan-ly-don-hang/don-hang/phieu-nhan-hang' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})} hasBullet={true} />
-        <SidebarMenuItem to='/quan-ly-don-hang/don-hang/phieu-nhan-hang-da-xoa' title={intl.formatMessage({id: 'MENU.PHIEUNHANHANGDAXOA'})} hasBullet={true} />
+        <SidebarMenuItem
+          to='/quan-ly-don-hang/don-hang/phieu-nhan-hang'
+          title={intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})}
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/quan-ly-don-hang/don-hang/phieu-nhan-hang-da-xoa'
+          title={intl.formatMessage({id: 'MENU.PHIEUNHANHANGDAXOA'})}
+          hasBullet={true}
+        />
       </SidebarMenuItemWithSub>
       <SidebarMenuItemWithSub
         to='/quan-ly-don-hang/bao-cao'
@@ -37,26 +45,17 @@ const SidebarMenuMain = () => {
         icon='bi fs-3 bi-clipboard2-data'
         fontIcon='bi-person'
       >
-        <SidebarMenuItem to='/quan-ly-don-hang/bao-cao/ket-ca' title={intl.formatMessage({id: 'MENU.KETCA'})} hasBullet={true} />
-        <SidebarMenuItem to='/quan-ly-don-hang/bao-cao/bao-cao' title={intl.formatMessage({id: 'MENU.BAOCAO'})} hasBullet={true} />
+        <SidebarMenuItem
+          to='/quan-ly-don-hang/bao-cao/ket-ca'
+          title={intl.formatMessage({id: 'MENU.KETCA'})}
+          hasBullet={true}
+        />
+        <SidebarMenuItem
+          to='/quan-ly-don-hang/bao-cao/bao-cao'
+          title={intl.formatMessage({id: 'MENU.BAOCAO'})}
+          hasBullet={true}
+        />
       </SidebarMenuItemWithSub>
-      {/* <SidebarMenuItemWithSub to='/error' title='Errors' fontIcon='bi-sticky' icon='cross-circle'>
-        <SidebarMenuItem to='/error/404' title='Error 404' hasBullet={true} />
-        <SidebarMenuItem to='/error/500' title='Error 500' hasBullet={true} />
-      </SidebarMenuItemWithSub>
-      <SidebarMenuItemWithSub
-        to='/crafted/widgets'
-        title='Widgets'
-        icon='element-7'
-        fontIcon='bi-layers'
-      >
-        <SidebarMenuItem to='/crafted/widgets/lists' title='Lists' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/statistics' title='Statistics' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/charts' title='Charts' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/mixed' title='Mixed' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/tables' title='Tables' hasBullet={true} />
-        <SidebarMenuItem to='/crafted/widgets/feeds' title='Feeds' hasBullet={true} />
-      </SidebarMenuItemWithSub> */}
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Quản lý kho</span>
@@ -64,24 +63,61 @@ const SidebarMenuMain = () => {
       </div>
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
-          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Định nghĩa giá cước</span>
+          <span className='menu-section text-muted text-uppercase fs-8 ls-1'>
+            {intl.formatMessage({id: 'MENU.THONGDAUVAO'})}
+          </span>
         </div>
       </div>
-      <SidebarMenuItem icon="bi bi-align-start" to='/dinh-nghia/khoang-cach' title={intl.formatMessage({id: 'MENU.KHOANGCACH'})}/>
-      <SidebarMenuItem icon="bi bi-sign-turn-right" to='/dinh-nghia/tuyen-duong' title={intl.formatMessage({id: 'MENU.TUYENDUONG'})}/>
-      <SidebarMenuItem icon="bi bi-box-seam" to='/dinh-nghia/dong-goi' title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>
-      <SidebarMenuItem icon="bi bi-box-seam" to='/dinh-nghia/tinh-nhan-hang' title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}/>
-      {/* <SidebarMenuItemWithSub
+      <SidebarMenuItemWithSub
         to='/dinh-nghia'
-        title='Định nghĩa giá cước'
+        title={intl.formatMessage({id: 'MENU.VITRI'})}
         fontIcon='bi-chat-left'
-        icon='message-text-2'
+        icon='bi bi-geo-alt'
       >
-        <SidebarMenuItem to='/apps/chat/private-chat' title='Private Chat' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/group-chat' title='Group Chart' hasBullet={true} />
-        <SidebarMenuItem to='/apps/chat/drawer-chat' title='Drawer Chart' hasBullet={true} />
+        <SidebarMenuItem
+          icon='bi bi-pin-map'
+          to='/dinh-nghia/vi-tri/khu-vuc'
+          title={intl.formatMessage({id: 'MENU.KHUVUC'})}
+        />
+        <SidebarMenuItem
+          icon='bi bi-map'
+          to='/dinh-nghia/vi-tri/tinh'
+          title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}
+        />
+        <SidebarMenuItem
+          icon='bi bi-compass'
+          to='/dinh-nghia/vi-tri/huyen'
+          title={intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}
+        />
+        <SidebarMenuItem
+          icon='bi bi-crosshair'
+          to='/dinh-nghia/vi-tri/xa'
+          title={intl.formatMessage({id: 'MENU.XANHANHANG'})}
+        />
       </SidebarMenuItemWithSub>
-      <SidebarMenuItem
+
+      <SidebarMenuItemWithSub
+        to='/dinh-nghia/gia'
+        title={intl.formatMessage({id: 'MENU.GIACUOCTHEOKG'})}
+        fontIcon='bi-chat-left'
+        icon='bi bi-cash-coin'
+      >
+        <SidebarMenuItem icon="bi bi-radar" to='/dinh-nghia/gia/vung' title={intl.formatMessage({id: 'MENU.VUNGGIA'})}/>
+        <SidebarMenuItem icon="bi bi-cash-coin" to='/dinh-nghia/gia/kg' title={intl.formatMessage({id: 'MENU.GIAKG'})}/>
+        <SidebarMenuItem icon="bi bi-cash-coin" to='/dinh-nghia/gia/cbm' title={intl.formatMessage({id: 'MENU.GIACBM'})}/>
+
+      </SidebarMenuItemWithSub>
+
+      {/* <SidebarMenuItemWithSub
+        to='/dinh-nghia/gia-cbm'
+        title={intl.formatMessage({id: 'MENU.GIACUOCTHEOCBM'})}
+        fontIcon='bi-chat-left'
+        icon='bi bi-cash-coin'
+      >
+        <SidebarMenuItem icon="bi bi-radar" to='/dinh-nghia/gia-cbm/vung' title={intl.formatMessage({id: 'MENU.VUNGCBM'})}/>
+        <SidebarMenuItem icon="bi bi-cash-coin" to='/dinh-nghia/gia-cbm/gia' title={intl.formatMessage({id: 'MENU.GIACBM'})}/>
+      </SidebarMenuItemWithSub> */}
+      {/* <SidebarMenuItem
         to='/apps/user-management/users'
         icon='abstract-28'
         title='User management'

@@ -6,16 +6,16 @@ import {MasterInit} from '../_metronic/layout/MasterInit'
 import {AuthInit} from './modules/auth'
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux'
-import { province } from '../slices/provinceSlices'
-import { packages } from '../slices/packSlices'
-import { distance } from '../slices/distanceSlices'
+import { provinceLite } from '../slices/provinceLiteSlices'
+import { packagesPrice } from '../slices/packagePriceSlice'
+import { packagesCBMPrice } from '../slices/packageCBMPriceSlice'
 
 const App = () => {
   const dispath = useDispatch();
   useEffect(() => {
-    dispath( province());
-    dispath( packages());
-    dispath( distance());
+    dispath( provinceLite());
+    dispath( packagesPrice());
+    dispath( packagesCBMPrice());
   }, []);
   return (
     <Suspense fallback={<LayoutSplashScreen />}>

@@ -8,9 +8,9 @@ import { ToastSuccess } from '../crud-helper/Toast';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export const ButtonActionsRender = (props: any) => {
-    const {setShowCreateAppModal, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
+    const {setShowModalOrder, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
     const handleEditRow = (params: any) => {
-        setShowCreateAppModal && setShowCreateAppModal(props?.data || false)
+        setShowModalOrder && setShowModalOrder(props?.data || false)
     }
     const handleRemoveRow = useCallback(() => {
         if (!rowDataOrder) return;

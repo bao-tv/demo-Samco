@@ -1,7 +1,7 @@
 import React from 'react'
 import {Navigate, Route, Routes, Outlet} from 'react-router-dom'
 import {PageLink, PageTitle} from '../../../_metronic/layout/core'
-import OrderManagement from '../../pages/layout-builder/OrderManagement'
+import OrderManagement from '../../pages/layout-order/OrderSetupPage'
 import OrderManagementDelete from '../../pages/layout-builder-delete/OrderManagementDelete'
 
 type Props = {}

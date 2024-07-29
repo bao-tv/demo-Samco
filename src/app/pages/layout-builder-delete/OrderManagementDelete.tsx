@@ -7,7 +7,7 @@ import { columnDefsOrderManagerment } from './interface';
 type Props = {}
 
 const OrderManagementDelete = (props: Props) => {
-  const {rowDataOrder, gridRef, showCreateAppModal, setShowCreateAppModal, rowDataCouponReciept} = usePageData();
+  const {rowDataOrder, gridRefOrderSetup, showModalOrder, setShowModalOrder, rowDataCouponReciept} = usePageData();
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
   const onGridReady = useCallback((params: any) => {
@@ -18,7 +18,7 @@ const OrderManagementDelete = (props: Props) => {
       "bao onCellValueChanged: " + event.colDef.field + " = " + event.newValue,
     );
   }, []);
-  const handleClose = () => setShowCreateAppModal && setShowCreateAppModal(false);
+  const handleClose = () => setShowModalOrder && setShowModalOrder(false);
   const renderRowDataOrder = (rowDataOrder)?.map((item) => ({...item, receiptAddressJoin: `${item.receiptAddress.label} - ${item.receiptProvinceAddress.label}`}))
   // const getRowId = useCallback((params: any) => params.data.indexRow, []);
   return (
@@ -31,7 +31,7 @@ const OrderManagementDelete = (props: Props) => {
           }
         >
           <AgGridReact
-            ref={gridRef}
+            ref={gridRefOrderSetup}
             rowData={renderRowDataOrder?.filter(item => item.isRemove)}
             columnDefs={columnDefsOrderManagerment}
             onGridReady={onGridReady}

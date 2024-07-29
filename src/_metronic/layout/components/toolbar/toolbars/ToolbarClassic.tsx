@@ -5,16 +5,16 @@ import { useLocation } from 'react-router-dom';
 import {KTIcon} from '../../../../helpers'
 import {CreateAppModal, Dropdown1} from '../../../../partials'
 import {useLayout, usePageData} from '../../../core'
-import { BuilderPage } from '../../../../../app/pages/layout-builder/BuilderPage'
+import OrderPage from '../../../../../app/pages/layout-order/ModalOrderPage'
 import { useIntl } from 'react-intl';
 
 const ToolbarClassic = () => {
   const {config} = useLayout();
   const intl = useIntl();
-  const {showCreateAppModal, setShowCreateAppModal, setShowModalDistance, setShowModalProvince, setShowModalPackage} = usePageData();
+  const {setShowModalRegion, setShowModalOrder, setShowModalProvince, setShowModalDistrict, setShowModalCommune, setShowModalPackagePrice, setShowModalRegion_Freight_Price, setShowModalRegion_Rate, setShowModalCBM_Rate, setShowModalPackageCBMPrice} = usePageData();
   const location = useLocation();
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
-  // const [showCreateAppModal, setShowCreateAppModal] = useState<boolean>(false)
+  // const [showCreateAppModal, setShowModalOrder] = useState<boolean>(false)
   const daterangepickerButtonClass = config.app?.toolbar?.fixed?.desktop
     ? 'btn-light'
     : 'bg-body btn-color-gray-700 btn-active-color-primary'
@@ -57,21 +57,21 @@ const ToolbarClassic = () => {
 
       {config.app?.toolbar?.primaryButton && location.pathname === '/quan-ly-don-hang/don-hang/phieu-nhan-hang' && (
         <div
-          onClick={() => (setShowCreateAppModal && setShowCreateAppModal(true))}
+          onClick={() => (setShowModalOrder && setShowModalOrder(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
           Tạo Phiếu nhận hàng
         </div>
       )}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/khoang-cach' && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/khu-vuc' && (
         <div
-          onClick={() => (setShowModalDistance && setShowModalDistance(true))}
+          onClick={() => (setShowModalRegion && setShowModalRegion(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
-          {`Tạo ${intl.formatMessage({id: 'MENU.KHOANGCACH'})}`}
+          {`Tạo ${intl.formatMessage({id: 'MENU.KHUVUC'})}`}
         </div>
       )}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/tinh-nhan-hang' && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/tinh' && (
         <div
           onClick={() => (setShowModalProvince && setShowModalProvince(true))}
           className='btn btn-sm fw-bold btn-primary'
@@ -79,19 +79,72 @@ const ToolbarClassic = () => {
           {`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
         </div>
       )}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi' && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/huyen' && (
         <div
-          onClick={() => (setShowModalPackage && setShowModalPackage(true))}
+          onClick={() => (setShowModalDistrict && setShowModalDistrict(true))}
           className='btn btn-sm fw-bold btn-primary'
         >
-          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOI'})}`}
+          {`Tạo ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}`}
         </div>
       )}
-      {/* <CreateAppModal
-        show={showCreateAppModal} 
-        handleClose={handleClose} 
-        content={<BuilderPage handleClose={handleClose}/>}
-      /> */}
+            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/xa' && (
+        <div
+          onClick={() => (setShowModalCommune && setShowModalCommune(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.XANHANHANG'})}`}
+        </div>
+      )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/vung' && (
+        <div
+          onClick={() => (setShowModalRegion_Freight_Price && setShowModalRegion_Freight_Price(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.VUNGGIA'})}`}
+        </div>
+      )}
+            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/kg' && (
+        <div
+          onClick={() => (setShowModalRegion_Rate && setShowModalRegion_Rate(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.GIAKG'})}`}
+        </div>
+      )}
+          
+            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/cbm' && (
+        <div
+          onClick={() => (setShowModalCBM_Rate && setShowModalCBM_Rate(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.GIACBM'})}`}
+        </div>
+      )}
+      {/* {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/khoang-cach' && (
+        <div
+          onClick={() => (setShowModalDistance && setShowModalDistance(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.KHOANGCACH'})}`}
+        </div>
+      )} */}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/thuong' && (
+        <div
+          onClick={() => (setShowModalPackagePrice && setShowModalPackagePrice(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}`}
+        </div>
+      )}
+            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/cbm' && (
+        <div
+          onClick={() => (setShowModalPackageCBMPrice && setShowModalPackageCBMPrice(true))}
+          className='btn btn-sm fw-bold btn-primary'
+        >
+          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOICBM'})}`}
+        </div>
+      )}
+
     </div>
   )
 }

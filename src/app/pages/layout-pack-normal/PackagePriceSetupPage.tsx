@@ -1,15 +1,15 @@
 import {useMemo, useCallback} from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { CreateAppModal, useThemeMode } from '../../../_metronic/partials';
-import { columnDefsPackageSetupPage } from './interface';
+import { columnDefsPackagePriceSetupPage } from './interface';
 import { usePageData } from '../../../_metronic/layout/core';
-import ModalShowAndAddPackage from './ModalShowAndAddPackage';
+import ModalShowAndAddPackage from './ModalShowAndAddPackagePrice';
 import { useSelector } from 'react-redux';
 import { useIntl } from 'react-intl';
 
 type Props = {}
 
-const PackageSetupPage = (props: Props) => {
+const PackagePriceSetupPage = (props: Props) => {
   const intl = useIntl();
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
   const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
@@ -21,11 +21,11 @@ const PackageSetupPage = (props: Props) => {
       "bao onCellValueChanged: " + event.colDef.field + " = " + event.newValue,
     );
   }, []);
-  const {listPackages} = useSelector((state:any) => state.packages);  
-  const {gridRefPackageSetup, showModalPackage, setShowModalPackage, setDataModalPackage} = usePageData();
-  const handleCloseModalPackage = () => {
-    setShowModalPackage && setShowModalPackage(false);
-    setDataModalPackage && setDataModalPackage({});
+  const {listPackagesPrice} = useSelector((state:any) => state.packagesPrice);  
+  const {gridRefPackagePriceSetup, showModalPackagePrice, setShowModalPackagePrice, setDataModalPackagePrice} = usePageData();
+  const handleCloseModalPackagePrice = () => {
+    setShowModalPackagePrice && setShowModalPackagePrice(false);
+    setDataModalPackagePrice && setDataModalPackagePrice({});
   }
   return (
     <div style={containerStyle}>
@@ -37,23 +37,23 @@ const PackageSetupPage = (props: Props) => {
           }
         >
           <AgGridReact
-            ref={gridRefPackageSetup}
-            rowData={listPackages}
-            columnDefs={columnDefsPackageSetupPage}
+            ref={gridRefPackagePriceSetup}
+            rowData={listPackagesPrice}
+            columnDefs={columnDefsPackagePriceSetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />
         </div>
       </div>
       <CreateAppModal
-        show={showModalPackage} 
-        handleClose={handleCloseModalPackage} 
-        content={<ModalShowAndAddPackage title={intl.formatMessage({id: 'MENU.DONGGOI'})}/>}
-        title={intl.formatMessage({id: 'MENU.DONGGOI'})}
+        show={showModalPackagePrice} 
+        handleClose={handleCloseModalPackagePrice} 
+        content={<ModalShowAndAddPackage title={intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}/>}
+        title={intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}
         size="lg"
       />
     </div>
   )
 }
 
-export default PackageSetupPage
+export default PackagePriceSetupPage

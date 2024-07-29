@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import provinceReducer from "./slices/provinceSlices";
-import packageReducer from "./slices/packSlices";
-import distanceReducer from "./slices/distanceSlices";
+import provinceLiteReducer from "./slices/provinceLiteSlices";
+import packagePriceReducer from "./slices/packagePriceSlice";
+import packageCBMPriceReducer from "./slices/packageCBMPriceSlice";
 
 const store = configureStore({
   reducer: {
-    provinces: provinceReducer,
-    packages: packageReducer,
-    distances: distanceReducer,
+    provinceLites: provinceLiteReducer,
+    packagesPrice: packagePriceReducer,
+    packagesCBMPrice: packageCBMPriceReducer,
   },
 });
 

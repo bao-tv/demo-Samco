@@ -106,7 +106,7 @@ const CreateAppModal = ({show, handleClose, content, title, size}: Props) => {
       </div>
 
       <div className='modal-body py-lg-10 px-lg-10'>
-        {content}
+      {content}
       </div>
     </Modal>,
     modalsRoot

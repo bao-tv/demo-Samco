@@ -19,3 +19,13 @@ export const provinceEditAPIByID = async (value) => {
     const {data} = await axiosClient.put('/province', value);
     return data;
 };
+
+export const provinceLiteAPIGetAll = async () => {
+    const {data} = await axiosClient.get('/province/lite');
+    return data;
+};
+
+export const provinceLiteAPIGetById = async (id) => {
+    const {data} = await axiosClient.get(`/province/${id}`);
+    return data;
+};

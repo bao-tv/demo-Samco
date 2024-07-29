@@ -1,12 +1,12 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {packageAPIGetAll} from '../apis/packageAPI';
+import {packagePriceAPIGetAll} from '../apis/packagePriceAPI';
 
-export const packages: any = createAsyncThunk(
-    'packages/fetchProvince',
+export const packagesPrice: any = createAsyncThunk(
+    'packagesPrice/fetchPackagePrice',
     async (value) => {
         // console.log('bao value: ', value)
         try {
-            const data = await packageAPIGetAll(value);
+            const data = await packagePriceAPIGetAll(value);
             return data.data;
         } catch (error) {
             throw error.response?.data?.content;
@@ -15,23 +15,23 @@ export const packages: any = createAsyncThunk(
 )
 
 const initialState = {
-    listPackages: [],
+    listPackagesPrice: [],
     isLoading: false,
     error: null
 }
-const packagesSlice = createSlice ({
-    name: 'packages',
+const packagesPriceSlice = createSlice ({
+    name: 'packagesPrice',
     initialState,
     reducers: {
     },
     extraReducers: (builder) => {
-        builder.addCase(packages.pending, (state) => {
+        builder.addCase(packagesPrice.pending, (state) => {
             return {...state, isLoading: true, error: null}
         });
-        builder.addCase(packages.fulfilled, (state, action) => {
-            return {...state, isLoading: false, listPackages: action.payload, error: null}
+        builder.addCase(packagesPrice.fulfilled, (state, action) => {
+            return {...state, isLoading: false, listPackagesPrice: action.payload, error: null}
         });
-        builder.addCase(packages.rejected, (state, action) => {
+        builder.addCase(packagesPrice.rejected, (state, action) => {
             return {...state, isLoading: false, error: action.error.message}
         });
     }
@@ -39,4 +39,4 @@ const packagesSlice = createSlice ({
 
 // export const {packages_remove, packages_created} = packagesSlice.actions;
 
-export default packagesSlice.reducer;
+export default packagesPriceSlice.reducer;

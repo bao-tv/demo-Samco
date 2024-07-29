@@ -21,38 +21,82 @@ export interface PageDataContextModel {
   setRowDataOrder?: (_datas: any) => void
   rowDataCouponReciept?: any
   setRowDataCouponReciept?: (_datas: any) => void
-  showCreateAppModal?: any
-  setShowCreateAppModal?: (_datas: any) => void
+  dataModalOrder?: any
+  setDataModalOrder?: (_datas: any) => void
+  showModalOrder?: any
+  setShowModalOrder?: (_datas: any) => void
 
-  showModalDistance?: any
-  setShowModalDistance?: (_datas: any) => void
-  dataModalDistance?: any
-  setDataModalDistance?: (_datas: any) => void
-  showModalDistancePriceObject?: any
-  setShowModalDistancePriceObject?: (_datas: any) => void
-  dataModalDistancePriceObject?: any
-  setDataModalDistancePriceObject?: (_datas: any) => void
-  gridRefDistanceSetup?: any,
-  gridRefDistancePricebjectSetup?: any,
+  showModalRegion?: any
+  setShowModalRegion?: (_datas: any) => void
+  dataModalRegion?: any
+  setDataModalRegion?: (_datas: any) => void
+  listRegions?: any
+  setListRegions?: (_datas: any) => void
+  gridRefRegionSetup?: any,
 
   showModalProvince?: any
   setShowModalProvince?: (_datas: any) => void
   dataModalProvince?: any
   setDataModalProvince?: (_datas: any) => void
-  showModalProvinceObject?: any
-  setShowModalProvinceObject?: (_datas: any) => void
-  dataModalProvinceObject?: any
-  setDataModalProvinceObject?: (_datas: any) => void
+  listProvinces?: any
+  setListProvinces?: (_datas: any) => void
   gridRefProvinceSetup?: any,
-  gridRefProvinceObjectSetup?: any,
 
-  showModalPackage?: any
-  setShowModalPackage?: (_datas: any) => void
-  dataModalPackage?: any
-  setDataModalPackage?: (_datas: any) => void
-  gridRefPackageSetup?: any,
+  showModalDistrict?: any
+  setShowModalDistrict?: (_datas: any) => void
+  dataModalDistrict?: any
+  setDataModalDistrict?: (_datas: any) => void
+  listDistricts?: any
+  setListDistricts?: (_datas: any) => void
+  gridRefDistrictSetup?: any,
 
-  gridRef?: any
+  showModalCommune?: any
+  setShowModalCommune?: (_datas: any) => void
+  dataModalCommune?: any
+  setDataModalCommune?: (_datas: any) => void
+  listCommunes?: any
+  setListCommunes?: (_datas: any) => void
+  gridRefCommuneSetup?: any,
+
+  showModalRegion_Freight_Price?: any
+  setShowModalRegion_Freight_Price?: (_datas: any) => void
+  dataModalRegion_Freight_Price?: any
+  setDataModalRegion_Freight_Price?: (_datas: any) => void
+  listRegion_Freight_Prices?: any
+  setListRegion_Freight_Prices?: (_datas: any) => void
+  gridRefRegion_Freight_PriceSetup?: any,
+
+  showModalRegion_Rate?: any
+  setShowModalRegion_Rate?: (_datas: any) => void
+  dataModalRegion_Rate?: any
+  setDataModalRegion_Rate?: (_datas: any) => void
+  listRegion_Rates?: any
+  setListRegion_Rates?: (_datas: any) => void
+  gridRefRegion_RateSetup?: any,
+
+  showModalCBM_Rate?: any
+  setShowModalCBM_Rate?: (_datas: any) => void
+  dataModalCBM_Rate?: any
+  setDataModalCBM_Rate?: (_datas: any) => void
+  listCBM_Rates?: any
+  setListCBM_Rates?: (_datas: any) => void
+  gridRefCBM_RateSetup?: any,
+
+  showModalPackagePrice?: any
+  setShowModalPackagePrice?: (_datas: any) => void
+  dataModalPackagePrice?: any
+  setDataModalPackagePrice?: (_datas: any) => void
+  gridRefPackagePriceSetup?: any,
+
+  showModalPackageCBMPrice?: any
+  setShowModalPackageCBMPrice?: (_datas: any) => void
+  dataModalPackageCBMPrice?: any
+  setDataModalPackageCBMPrice?: (_datas: any) => void
+  listPackageCBMPrice?: any
+  setListPackageCBMPrice?: (_datas: any) => void
+  gridRefPackageCBMPriceSetup?: any,
+
+  gridRefOrderSetup?: any
   setIsLoading?: any,
   isLoading?: any,
 }
@@ -63,7 +107,7 @@ const PageDataContext = createContext<PageDataContextModel>({
   setPageDescription: (_description: string) => {},
   setRowDataOrder: (_datas: any) => {},
   setRowDataCouponReciept: (_datas: any) => {},
-  setShowCreateAppModal: (_datas: any) => {},
+  setShowModalOrder: (_datas: any) => {},
   setIsLoading: (_datas: any) => boolean,
 })
 
@@ -73,32 +117,58 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
   const [rowDataOrder, setRowDataOrder] = useState<any[]>([])
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
-  const [showCreateAppModal, setShowCreateAppModal] = useState<any>(false)
+  const [dataModalOrder, setDataModalOrder] = useState<any>({})
+  const [showModalOrder, setShowModalOrder] = useState<any>(false)
 
-  const [showModalDistance, setShowModalDistance] = useState<any>(false)
-  const [dataModalDistance, setDataModalDistance] = useState<any>({})
-  const [showModalDistancePriceObject, setShowModalDistancePriceObject] = useState<boolean | string>(false);
-  const [dataModalDistancePriceObject, setDataModalDistancePriceObject] = useState<any>({})
-  const gridRefDistanceSetup = useRef(null);
-  const gridRefDistancePricebjectSetup= useRef(null);
-
+  const [showModalRegion, setShowModalRegion] = useState<any>(false)
+  const [dataModalRegion, setDataModalRegion] = useState<any>({})
+  const [listRegions, setListRegions] = useState<any[]>([])
+  const gridRefRegionSetup = useRef(null);
 
   const [showModalProvince, setShowModalProvince] = useState<boolean>(false);
   const [dataModalProvince, setDataModalProvince] = useState<any>({})
-  const [showModalProvinceObject, setShowModalProvinceObject] = useState<boolean>(false);
-  const [dataModalProvinceObject, setDataModalProvinceObject] = useState<any>({})
+  const [listProvinces, setListProvinces] = useState<any[]>([])
   const gridRefProvinceSetup = useRef<any>(null);
-  const gridRefProvinceObjectSetup= useRef(null);
 
-  const [showModalPackage, setShowModalPackage] = useState<boolean>(false);
-  const [dataModalPackage, setDataModalPackage] = useState<any>({})
-  const gridRefPackageSetup = useRef<any>(null);
+  const [showModalDistrict, setShowModalDistrict] = useState<any>(false)
+  const [dataModalDistrict, setDataModalDistrict] = useState<any>({})
+  const [listDistricts, setListDistricts] = useState<any[]>([])
+  const gridRefDistrictSetup = useRef(null);
+
+  const [showModalCommune, setShowModalCommune] = useState<any>(false)
+  const [dataModalCommune, setDataModalCommune] = useState<any>({})
+  const [listCommunes, setListCommunes] = useState<any[]>([])
+  const gridRefCommuneSetup = useRef(null);
+
+  const [showModalRegion_Freight_Price, setShowModalRegion_Freight_Price] = useState<any>(false)
+  const [dataModalRegion_Freight_Price, setDataModalRegion_Freight_Price] = useState<any>({})
+  const [listRegion_Freight_Prices, setListRegion_Freight_Prices] = useState<any[]>([])
+  const gridRefRegion_Freight_PriceSetup = useRef(null);
+
+  const [showModalRegion_Rate, setShowModalRegion_Rate] = useState<any>(false)
+  const [dataModalRegion_Rate, setDataModalRegion_Rate] = useState<any>({})
+  const [listRegion_Rates, setListRegion_Rates] = useState<any[]>([])
+  const gridRefRegion_RateSetup = useRef(null);
+
+  const [showModalCBM_Rate, setShowModalCBM_Rate] = useState<any>(false)
+  const [dataModalCBM_Rate, setDataModalCBM_Rate] = useState<any>({})
+  const [listCBM_Rates, setListCBM_Rates] = useState<any[]>([])
+  const gridRefCBM_RateSetup = useRef(null);
+
+  const [showModalPackagePrice, setShowModalPackagePrice] = useState<boolean>(false);
+  const [dataModalPackagePrice, setDataModalPackagePrice] = useState<any>({})
+  const gridRefPackagePriceSetup = useRef<any>(null);
+
+  const [showModalPackageCBMPrice, setShowModalPackageCBMPrice] = useState<boolean>(false);
+  const [dataModalPackageCBMPrice, setDataModalPackageCBMPrice] = useState<any>({})
+  const [listPackageCBMPrice, setListPackageCBMPrice] = useState<any>([])
+  const gridRefPackageCBMPriceSetup = useRef<any>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const gridRef = useRef(null);
+  const gridRefOrderSetup = useRef(null);
 
   const value: PageDataContextModel = {
-    gridRef,
+    gridRefOrderSetup,
     pageTitle,
     setPageTitle,
     pageDescription,
@@ -109,36 +179,80 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setRowDataOrder,
     rowDataCouponReciept,
     setRowDataCouponReciept,
-    showCreateAppModal,
-    setShowCreateAppModal,
+    dataModalOrder,
+    setDataModalOrder,
+    showModalOrder,
+    setShowModalOrder,
 
-    showModalDistance,
-    setShowModalDistance,
-    dataModalDistance,
-    setDataModalDistance,
-    showModalDistancePriceObject,
-    setShowModalDistancePriceObject,
-    dataModalDistancePriceObject,
-    setDataModalDistancePriceObject,
-    gridRefDistanceSetup,
-    gridRefDistancePricebjectSetup,
+    showModalRegion,
+    setShowModalRegion,
+    dataModalRegion,
+    setDataModalRegion,
+    listRegions,
+    setListRegions,
+    gridRefRegionSetup,
 
-    gridRefProvinceSetup,
-    gridRefProvinceObjectSetup,
     showModalProvince,
     setShowModalProvince,
     dataModalProvince,
     setDataModalProvince,
-    showModalProvinceObject,
-    setShowModalProvinceObject,
-    dataModalProvinceObject,
-    setDataModalProvinceObject,
+    listProvinces,
+    setListProvinces,
+    gridRefProvinceSetup,
 
-    gridRefPackageSetup,
-    showModalPackage,
-    setShowModalPackage,
-    dataModalPackage,
-    setDataModalPackage,
+    showModalDistrict,
+    setShowModalDistrict,
+    dataModalDistrict,
+    setDataModalDistrict,
+    listDistricts,
+    setListDistricts,
+    gridRefDistrictSetup,
+
+    showModalCommune,
+    setShowModalCommune,
+    dataModalCommune,
+    setDataModalCommune,
+    listCommunes,
+    setListCommunes,
+    gridRefCommuneSetup,
+
+    showModalRegion_Freight_Price,
+    setShowModalRegion_Freight_Price,
+    dataModalRegion_Freight_Price,
+    setDataModalRegion_Freight_Price,
+    listRegion_Freight_Prices,
+    setListRegion_Freight_Prices,
+    gridRefRegion_Freight_PriceSetup,
+
+    showModalRegion_Rate,
+    setShowModalRegion_Rate,
+    dataModalRegion_Rate,
+    setDataModalRegion_Rate,
+    listRegion_Rates,
+    setListRegion_Rates,
+    gridRefRegion_RateSetup,
+
+    showModalCBM_Rate,
+    setShowModalCBM_Rate,
+    dataModalCBM_Rate,
+    setDataModalCBM_Rate,
+    listCBM_Rates,
+    setListCBM_Rates,
+    gridRefCBM_RateSetup,
+
+    gridRefPackagePriceSetup,
+    showModalPackagePrice,
+    setShowModalPackagePrice,
+    dataModalPackagePrice,
+    setDataModalPackagePrice,
+
+    gridRefPackageCBMPriceSetup,
+    showModalPackageCBMPrice,
+    setShowModalPackageCBMPrice,
+    dataModalPackageCBMPrice,
+    setDataModalPackageCBMPrice,
+    listPackageCBMPrice,
+    setListPackageCBMPrice,
     
     setIsLoading,
     isLoading,
