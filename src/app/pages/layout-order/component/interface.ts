@@ -21,6 +21,7 @@ export interface IFormInput {
     packageHeight?: number,
     packageWidth?: number,
     packageLength?: number,
+    fragile?: boolean,
     packageQuantity?: number,
     shipName?: string,
     price?: number,

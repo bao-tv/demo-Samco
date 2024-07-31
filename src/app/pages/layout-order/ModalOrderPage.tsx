@@ -10,7 +10,7 @@ import { IFormInput } from './component/interface';
 import { usePageData } from '../../../_metronic/layout/core';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
-import { calculatePrice, calculatePriceVehicle, renderTooltip } from '../../../_metronic/helpers';
+import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM } from '../../../_metronic/helpers';
 import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
 import { useIntl } from 'react-intl';
@@ -18,35 +18,16 @@ import Sender from './component/Sender';
 import Receiver from './component/Receiver';
 import Parcelnformation from './component/Parcelnformation';
 import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { number } from 'yup';
 
 const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
-  const intl = useIntl();
-
-  const optionsShipName: any[] = [
-    { value: 'option 1', label: 'Samco', fullName: 'Công ty TNHH Kumho Samco Buslines' },
-    { value: 'option 2', label: 'Phương Trang', fullName: 'Công ty TNHH Phương Trang' },
-    { value: 'option 3', label: 'Thành Bưởi', fullName: 'Công ty TNHH Thành Bưởi' },
-    { value: 'option 4', label: 'Bus Line', fullName: 'Công ty TNHH Bus Line' },
-    { value: 'option 5', label: 'Vận chuyển siêu tốc', fullName: 'Công ty TNHH Vận chuyển siêu tốc' },
-  ]
-  const [priceVehicleData, setPriceVehicleData] = useState<any[]>([]);
-  const [packingServiceData, setPackingServiceData] = useState<any[]>([]);
-  const getData=(pathJson: string, setter: any)=>{
-    fetch(pathJson)
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        // Process the JSON data here
-        setter(data);
-      })
-      .catch(error => {
-        console.error('Error fetching JSON:', error);
-      });
-  }
+  const [provinceDetail, setProvinceDetail] = useState<any>({});
+  const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number);
+  const {listPackagesPrice} = useSelector((state: RootState) => state.packagesPrice)
+  const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
 
   const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData();
-
   const receiptDate = dayjs().add(3, 'day').toDate();
 
   const { control, watch, setValue, getValues, handleSubmit, clearErrors, formState: { errors }, } = useForm<IFormInput>({
@@ -73,6 +54,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       packageWidth: showModalOrder.packageWidth || 0,
       packageHeight: showModalOrder.packageHeight || 0,
       packageWeight: showModalOrder.packageWeight || 0,
+      fragile: showModalOrder.fragile || false,
       packageQuantity: showModalOrder.packageQuantity || 1,
       shipName: showModalOrder.shipName || '',
       price: showModalOrder.price || 0,
@@ -119,36 +101,44 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   }
   
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
-    const data: any = useWatch({
+    const dataInput: any = useWatch({
       control,
-      name: ['receiptProvincesAddress', 'packageWeight', 'packageQuantity', 'packageLength', 'packageWidth', 'packageHeight']
+      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile']
     })
-    console.log('bao data IsolateReRenderPriceService: ', data[0]?.region);
-    // const priceObject: any = data[0]?.filter((item: any) => item?.distance_code === data[2]?.value)
-    const priceObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
+    const priceByKGArray: any[] = provinceDetail?.regionFreightPrice?.regionRates
+    const priceByCBMArray: any[] = provinceDetail?.regionFreightPrice?.cbmRates
+    // const priceByKGObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
     let pri: any = 0;
-    // if (priceObject[0]?.price.length && data[0] && data[3]?.code === 'D0') {
-    //   pri = calculatePrice(priceObject[0].price, +data[0]);
-    //   setValue("price", pri * +data[1]);
-    // } else if (priceObjectForVehicle[0]?.price.length && data[3]?.code !== 'D0') {
-    //   pri = calculatePriceVehicle(priceObjectForVehicle[0].price, data[3]?.code);
-    //   setValue("price", pri * +data[1]);
-
-    // }
+    const calPackageFragile = () => {
+      const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
+      // console.log('bao packageByCBM: ', packageByCBM)
+      const priPackageByCBM = calculatePricePackageByCBM(listPackagesCBMPrice, packageByCBM);
+      setPriPackageByCBM(priPackageByCBM);
+      return priPackageByCBM;
+    }
+    if (priceByKGArray?.length && dataInput[3]) {
+      let calObjPackageFragile: any = {};
+      if (dataInput[5]) {
+        calObjPackageFragile = calPackageFragile();
+      }
+      const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0));
+      const KGConvert = (+dataInput[0] * +dataInput[1] * +dataInput[2])*3/10000 + (calObjPackageFragile?.additionalWeightAfterPacking || 0);
+      const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert);
+      const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/10000;
+      const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);
+      priByKG > priByCBM ? pri = priByKG : pri = priByCBM;
+      setValue("price", pri);
+    }
     return (
       <Controller
         control={control}
-        // rules={{
-        //   required: true,
-        //   min: 0.1
-        // }}
         render={({ field: { onChange, onBlur, value } }) => (
           <InputGroup className="mb-3">
             <InputGroup.Text className={`group-text ${errors?.price && 'border-danger'}`}>
               Giá dịch vụ
             </InputGroup.Text>
             <NumericFormat
-              value={pri * +data[1]}
+              value={pri}
               className={`text-dark ${errors?.price && 'border-danger'} form-control`}
               onBlur={onBlur}
               onChange={onChange}
@@ -169,15 +159,15 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   
     const packagingService = useWatch({
       control,
-      name: 'packagingService',
+      name: 'packagingService,',
     });
 
     const clonepackagingService = _.cloneDeep(packagingService);
 
     useEffect(() => {
-      if (clonepackagingService?.value) {
+      if (clonepackagingService?.code) {
         // Check if packagingService is already present in packagingServiceData
-        const isExists = packagingServiceData.some(item => item.value === clonepackagingService.value);
+        const isExists = packagingServiceData.some(item => item.code === clonepackagingService.code);
         
         // If packagingService doesn't exist, add it to packagingServiceData
         const number = _.cloneDeepWith(+getValues("numberOfPackagingService"));
@@ -228,7 +218,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
               field.onChange(newValue);
               onChange(newValue, actionMeta);
             }}
-            getOptionLabel={(option) => `${option.packagingName} (SL: ${option.quality})`}
+            getOptionLabel={(option) => `${option.code} (SL: ${option.quality})`}
           />
         )}
       />
@@ -238,9 +228,15 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   // price dịch vụ ddoings gói
   const IsolateReRenderPricePackingService: React.FC<{ control: any }> = ({ control }) => {
     // Calculate the price based on the watched fields
+    const priPackageFragile = useWatch({
+      control,
+      name: 'fragile',
+    });
+    // console.log('bao priPackageByCBM: ', priPackageByCBM)
     let calculatedPrice: number = 0
     packagingServiceData.length && packagingServiceData?.forEach((item: any) => calculatedPrice += (+item.price * +item.quality));
-    setValue("packagingServicePrice", +calculatedPrice)
+    setValue("packagingServicePrice", +calculatedPrice + (priPackageFragile ? priPackageByCBM?.price : 0))
+    // console.log('bao +calculatedPrice + (priPackageByCBM?.price || 0): ', +calculatedPrice + (priPackageFragile ? priPackageByCBM?.price : 0))
     return (
       <Controller
         control={control}
@@ -256,7 +252,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
                 Giá dịch vụ đóng gói
               </InputGroup.Text>
               <NumericFormat
-                value={+calculatedPrice}
+                value={value}
                 disabled
                 className={`text-dark ${errors?.packagingServicePrice && 'border-danger'} form-control`}
                 aria-label="Default"
@@ -323,12 +319,12 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
           <Sender control={control} errors={errors} />
         </div>
         <div className='group card p-5 pt-0 ms-3'>
-          <Receiver control={control} errors={errors} watch={watch} setValue={setValue}/>
+          <Receiver control={control} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} />
         </div>
-        <div className='group card p-5 me-3'>
+        <div className='group card p-5 pt-0 me-3'>
           <Parcelnformation control={control} errors={errors} watch={watch}/>
         </div>
-        <div className='group card p-5 ms-3'>
+        <div className='group card p-5 pt-0 ms-3'>
           <>
             <p className='list-unstyled text-gray-700 fw-bold fs-3'>Tiền dịch vụ</p>
             <IsolateReRenderPriceService control={control} />
@@ -342,7 +338,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
                     <Select
                       className={`react-select-styled w-100 ${errors?.packagingService && 'rounded border border-danger'}`}
                       classNamePrefix='react-select text-dark' 
-                      options={packingServiceData}
+                      options={listPackagesPrice}
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value}

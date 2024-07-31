@@ -67,23 +67,20 @@ const Parcelnformation = (props: Props) => {
         )}
       />
 
-    <p>Kích thước kiện hàng (cm)</p>
       <div className='d-flex'>
         <Controller
-            name='packageLength'
-            control={props?.control}
-            rules={{
+          name='packageLength'
+          control={props?.control}
+          rules={{
             required: true,
             min: 0.001,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3 me-3'>
-                <InputGroup.Text
-                className={`${props?.errors?.packageLength && 'border-danger'}`}
-                >
+              <InputGroup.Text className={`${props?.errors?.packageLength && 'border-danger'}`}>
                 Dài
-                </InputGroup.Text>
-                <Form.Control
+              </InputGroup.Text>
+              <Form.Control
                 className={`text-dark ${props?.errors?.packageLength && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
@@ -91,62 +88,58 @@ const Parcelnformation = (props: Props) => {
                 onBlur={onBlur}
                 onChange={onChange}
                 value={value}
-                />
+              />
             </InputGroup>
-            )}
+          )}
         />
         <Controller
-        name='packageWidth'
-        control={props?.control}
-        rules={{
-          required: true,
-          min: 0.001,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <InputGroup className='mb-3  me-3'>
-            <InputGroup.Text
-              className={`${props?.errors?.packageWidth && 'border-danger'}`}
-            >
-              Rộng
-            </InputGroup.Text>
-            <Form.Control
-              className={`text-dark ${props?.errors?.packageWidth && 'border-danger'}`}
-              type='number'
-              aria-label='Default'
-              aria-describedby='inputGroup-sizing-default'
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value}
-            />
-          </InputGroup>
-        )}
-      />
-      <Controller
-        name='packageHeight'
-        control={props?.control}
-        rules={{
-          required: true,
-          min: 0.001,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <InputGroup className='mb-3'>
-            <InputGroup.Text
-              className={`${props?.errors?.packageHeight && 'border-danger'}`}
-            >
-              Cao
-            </InputGroup.Text>
-            <Form.Control
-              className={`text-dark ${props?.errors?.packageHeight && 'border-danger'}`}
-              type='number'
-              aria-label='Default'
-              aria-describedby='inputGroup-sizing-default'
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value}
-            />
-          </InputGroup>
-        )}
-      />
+          name='packageWidth'
+          control={props?.control}
+          rules={{
+            required: true,
+            min: 0.001,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <InputGroup className='mb-3  me-3'>
+              <InputGroup.Text className={`${props?.errors?.packageWidth && 'border-danger'}`}>
+                Rộng
+              </InputGroup.Text>
+              <Form.Control
+                className={`text-dark ${props?.errors?.packageWidth && 'border-danger'}`}
+                type='number'
+                aria-label='Default'
+                aria-describedby='inputGroup-sizing-default'
+                onBlur={onBlur}
+                onChange={onChange}
+                value={value}
+              />
+            </InputGroup>
+          )}
+        />
+        <Controller
+          name='packageHeight'
+          control={props?.control}
+          rules={{
+            required: true,
+            min: 0.001,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <InputGroup className='mb-3'>
+              <InputGroup.Text className={`${props?.errors?.packageHeight && 'border-danger'}`}>
+                Cao
+              </InputGroup.Text>
+              <Form.Control
+                className={`text-dark ${props?.errors?.packageHeight && 'border-danger'}`}
+                type='number'
+                aria-label='Default'
+                aria-describedby='inputGroup-sizing-default'
+                onBlur={onBlur}
+                onChange={onChange}
+                value={value}
+              />
+            </InputGroup>
+          )}
+        />
       </div>
 
       <Controller
@@ -182,62 +175,51 @@ const Parcelnformation = (props: Props) => {
         )}
       />
 
-      <Controller
-        name='packageQuantity'
-        control={props?.control}
-        rules={{
-          required: true,
-          min: 0.001,
-        }}
-        render={({field: {onChange, onBlur, value}}) => (
-          <InputGroup className='mb-3'>
-            <InputGroup.Text
-              className={`group-text ${props?.errors?.packageQuantity && 'border-danger'}`}
-            >
-              Số kiện
-            </InputGroup.Text>
-            <Form.Control
-              className={`text-dark ${props?.errors?.packageQuantity && 'border-danger'}`}
-              type='number'
-              aria-label='Default'
-              aria-describedby='inputGroup-sizing-default'
-              onBlur={onBlur}
-              onChange={onChange}
-              value={value}
-            />
-          </InputGroup>
-        )}
-      />
-
-      {/* <InputGroup className='mb-3'>
+      <div className='d-flex'>
         <Controller
-          name='shipName'
           control={props?.control}
-          rules={{
-            required: true,
-          }}
           render={({field: {onChange, onBlur, value}}) => (
-            <div
-              className={`d-flex align-items-center w-100 ${
-                props?.errors?.shipName && 'border-danger'
-              }`}
-            >
-              <label className='form-label d-block me-5'>Đơn vị vận chuyển</label>
-              <Select
-                className={`react-select-styled w-50 ${
-                  props?.errors?.shipName && 'rounded border border-danger'
-                }`}
-                classNamePrefix='react-select'
-                options={[]}
+            <InputGroup className='mb-3 w-50'>
+              <Form.Check // prettier-ignore
+                type='checkbox'
+                id={`default-checkbox`}
+                label='Hàng dễ vỡ'
                 onBlur={onBlur}
                 onChange={onChange}
                 value={value}
-                placeholder='Chọn một đơn vị vận chuyển'
               />
-            </div>
+            </InputGroup>
+          )}
+          name='fragile'
+        />
+
+        <Controller
+          name='packageQuantity'
+          control={props?.control}
+          rules={{
+            required: true,
+            min: 0.001,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <InputGroup className='mb-3'>
+              <InputGroup.Text
+                className={`group-text ${props?.errors?.packageQuantity && 'border-danger'}`}
+              >
+                Số kiện
+              </InputGroup.Text>
+              <Form.Control
+                className={`text-dark ${props?.errors?.packageQuantity && 'border-danger'}`}
+                type='number'
+                aria-label='Default'
+                aria-describedby='inputGroup-sizing-default'
+                onBlur={onBlur}
+                onChange={onChange}
+                value={value}
+              />
+            </InputGroup>
           )}
         />
-      </InputGroup> */}
+      </div>
     </>
   )
 }

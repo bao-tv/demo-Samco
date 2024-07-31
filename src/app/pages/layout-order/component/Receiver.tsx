@@ -13,17 +13,18 @@ type Props = {
   errors: any
   watch: any
   setValue: any
+  setProvinceDetail: any
+  provinceDetail: any
 }
 
 const Receiver = (props: Props) => {
   const intl = useIntl();
   const {listProvinceLite} = useSelector((state: any) => state.provinceLites)
-  const [listDistricts, setListDistricts] = useState<any[]>([])
-  const [districtDetail, setDisTrictDetail] = useState<any>({});
+  const [districtDetail, setDistrictDetail] = useState<any>({});
   const getDisTrictDetail = async (id: number) => {
     try {
       const response = await districtAPIGetById(id)
-      response.status === 'OK' && setDisTrictDetail(response?.data)
+      response.status === 'OK' && setDistrictDetail(response?.data)
     } catch (error) {
       ToastError('Có lỗi xả ra!')
     }
@@ -140,8 +141,7 @@ const Receiver = (props: Props) => {
                   onChange(selectedOption)
                   props?.setValue('receiptAddress', '')
                   const responseProvinceDetail = await provinceLiteAPIGetById(selectedOption?.id);
-                  console.log('bao responseProvinceDetail: ', responseProvinceDetail);
-                  setListDistricts(responseProvinceDetail?.data?.districts)
+                  props?.setProvinceDetail(responseProvinceDetail?.data)
                 }}
                 value={value}
                 placeholder='Chọn một tỉnh'
@@ -170,8 +170,8 @@ const Receiver = (props: Props) => {
                   props?.errors?.receiptDistrictsAddress && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                isDisabled={!listDistricts.length}
-                options={listDistricts}
+                isDisabled={!props?.provinceDetail?.districts?.length}
+                options={props?.provinceDetail?.districts}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 onBlur={onBlur}

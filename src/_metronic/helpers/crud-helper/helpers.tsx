@@ -128,36 +128,62 @@ function customRoundKG(value: number): number {
   return roundedValue;
 }
 
-const calculatePrice = (arrayPrice: any[], KG: number) => {
+const calculatePriceByKG = (arrayPrice: any[], KG: number) => {
   let totalPrice: number = 0;
-  let KGOver: number = 0;
+  let totalPriceAdd: number = 0;
   arrayPrice.forEach((item: any) => {
-    const step = roundToNearestHalf(item.maxKG) - roundToNearestHalf(item.minKG);
-    if (KG > +item.minKG && KG <= +item.maxKG) {
-      KGOver = KG - roundToNearestHalf(item.minKG);
-    }
-    if (KG >= item.maxKG) {
-      if (!item.price_add) {
-        totalPrice = +item.price_number;
-      } else {
-        totalPrice += (+item.price_number)*step*2;
-      }
-    } else if (KG < item.maxKG && KG >= item.minKG && step) {
-      totalPrice += +item.price_number*KGOver*2
-    } else if (KG > 40) {
-      // console.log('bao customRoundKG(KG-40): ', customRoundKG(KG-40));
-      totalPrice += +item.price_number*customRoundKG(KG-40)*2
+    if (KG > item.fromKg && !item.additionalPrice && !item.additionalWeight) {
+      totalPrice = item.price;
+    } 
+    if (item.additionalPrice && !item.additionalWeight && KG > item.toKg) {
+      const step = customRoundKG(item.toKg - item.fromKg) / 0.5;
+      totalPriceAdd += item.price*step;
+    } else if (item.additionalPrice && !item.additionalWeight && KG <= item.toKg && KG > item.fromKg) {
+      const step = customRoundKG(KG - item.fromKg) / 0.5;
+      totalPriceAdd += item.price*step;
+    } else if (item.additionalPrice && item.additionalWeight && KG > item.fromKg) {
+      const step = customRoundKG(KG - item.fromKg) / 0.5;
+      totalPriceAdd += item.price*step;
     }
   })
-  return totalPrice;
+  return totalPrice + totalPriceAdd;
 }
 
-const calculatePriceVehicle = (arrayPrice: any[], price_code: number) => {
-  // console.log('bao arrayPrice: ', arrayPrice);
-  // console.log('bao price_code: ', price_code);
-  const objectPrice = arrayPrice.filter((item: any) => item.price_code === price_code)
-  // console.log('bao objectPrice: ', objectPrice)
-  return objectPrice[0]?.price_number
+const calculatePriceByCBM = (arrayPrice: any[], CBM: number) => {
+  let totalPrice: number = 0;
+  console.log('bao CBM: ', CBM);
+  arrayPrice.forEach((item: any) => {
+    if (item.toVolume == CBM) {
+      // console.log('bao item1: ', item)
+      totalPrice = item.price;
+    } else if (item.fromVolume < CBM && item.toVolume >= CBM && item.fromVolume && item.toVolume) {
+      console.log('bao item2: ', item)
+
+      totalPrice = item.price;
+    } else if (item.fromVolume < CBM && !item.toVolume) {
+      console.log('bao item3: ', item)
+
+      totalPrice = item.price;
+    }
+  })
+  return totalPrice ;
+}
+
+const calculatePricePackageByCBM = (arrayPrice: any[], PricePackageByCBM: number) => {
+  let totalPrice: number = 0;
+  console.log('bao PricePackageByCBM: ', PricePackageByCBM);
+  arrayPrice.forEach((item: any) => {
+    if (item.fromCbm < PricePackageByCBM && item.toCbm >= PricePackageByCBM) {
+      console.log('bao item2: ', item)
+
+      totalPrice = item;
+    } else if (item.fromCbm < PricePackageByCBM && !item.toCbm) {
+      console.log('bao item3: ', item)
+
+      totalPrice = item;
+    }
+  })
+  return totalPrice ;
 }
 
 const NumberConverterRejectSystax = (number: any) => {
@@ -176,7 +202,8 @@ export {
   useDebounce,
   isNotEmpty,
   renderTooltip,
-  calculatePrice,
-  calculatePriceVehicle,
+  calculatePriceByKG,
+  calculatePriceByCBM,
+  calculatePricePackageByCBM,
   NumberConverterRejectSystax,
 }

@@ -41,6 +41,7 @@ setupAxios(axios)
 Chart.register(...registerables)
 
 const queryClient = new QueryClient()
+
 const container = document.getElementById('root')
 if (container) {
   createRoot(container).render(
