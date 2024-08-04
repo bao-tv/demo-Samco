@@ -21,6 +21,8 @@ const Receiver = (props: Props) => {
   const intl = useIntl();
   const {listProvinceLite} = useSelector((state: any) => state.provinceLites)
   const [districtDetail, setDistrictDetail] = useState<any>({});
+  // console.log('bao districtDetail: ', districtDetail);
+  // console.log('bao provinceDetail: ', props.provinceDetail);
   const getDisTrictDetail = async (id: number) => {
     try {
       const response = await districtAPIGetById(id)
@@ -139,7 +141,8 @@ const Receiver = (props: Props) => {
                 onBlur={onBlur}
                 onChange={async (selectedOption) => {
                   onChange(selectedOption)
-                  props?.setValue('receiptAddress', '')
+                  props?.setValue('receiptDistrictsAddress', '')
+                  props?.setValue('receiptCommunesAddress', '')
                   const responseProvinceDetail = await provinceLiteAPIGetById(selectedOption?.id);
                   props?.setProvinceDetail(responseProvinceDetail?.data)
                 }}
@@ -207,7 +210,7 @@ const Receiver = (props: Props) => {
                   props?.errors?.receiptCommunesAddress && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                isDisabled={!districtDetail?.communes?.length}
+                isDisabled={!props?.provinceDetail?.districts?.length || !districtDetail?.communes?.length}
                 options={districtDetail?.communes}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}

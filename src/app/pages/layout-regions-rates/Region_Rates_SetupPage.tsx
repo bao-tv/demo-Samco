@@ -38,6 +38,12 @@ const Region_Rates_SetupPage = (props: Props) => {
   useEffect(() => {
     getListRegion_Rates();
   },[])
+  const defaultColDefRegion_Rates_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -51,6 +57,7 @@ const Region_Rates_SetupPage = (props: Props) => {
             ref={gridRefRegion_RateSetup}
             rowData={listRegion_Rates.map((ele: any) => ({...ele, additionalPrice: ele.additionalPrice ? true : false, additionalWeight: ele.additionalWeight ? true : false}))}
             columnDefs={columnDefsRegion_Rates_SetupPage}
+            defaultColDef={defaultColDefRegion_Rates_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />

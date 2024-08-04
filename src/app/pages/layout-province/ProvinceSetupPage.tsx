@@ -38,6 +38,13 @@ const ProvinceSetupPage = (props: Props) => {
   useEffect(() => {
     getListProvinces();
   },[])
+
+  const defaultColDefProvinces_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{height: '100%', boxSizing: 'border-box'}}>
@@ -49,6 +56,7 @@ const ProvinceSetupPage = (props: Props) => {
             ref={gridRefProvinceSetup}
             rowData={listProvinces}
             columnDefs={columnDefsProvinceSetupPage}
+            defaultColDef={defaultColDefProvinces_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />

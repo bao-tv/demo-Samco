@@ -46,6 +46,7 @@ export const columnDefsRegion_Rates_SetupPage: ColDef[] = [
   {
     headerName: 'Hành động',
     cellRenderer: ButtonActionRegion_Rate,
+    filter: false,
     width: 150,
   },
   {

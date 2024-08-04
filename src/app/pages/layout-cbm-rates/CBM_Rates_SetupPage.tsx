@@ -38,6 +38,12 @@ const CBM_Rates_SetupPage = (props: Props) => {
   useEffect(() => {
     getListCBM_Rates();
   },[])
+  const defaultColDefCBM_Rates_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -51,6 +57,7 @@ const CBM_Rates_SetupPage = (props: Props) => {
             ref={gridRefCBM_RateSetup}
             rowData={listCBM_Rates.map((ele: any) => ({...ele, additionalPrice: ele.additionalPrice ? true : false, additionalWeight: ele.additionalWeight ? true : false}))}
             columnDefs={columnDefsCBM_Rates_SetupPage}
+            defaultColDef={defaultColDefCBM_Rates_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />

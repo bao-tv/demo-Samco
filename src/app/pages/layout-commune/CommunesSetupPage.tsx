@@ -38,6 +38,12 @@ const CommunesSetupPage = (props: Props) => {
   useEffect(() => {
     getListCommunes();
   },[])
+  const defaultColDefCommunes_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -51,6 +57,7 @@ const CommunesSetupPage = (props: Props) => {
             ref={gridRefCommuneSetup}
             rowData={listCommunes}
             columnDefs={columnDefsCommunesSetupPage}
+            defaultColDef={defaultColDefCommunes_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />

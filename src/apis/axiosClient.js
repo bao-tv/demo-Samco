@@ -5,7 +5,7 @@ import axios from "axios";
 // export const maNhom = "GP03";
 
 const axiosClient = axios.create({
-  baseURL: "http://27.71.229.40:8082/api/v1/",
+  baseURL: "https://27.71.229.40:8082/api/v1/",
   headers: {
     'TokenBXMDM': '', // Ensure this has a valid value if needed
     'Content-Type': 'application/json',

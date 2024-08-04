@@ -191,6 +191,13 @@ const NumberConverterRejectSystax = (number: any) => {
   return Number(number?.toString()?.replace(/,/g, ''));
 }
 
+const getMaxValue = (arr: any[]) => {
+  if (arr.length === 0) {
+    throw new Error("Array is empty");
+  }
+  return Math.max(...arr);
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -206,4 +213,5 @@ export {
   calculatePriceByCBM,
   calculatePricePackageByCBM,
   NumberConverterRejectSystax,
+  getMaxValue,
 }

@@ -46,6 +46,7 @@ export const columnDefsCBM_Rates_SetupPage: ColDef[] = [
   {
     headerName: 'Hành động',
     cellRenderer: ButtonActionCBM_Rate,
+    filter: false,
     width: 150,
   },
   {

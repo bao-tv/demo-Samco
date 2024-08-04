@@ -10,7 +10,7 @@ import { IFormInput } from './component/interface';
 import { usePageData } from '../../../_metronic/layout/core';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
-import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM } from '../../../_metronic/helpers';
+import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM, getMaxValue } from '../../../_metronic/helpers';
 import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
 import { useIntl } from 'react-intl';
@@ -103,7 +103,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
     const dataInput: any = useWatch({
       control,
-      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile']
+      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile', 'receiptCommunesAddress']
     })
     const priceByKGArray: any[] = provinceDetail?.regionFreightPrice?.regionRates
     const priceByCBMArray: any[] = provinceDetail?.regionFreightPrice?.cbmRates
@@ -123,10 +123,13 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       }
       const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0));
       const KGConvert = (+dataInput[0] * +dataInput[1] * +dataInput[2])*3/10000 + (calObjPackageFragile?.additionalWeightAfterPacking || 0);
+      console.log('bao KGConvert: ', KGConvert)
       const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert);
-      const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/10000;
-      const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);
-      priByKG > priByCBM ? pri = priByKG : pri = priByCBM;
+      const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
+      console.log('bao CBM: ', CBM)
+      const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);   
+      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
+      pri = getMaxValue([priByKG*1.08, priKGConvert*1.08, priByCBM]) * (dataInput[6]?.shipmentType === "OUT_PROVINCE" ? 1.25 : 1);
       setValue("price", pri);
     }
     return (
@@ -210,6 +213,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
           <Select
             className='mb-3 basic-multi-select'
             classNamePrefix='select'
+            placeholder="Dịch vụ đóng gói"
             isMulti
             components={{ DropdownIndicator:() => null, IndicatorSeparator:() => null }}
             isClearable={packagingServiceData.some((v) => !v.isFixed)}
@@ -273,20 +277,20 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const  IsolateReRenderTotalPrice: React.FC<{ control: any }> = ({ control }) => {
     const data: any = useWatch({
       control: control,
-      name: ['coefficient', 'price', 'packagingServicePrice'],
+      name: ['price', 'packagingServicePrice'],
       exact: true,
     })
     // console.log('bao data: ', data)
     // setValue("sendPay", data[1]*data[0].code + data[2]);
-    setValue("totalPrice", data[1]*data[0].code + data[2] || 0);
+    setValue("totalPrice", data[0] + data[1]);
     return (
       <Controller
         control={control}
-        // defaultValue={totalPay}
-        // rules={{
-        //   required: true,
-        //   min: 0.1
-        // }}
+        defaultValue={data[0] + data[1]}
+        rules={{
+          required: true,
+          min: 0.1
+        }}
         render={({ field: { onChange, onBlur, value } }) => (
         <InputGroup className="mb-3">
             <InputGroup.Text className={`group-text ${errors?.totalPrice && 'border-danger'}`}>

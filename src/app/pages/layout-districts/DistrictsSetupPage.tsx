@@ -38,6 +38,13 @@ const DistrictsSetupPage = (props: Props) => {
   useEffect(() => {
     getListDistricts();
   },[])
+
+  const defaultColDefDistricts_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -51,6 +58,7 @@ const DistrictsSetupPage = (props: Props) => {
             ref={gridRefDistrictSetup}
             rowData={listDistricts}
             columnDefs={columnDefsDistrictsSetupPage}
+            defaultColDef={defaultColDefDistricts_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />

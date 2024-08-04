@@ -38,6 +38,12 @@ const Region_Freight_Prices_SetupPage = (props: Props) => {
   useEffect(() => {
     getListRegion_Freight_Prices();
   },[])
+  const defaultColDefRegion_Freight_Prices_SetupPage = useMemo<any>(() => {
+    return {
+      flex: 1,
+      filter: true,
+    };
+  }, []);
   return (
     <div style={containerStyle}>
       <div style={{ height: "100%", boxSizing: "border-box" }}>
@@ -51,6 +57,7 @@ const Region_Freight_Prices_SetupPage = (props: Props) => {
             ref={gridRefRegion_Freight_PriceSetup}
             rowData={listRegion_Freight_Prices}
             columnDefs={columnDefsRegion_Freight_Prices_SetupPage}
+            defaultColDef={defaultColDefRegion_Freight_Prices_SetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />
