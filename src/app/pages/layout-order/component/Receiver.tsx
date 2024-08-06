@@ -4,9 +4,10 @@ import {Controller} from 'react-hook-form'
 import { useIntl } from 'react-intl'
 import { useSelector } from 'react-redux'
 import Select from 'react-select'
-import { districtAPIGetById } from '../../../../apis/districtAPI'
+import { districtAPIGetAll, districtAPIGetById } from '../../../../apis/districtAPI'
 import ToastError from '../../../../_metronic/helpers/crud-helper/Toast'
 import { provinceLiteAPIGetById } from '../../../../apis/provinceAPI'
+import { communeAPIGetAll } from '../../../../apis/communeAPI'
 
 type Props = {
   control: any
@@ -15,6 +16,8 @@ type Props = {
   setValue: any
   setProvinceDetail: any
   provinceDetail: any
+  setCommuneDetail: any
+  communeDetail: any
 }
 
 const Receiver = (props: Props) => {
@@ -143,7 +146,7 @@ const Receiver = (props: Props) => {
                   onChange(selectedOption)
                   props?.setValue('receiptDistrictsAddress', '')
                   props?.setValue('receiptCommunesAddress', '')
-                  const responseProvinceDetail = await provinceLiteAPIGetById(selectedOption?.id);
+                  const responseProvinceDetail = await districtAPIGetAll();
                   props?.setProvinceDetail(responseProvinceDetail?.data)
                 }}
                 value={value}
@@ -173,15 +176,17 @@ const Receiver = (props: Props) => {
                   props?.errors?.receiptDistrictsAddress && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                isDisabled={!props?.provinceDetail?.districts?.length}
-                options={props?.provinceDetail?.districts}
+                // isDisabled={!props?.provinceDetail?.districts?.length}
+                options={props?.provinceDetail}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 onBlur={onBlur}
                 // onChange={onChange}
-                onChange={(selectedOption) => {
+                onChange={async(selectedOption) => {
                   onChange(selectedOption)
                   props?.setValue('receiptCommunesAddress', '')
+                  const responseCommuneDetail = await communeAPIGetAll();
+                  props?.setCommuneDetail(responseCommuneDetail?.data)
                 }}
                 value={value}
                 placeholder='Chọn Huyện nhận hàng'
@@ -210,8 +215,8 @@ const Receiver = (props: Props) => {
                   props?.errors?.receiptCommunesAddress && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                isDisabled={!props?.provinceDetail?.districts?.length || !districtDetail?.communes?.length}
-                options={districtDetail?.communes}
+                // isDisabled={!props?.provinceDetail?.districts?.length || !districtDetail?.communes?.length}
+                options={props?.communeDetail}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 onBlur={onBlur}

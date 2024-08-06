@@ -10,7 +10,7 @@ import { IFormInput } from './component/interface';
 import { usePageData } from '../../../_metronic/layout/core';
 import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
 import dayjs from 'dayjs';
-import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM, getMaxValue } from '../../../_metronic/helpers';
+import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM, getMaxValue, NumberConverterRejectSystax } from '../../../_metronic/helpers';
 import _, { cloneDeep } from 'lodash';
 import { NumericFormat } from 'react-number-format';
 import { useIntl } from 'react-intl';
@@ -20,9 +20,11 @@ import Parcelnformation from './component/Parcelnformation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { number } from 'yup';
+import { provinceLiteAPIGetById } from '../../../apis/provinceAPI';
 
 const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
-  const [provinceDetail, setProvinceDetail] = useState<any>({});
+  const [provinceDetail, setProvinceDetail] = useState<any>([]);
+  const [communeDetail, setCommuneDetail] = useState<any>([]);
   const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number);
   const {listPackagesPrice} = useSelector((state: RootState) => state.packagesPrice)
   const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
@@ -103,10 +105,25 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
     const dataInput: any = useWatch({
       control,
-      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile', 'receiptCommunesAddress']
+      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile', 'receiptCommunesAddress', 'receiptProvincesAddress', 'packageValue']
     })
-    const priceByKGArray: any[] = provinceDetail?.regionFreightPrice?.regionRates
-    const priceByCBMArray: any[] = provinceDetail?.regionFreightPrice?.cbmRates
+    console.log('bao data: ', dataInput)
+    const [province, setProvince] = useState<any>({})
+    useEffect(() => {
+      const fetchProvinceData = async () => {
+        if (dataInput[7]?.id) {
+          try {
+            const response = await provinceLiteAPIGetById(dataInput[7]?.id);
+            setProvince(response?.data || {});
+          } catch (error) {
+            console.error('Error fetching province detail:', error);
+          }
+        }
+      };
+  
+      fetchProvinceData();
+    }, [dataInput[7]?.id]);
+    
     // const priceByKGObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
     let pri: any = 0;
     const calPackageFragile = () => {
@@ -116,6 +133,9 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       setPriPackageByCBM(priPackageByCBM);
       return priPackageByCBM;
     }
+    // console.log('bao province: ', province);
+    const priceByKGArray: any[] = province?.regionFreightPrice?.regionRates
+    const priceByCBMArray: any[] = province?.regionFreightPrice?.cbmRates
     if (priceByKGArray?.length && dataInput[3]) {
       let calObjPackageFragile: any = {};
       if (dataInput[5]) {
@@ -123,13 +143,15 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       }
       const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0));
       const KGConvert = (+dataInput[0] * +dataInput[1] * +dataInput[2])*3/10000 + (calObjPackageFragile?.additionalWeightAfterPacking || 0);
-      console.log('bao KGConvert: ', KGConvert)
+      // console.log('bao KGConvert: ', KGConvert)
       const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert);
       const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
-      console.log('bao CBM: ', CBM)
+      // console.log('bao CBM: ', CBM)
       const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);   
-      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
-      pri = getMaxValue([priByKG*1.08, priKGConvert*1.08, priByCBM]) * (dataInput[6]?.shipmentType === "OUT_PROVINCE" ? 1.25 : 1);
+      // console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
+      // console.log('bao ', NumberConverterRejectSystax(dataInput[8]) )
+      const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
+      pri = getMaxValue([priByKG*1.08, priKGConvert*1.08, priByCBM]) * (dataInput[6]?.shipmentType === "Nội Tuyến" ? 1 : 1.25)*+dataInput[4] + (+valuePackage > 1000000 ? (+valuePackage - 1000000)*0.05 : 0);
       setValue("price", pri);
     }
     return (
@@ -162,7 +184,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   
     const packagingService = useWatch({
       control,
-      name: 'packagingService,',
+      name: 'packagingService',
     });
 
     const clonepackagingService = _.cloneDeep(packagingService);
@@ -232,15 +254,15 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   // price dịch vụ ddoings gói
   const IsolateReRenderPricePackingService: React.FC<{ control: any }> = ({ control }) => {
     // Calculate the price based on the watched fields
-    const priPackageFragile = useWatch({
+    const priPackageService = useWatch({
       control,
-      name: 'fragile',
+      name: ['fragile', 'packageQuantity'],
     });
     // console.log('bao priPackageByCBM: ', priPackageByCBM)
     let calculatedPrice: number = 0
     packagingServiceData.length && packagingServiceData?.forEach((item: any) => calculatedPrice += (+item.price * +item.quality));
-    setValue("packagingServicePrice", +calculatedPrice + (priPackageFragile ? priPackageByCBM?.price : 0))
-    // console.log('bao +calculatedPrice + (priPackageByCBM?.price || 0): ', +calculatedPrice + (priPackageFragile ? priPackageByCBM?.price : 0))
+    setValue("packagingServicePrice", (+calculatedPrice + (priPackageService[0] ? priPackageByCBM?.price : 0))*+priPackageService[1])
+    // console.log('bao +calculatedPrice + (priPackageByCBM?.price || 0): ', +calculatedPrice + ([0] ? priPackageByCBM?.price : 0))
     return (
       <Controller
         control={control}
@@ -323,7 +345,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
           <Sender control={control} errors={errors} />
         </div>
         <div className='group card p-5 pt-0 ms-3'>
-          <Receiver control={control} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} />
+          <Receiver control={control} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} setCommuneDetail={setCommuneDetail} communeDetail={communeDetail} />
         </div>
         <div className='group card p-5 pt-0 me-3'>
           <Parcelnformation control={control} errors={errors} watch={watch}/>

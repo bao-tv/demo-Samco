@@ -44,7 +44,6 @@ const ModalShowAndAddPackageCBMPrice = (props: any) => {
   const onSubmit: SubmitHandler<IFormPackageCBMPriceInput> = async (
     data: IFormPackageCBMPriceInput
   ) => {
-    console.log('bao data: ', data)
     try {
       if (data.id) {
         await packageCBMPriceEditAPIByID(data)
@@ -135,7 +134,7 @@ const ModalShowAndAddPackageCBMPrice = (props: any) => {
                       onChange={onChange}
                       allowLeadingZeros
                       thousandSeparator=','
-                      decimalScale={3}
+                      decimalScale={5}
                     />
                   </InputGroup>
                 )}
@@ -157,7 +156,7 @@ const ModalShowAndAddPackageCBMPrice = (props: any) => {
                       onChange={onChange}
                       allowLeadingZeros
                       thousandSeparator=','
-                      decimalScale={2}
+                      decimalScale={5}
                     />
                   </InputGroup>
                 )}
