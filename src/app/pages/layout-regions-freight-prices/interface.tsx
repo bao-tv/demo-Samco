@@ -76,6 +76,11 @@ export const columnDefsRegion_Freight_Prices_SetupPage: ColDef[] = [
     width: 180,
   },
   {
+    headerName: 'Bước nhảy giá',
+    field: 'label',
+    width: 150,
+  },
+  {
     headerName: 'Khu vực',
     field: 'region.name',
     width: 150,

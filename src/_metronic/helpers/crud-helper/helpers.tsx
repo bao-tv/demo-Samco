@@ -128,7 +128,7 @@ function customRoundKG(value: number): number {
   return roundedValue;
 }
 
-const calculatePriceByKG = (arrayPrice: any[], KG: number) => {
+const calculatePriceByKG = (arrayPrice: any[], KG: number, stepNumber: number = 0.5) => {
   let totalPrice: number = 0;
   let totalPriceAdd: number = 0;
   arrayPrice.forEach((item: any) => {
@@ -136,13 +136,13 @@ const calculatePriceByKG = (arrayPrice: any[], KG: number) => {
       totalPrice = item.price;
     } 
     if (item.additionalPrice && !item.additionalWeight && KG > item.toKg) {
-      const step = customRoundKG(item.toKg - item.fromKg) / 0.5;
+      const step = customRoundKG(item.toKg - item.fromKg) / stepNumber;
       totalPriceAdd += item.price*step;
     } else if (item.additionalPrice && !item.additionalWeight && KG <= item.toKg && KG > item.fromKg) {
-      const step = customRoundKG(KG - item.fromKg) / 0.5;
+      const step = customRoundKG(KG - item.fromKg) / stepNumber;
       totalPriceAdd += item.price*step;
     } else if (item.additionalPrice && item.additionalWeight && KG > item.fromKg) {
-      const step = customRoundKG(KG - item.fromKg) / 0.5;
+      const step = customRoundKG(KG - item.fromKg) / stepNumber;
       totalPriceAdd += item.price*step;
     }
   })
@@ -151,17 +151,17 @@ const calculatePriceByKG = (arrayPrice: any[], KG: number) => {
 
 const calculatePriceByCBM = (arrayPrice: any[], CBM: number) => {
   let totalPrice: number = 0;
-  console.log('bao CBM: ', CBM);
+  // console.log('bao CBM: ', CBM);
   arrayPrice.forEach((item: any) => {
     if (item.toVolume == CBM) {
       // console.log('bao item1: ', item)
       totalPrice = item.price;
     } else if (item.fromVolume < CBM && item.toVolume >= CBM && item.fromVolume && item.toVolume) {
-      console.log('bao item2: ', item)
+      // console.log('bao item2: ', item)
 
       totalPrice = item.price;
     } else if (item.fromVolume < CBM && !item.toVolume) {
-      console.log('bao item3: ', item)
+      // console.log('bao item3: ', item)
 
       totalPrice = item.price;
     }
@@ -171,14 +171,14 @@ const calculatePriceByCBM = (arrayPrice: any[], CBM: number) => {
 
 const calculatePricePackageByCBM = (arrayPrice: any[], PricePackageByCBM: number) => {
   let totalPrice: number = 0;
-  console.log('bao PricePackageByCBM: ', PricePackageByCBM);
+  // console.log('bao PricePackageByCBM: ', PricePackageByCBM);
   arrayPrice.forEach((item: any) => {
     if (item.fromCbm < PricePackageByCBM && item.toCbm >= PricePackageByCBM) {
-      console.log('bao item2: ', item)
+      // console.log('bao item2: ', item)
 
       totalPrice = item;
     } else if (item.fromCbm < PricePackageByCBM && !item.toCbm) {
-      console.log('bao item3: ', item)
+      // console.log('bao item3: ', item)
 
       totalPrice = item;
     }

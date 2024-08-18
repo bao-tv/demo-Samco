@@ -64,14 +64,14 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         <p className='fw-bold'>1. Người gửi:</p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span><span>{data?.sendName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.sendIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.sendPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.senderAddress}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.sendAddress}</span></p>
                     </div>
                     <div>
                         <p className='fw-bold'>2. Người nhận:</p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiptName}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiverName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiptIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiptPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiverPhone}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{ `${data?.receiptAddress?.label ? data?.receiptAddress?.label : ''} - ${data?.receiptProvinceAddress?.label ? data?.receiptProvinceAddress?.label : ''}`}</span></p>
                     </div>
                 </div>
@@ -195,14 +195,14 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         <p className='fw-bold'>1. Người gửi:</p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span><span>{data?.sendName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.sendIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.sendPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.senderAddress}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.sendAddress}</span></p>
                     </div>
                     <div>
                         <p className='fw-bold'>2. Người nhận:</p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiptName}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiverName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiptIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiptPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiverPhone}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{ `${data?.receiptAddress?.label ? data?.receiptAddress?.label : ''} - ${data?.receiptProvinceAddress?.label ? data?.receiptProvinceAddress?.label : ''}`}</span></p>
                     </div>
                 </div>
@@ -326,14 +326,14 @@ const ReceiptLayoutPrints = ({data}: Props) => {
                         <p className='fw-bold'>1. Người gửi:</p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span><span>{data?.sendName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.sendIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.sendPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.senderAddress}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.sendAddress}</span></p>
                     </div>
                     <div>
                         <p className='fw-bold'>2. Người nhận:</p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiptName}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiverName}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiptIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiptPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiverPhone}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{ `${data?.receiptAddress?.label ? data?.receiptAddress?.label : ''} - ${data?.receiptProvinceAddress?.label ? data?.receiptProvinceAddress?.label : ''}`}</span></p>
                     </div>
                 </div>

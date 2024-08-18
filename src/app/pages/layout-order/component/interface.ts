@@ -1,44 +1,45 @@
-import { ColDef } from 'ag-grid-community';
-import { FormatsDate, ButtonActionsRender } from '../../../../_metronic/helpers';
+import {ColDef} from 'ag-grid-community'
+import {FormatsDate, ButtonActionsRender, RenderAddress} from '../../../../_metronic/helpers'
 // import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {
-    sendDate?: any,
-    sendName?: string,
-    sendIdPer?: string,
-    sendPhone?: number | string,
-    sendAddress?: string,
-    receiptDate?: any,
-    receiptName?: string,
-    receiptIdPer?: string,
-    receiptPhone?: number | string,
-    receiptProvincesAddress?: any,
-    receiptDistrictsAddress?: any,
-    receiptCommunesAddress?: any,
-    packageName?: string,
-    packageValue?: number,
-    packageWeight?: number,
-    packageHeight?: number,
-    packageWidth?: number,
-    packageLength?: number,
-    fragile?: boolean,
-    packageQuantity?: number,
-    shipName?: string,
-    price?: number,
-    coefficient?: number,
-    packagingService?: any,
-    numberOfPackagingService?: any,
-    packagingServiceData?:any,
-    packagingServicePrice?: number,
-    totalPrice?: number,
-    // sendPay?: number,
-    // receiptPay?: number,
-    indexRow?: number,
-  }
-export   const columnDefsOrderManagerment: ColDef[] = [
+  id?: any
+  sendDate?: any
+  senderName?: string
+  senderIdCard?: string
+  senderPhone?: number | string
+  senderAddress?: string
+  receiptDate?: any
+  receiverName?: string
+  receiverIdCard?: string
+  receiverPhone?: number | string
+  receiverProvince?: any
+  receiverDistrict?: any
+  receiverCommune?: any
+  receiverAddress?: any
+  itemName?: string
+  itemValue?: number
+  itemWidth?: number
+  itemHeight?: number
+  itemWeight?: number
+  itemLength?: number
+  itemFragile?: boolean
+  itemQuantity?: number
+  shipName?: string
+  serviceFee?: number
+  packagingService?: any
+  packagingServiceQuantity?: any
+  packagingServiceData?: any
+  packagingServiceFee?: number
+  totalAmount?: number
+  // sendPay?: number,
+  // receiptPay?: number,
+  indexRow?: number
+}
+export const columnDefsOrderManagerment: ColDef[] = [
   {
-    headerName: 'STT',
-    field: 'indexRow',
+    headerName: 'ID',
+    field: 'id',
     width: 60,
   },
   {
@@ -46,7 +47,6 @@ export   const columnDefsOrderManagerment: ColDef[] = [
     field: '',
     width: 180,
     cellRenderer: ButtonActionsRender,
-
   },
   {
     headerName: 'Ngày gửi',
@@ -56,22 +56,22 @@ export   const columnDefsOrderManagerment: ColDef[] = [
   },
   {
     headerName: 'Tên người gửi',
-    field: 'sendName',
+    field: 'senderName',
     width: 140,
   },
   {
     headerName: 'CCCD người gửi',
-    field: 'sendIdPer',
+    field: 'senderIdCard',
     width: 140,
   },
   {
     headerName: 'SĐT người gửi',
-    field: 'sendPhone',
+    field: 'senderPhone',
     width: 140,
   },
   {
     headerName: 'Địa chỉ người gửi',
-    field: 'sendAddress',
+    field: 'senderAddress',
     width: 150,
   },
   {
@@ -82,67 +82,52 @@ export   const columnDefsOrderManagerment: ColDef[] = [
   },
   {
     headerName: 'Tên người nhận',
-    field: 'receiptName',
+    field: 'receiverName',
     width: 140,
   },
   {
     headerName: 'CCCD người nhận',
-    field: 'receiptIdPer',
+    field: 'receiverIdCard',
     width: 140,
   },
   {
     headerName: 'SĐT người nhận',
-    field: 'receiptPhone',
+    field: 'receiverPhone',
     width: 140,
   },
   {
     headerName: 'Địa chỉ người nhận',
-    field: 'receiptAddressJoin',
-    width: 150,
+    cellRenderer: RenderAddress,
+    width: 350,
   },
   {
     headerName: 'Tên hàng',
-    field: 'packageName',
+    field: 'itemName',
     width: 110,
   },
   {
     headerName: 'Trị giá hàng',
-    field: 'packageValue',
+    field: 'itemValue',
     width: 110,
-  },
-  {
-    headerName: 'Trọng lượng hàng',
-    field: 'packageWeight',
-    width: 150,
   },
   {
     headerName: 'Số kiện hàng',
-    field: 'packageQuantity',
+    field: 'itemQuantity',
     width: 120,
   },
   {
-    headerName: 'Đơn vị vận chuyển',
-    field: 'shipName.label',
-    width: 160,
-  },
-  {
     headerName: 'Giá dịch vụ',
-    field: 'price',
+    field: 'serviceFee',
     width: 110,
   },
   {
-    headerName: 'Hệ số dịch vụ',
-    field: 'coefficient.label',
-    width: 130,
-  },
-  {
     headerName: 'Giá đóng gói',
-    field: 'packagingServicePrice',
+    field: 'packagingServiceFee',
     width: 120,
   },
   {
     headerName: 'Tổng tiền dịch vụ',
-    field: 'totalPrice',
+    field: 'totalAmount',
     width: 150,
   },
-];
+]

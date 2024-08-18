@@ -10,6 +10,16 @@ export const districtAPIGetAll = async () => {
     return data;
 };
 
+export const districtAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/district/search/', value);
+    return data;
+};
+
+export const districtAPIGetByProvince = async (id) => {
+    const {data} = await axiosClient.get(`/district/province/${id}`);
+    return data;
+};
+
 export const districtAPIGetById = async (id) => {
     const {data} = await axiosClient.get(`/district/${id}`);
     return data;

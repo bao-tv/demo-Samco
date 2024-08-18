@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {Form, InputGroup} from 'react-bootstrap'
 import {Controller} from 'react-hook-form'
-import { useIntl } from 'react-intl'
-import { useSelector } from 'react-redux'
+import {useIntl} from 'react-intl'
+import {useSelector} from 'react-redux'
 import Select from 'react-select'
-import { districtAPIGetAll, districtAPIGetById } from '../../../../apis/districtAPI'
-import ToastError from '../../../../_metronic/helpers/crud-helper/Toast'
-import { provinceLiteAPIGetById } from '../../../../apis/provinceAPI'
-import { communeAPIGetAll } from '../../../../apis/communeAPI'
+import {districtAPIGetByProvince} from '../../../../apis/districtAPI'
+import {communeAPIGetByDistrict} from '../../../../apis/communeAPI'
 
 type Props = {
   control: any
   errors: any
   watch: any
   setValue: any
+  getValues: any
   setProvinceDetail: any
   provinceDetail: any
   setCommuneDetail: any
@@ -21,22 +20,39 @@ type Props = {
 }
 
 const Receiver = (props: Props) => {
-  const intl = useIntl();
+  const intl = useIntl()
   const {listProvinceLite} = useSelector((state: any) => state.provinceLites)
-  const [districtDetail, setDistrictDetail] = useState<any>({});
-  // console.log('bao districtDetail: ', districtDetail);
-  // console.log('bao provinceDetail: ', props.provinceDetail);
-  const getDisTrictDetail = async (id: number) => {
+  const [listDistricts, setListDistricts] = useState<any>([])
+  const [listCommunes, setListCommunes] = useState<any>([])
+  const dataInit = async () => {
     try {
-      const response = await districtAPIGetById(id)
-      response.status === 'OK' && setDistrictDetail(response?.data)
+      const provinceId = props.getValues('receiverProvince')?.id;
+      if (provinceId) {
+        const districtInProvince = await districtAPIGetByProvince(provinceId);
+        setListDistricts(districtInProvince?.data || []);
+        
+        const districtId = props.getValues('receiverDistrict')?.id;
+        if (districtId) {
+          const communeInDistrict = await communeAPIGetByDistrict(districtId);
+          setListCommunes(communeInDistrict?.data || []);
+        } else {
+          setListCommunes([]);
+        }
+      } else {
+        setListDistricts([]);
+        setListCommunes([]);
+      }
     } catch (error) {
-      ToastError('Có lỗi xả ra!')
+      console.error('Failed to fetch data:', error);
     }
   }
-  useEffect(() => {
-    props?.watch('receiptDistrictsAddress')?.id && getDisTrictDetail(props?.watch('receiptDistrictsAddress')?.id);
-  }, [props?.watch('receiptDistrictsAddress')?.id])
+  
+  if (props.getValues('receiverProvince')) {
+    useEffect(() => {
+      dataInit();
+    }, [])
+  }
+  
   return (
     <>
       <p className='list-unstyled text-gray-700 fw-bold fs-3'>Người nhận</p>
@@ -48,12 +64,12 @@ const Receiver = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.receiptName && 'border-danger'}`}
+              className={`group-text ${props?.errors?.receiverName && 'border-danger'}`}
             >
               Họ tên
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.receiptName && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.receiverName && 'border-danger'}`}
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
               onBlur={onBlur}
@@ -62,7 +78,7 @@ const Receiver = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='receiptName'
+        name='receiverName'
       />
 
       <Controller
@@ -73,12 +89,12 @@ const Receiver = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.receiptIdPer && 'border-danger'}`}
+              className={`group-text ${props?.errors?.receiverIdCard && 'border-danger'}`}
             >
               Số CCCD
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.receiptIdPer && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.receiverIdCard && 'border-danger'}`}
               type='number'
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
@@ -88,7 +104,7 @@ const Receiver = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='receiptIdPer'
+        name='receiverIdCard'
       />
 
       <Controller
@@ -99,12 +115,12 @@ const Receiver = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.receiptPhone && 'border-danger'}`}
+              className={`group-text ${props?.errors?.receiverPhone && 'border-danger'}`}
             >
               Điện thoại
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.receiptPhone && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.receiverPhone && 'border-danger'}`}
               type='number'
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
@@ -114,10 +130,10 @@ const Receiver = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='receiptPhone'
+        name='receiverPhone'
       />
       <Controller
-        name='receiptProvincesAddress'
+        name='receiverProvince'
         control={props?.control}
         rules={{
           required: true,
@@ -127,7 +143,7 @@ const Receiver = (props: Props) => {
           return (
             <div
               className={`d-flex align-items-center w-100 mb-3 ${
-                props?.errors?.receiptProvincesAddress && 'border-danger'
+                props?.errors?.receiverProvince && 'border-danger'
               }`}
             >
               <label className='form-label d-block me-5'>
@@ -135,7 +151,7 @@ const Receiver = (props: Props) => {
               </label>
               <Select
                 className={`react-select-styled w-50 ${
-                  props?.errors?.receiptProvincesAddress && 'rounded border border-danger'
+                  props?.errors?.receiverProvince && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
                 options={listProvinceLite}
@@ -144,10 +160,11 @@ const Receiver = (props: Props) => {
                 onBlur={onBlur}
                 onChange={async (selectedOption) => {
                   onChange(selectedOption)
-                  props?.setValue('receiptDistrictsAddress', '')
-                  props?.setValue('receiptCommunesAddress', '')
-                  const responseProvinceDetail = await districtAPIGetAll();
-                  props?.setProvinceDetail(responseProvinceDetail?.data)
+                  console.log('bao selectedOption: ', selectedOption);
+                  props?.setValue('receiverDistrict', '')
+                  props?.setValue('receiverCommune', '')
+                  const districtInProvince = await districtAPIGetByProvince(selectedOption?.id)
+                  setListDistricts(districtInProvince?.data || [])
                 }}
                 value={value}
                 placeholder='Chọn một tỉnh'
@@ -157,7 +174,7 @@ const Receiver = (props: Props) => {
         }}
       />
       <Controller
-        name='receiptDistrictsAddress'
+        name='receiverDistrict'
         control={props?.control}
         rules={{
           required: true,
@@ -167,26 +184,25 @@ const Receiver = (props: Props) => {
           return (
             <div
               className={`d-flex align-items-center w-100 mb-3 ${
-                props?.errors?.receiptDistrictsAddress && 'border-danger'
+                props?.errors?.receiverDistrict && 'border-danger'
               }`}
             >
               <label className='form-label d-block me-5'>Huyện nhận hàng</label>
               <Select
                 className={`react-select-styled w-50 ${
-                  props?.errors?.receiptDistrictsAddress && 'rounded border border-danger'
+                  props?.errors?.receiverDistrict && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                // isDisabled={!props?.provinceDetail?.districts?.length}
-                options={props?.provinceDetail}
+                isDisabled={!listDistricts?.length && !props.getValues('receiverDistrict')}
+                options={listDistricts}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 onBlur={onBlur}
-                // onChange={onChange}
-                onChange={async(selectedOption) => {
+                onChange={async (selectedOption) => {
                   onChange(selectedOption)
-                  props?.setValue('receiptCommunesAddress', '')
-                  const responseCommuneDetail = await communeAPIGetAll();
-                  props?.setCommuneDetail(responseCommuneDetail?.data)
+                  props?.setValue('receiverCommune', '')
+                  const communeInDistrict = await communeAPIGetByDistrict(selectedOption?.id)
+                  setListCommunes(communeInDistrict?.data || [])
                 }}
                 value={value}
                 placeholder='Chọn Huyện nhận hàng'
@@ -196,7 +212,7 @@ const Receiver = (props: Props) => {
         }}
       />
       <Controller
-        name='receiptCommunesAddress'
+        name='receiverCommune'
         control={props?.control}
         rules={{
           required: true,
@@ -206,17 +222,20 @@ const Receiver = (props: Props) => {
           return (
             <div
               className={`d-flex align-items-center w-100 mb-3 ${
-                props?.errors?.receiptCommunesAddress && 'border-danger'
+                props?.errors?.receiverCommune && 'border-danger'
               }`}
             >
               <label className='form-label d-block me-5'>Xã nhận hàng</label>
               <Select
                 className={`react-select-styled w-50 ${
-                  props?.errors?.receiptCommunesAddress && 'rounded border border-danger'
+                  props?.errors?.receiverCommune && 'rounded border border-danger'
                 }`}
                 classNamePrefix='react-select text-dark'
-                // isDisabled={!props?.provinceDetail?.districts?.length || !districtDetail?.communes?.length}
-                options={props?.communeDetail}
+                isDisabled={
+                  (!listDistricts?.length || !listCommunes.length) &&
+                  !props.getValues('receiverCommune')
+                }
+                options={listCommunes}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id}
                 onBlur={onBlur}
@@ -227,6 +246,31 @@ const Receiver = (props: Props) => {
             </div>
           )
         }}
+      />
+
+      <Controller
+        control={props?.control}
+        rules={{
+          required: true,
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <InputGroup className='mb-3'>
+            <InputGroup.Text
+              className={`group-text ${props?.errors?.receiverAddress && 'border-danger'}`}
+            >
+              Địa chỉ
+            </InputGroup.Text>
+            <Form.Control
+              className={`text-dark ${props?.errors?.receiverAddress && 'border-danger'}`}
+              aria-label='Default'
+              aria-describedby='inputGroup-sizing-default'
+              onBlur={onBlur}
+              onChange={onChange}
+              value={value}
+            />
+          </InputGroup>
+        )}
+        name='receiverAddress'
       />
     </>
   )

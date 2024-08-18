@@ -1,18 +1,31 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
 import {useState} from 'react'
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom'
 import {KTIcon} from '../../../../helpers'
-import {CreateAppModal, Dropdown1} from '../../../../partials'
 import {useLayout, usePageData} from '../../../core'
-import OrderPage from '../../../../../app/pages/layout-order/ModalOrderPage'
-import { useIntl } from 'react-intl';
+// import OrderPage from '../../../../../app/pages/layout-order/ModalOrderPage'
+import {useIntl} from 'react-intl'
+import ButtonCreate from '../../../../helpers/components/ButtonCreate'
+import SearchData from '../../../../helpers/components/SearchData'
 
 const ToolbarClassic = () => {
-  const {config} = useLayout();
-  const intl = useIntl();
-  const {setShowModalRegion, setShowModalOrder, setShowModalProvince, setShowModalDistrict, setShowModalCommune, setShowModalPackagePrice, setShowModalRegion_Freight_Price, setShowModalRegion_Rate, setShowModalCBM_Rate, setShowModalPackageCBMPrice} = usePageData();
-  const location = useLocation();
+  const {config} = useLayout()
+  const intl = useIntl()
+  const {
+    setShowModalRegion,
+    setShowModalOrder,
+    setShowModalProvince,
+    setShowModalDistrict,
+    setShowModalCommune,
+    setShowModalPackagePrice,
+    setShowModalRegion_Freight_Price,
+    setShowModalRegion_Rate,
+    setShowModalCBM_Rate,
+    setShowModalPackageCBMPrice,
+    setSearchData,
+  } = usePageData()
+  const location = useLocation()
   // console.log('bao showCreateAppModal: ', showCreateAppModal);
   // const [showCreateAppModal, setShowModalOrder] = useState<boolean>(false)
   const daterangepickerButtonClass = config.app?.toolbar?.fixed?.desktop
@@ -55,96 +68,87 @@ const ToolbarClassic = () => {
         </a>
       )}
 
-      {config.app?.toolbar?.primaryButton && location.pathname === '/quan-ly-don-hang/don-hang/phieu-nhan-hang' && (
-        <div
-          onClick={() => (setShowModalOrder && setShowModalOrder(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          Tạo Phiếu nhận hàng
-        </div>
-      )}
+      {config.app?.toolbar?.primaryButton &&
+        location.pathname === '/quan-ly-don-hang/don-hang/phieu-nhan-hang' && (
+          <>
+            <ButtonCreate setData={setShowModalOrder} title={`Tạo Phiếu nhận hàng`} />
+          </>
+        )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/khu-vuc' && (
-        <div
-          onClick={() => (setShowModalRegion && setShowModalRegion(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.KHUVUC'})}`}
-        </div>
+        <>
+          <ButtonCreate
+            setData={setShowModalRegion}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.KHUVUC'})}`}
+          />
+        </>
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/tinh' && (
-        <div
-          onClick={() => (setShowModalProvince && setShowModalProvince(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
-        </div>
+        <>
+          <ButtonCreate
+            setData={setShowModalProvince}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
+          />
+        </>
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/huyen' && (
-        <div
-          onClick={() => (setShowModalDistrict && setShowModalDistrict(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}`}
-        </div>
+        <>
+          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}...`}/>
+          <ButtonCreate
+            setData={setShowModalDistrict}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}`}
+          />
+        </>
       )}
-            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/xa' && (
-        <div
-          onClick={() => (setShowModalCommune && setShowModalCommune(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.XANHANHANG'})}`}
-        </div>
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/xa' && (
+        <>
+          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.XANHANHANG'})}...`}/>
+          <ButtonCreate
+            setData={setShowModalCommune}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.XANHANHANG'})}`}
+          />
+        </>
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/vung' && (
-        <div
-          onClick={() => (setShowModalRegion_Freight_Price && setShowModalRegion_Freight_Price(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.VUNGGIA'})}`}
-        </div>
+        <>
+          <ButtonCreate
+            setData={setShowModalRegion_Freight_Price}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.VUNGGIA'})}`}
+          />
+        </>
       )}
-            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/kg' && (
-        <div
-          onClick={() => (setShowModalRegion_Rate && setShowModalRegion_Rate(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.GIAKG'})}`}
-        </div>
-      )}
-          
-            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/cbm' && (
-        <div
-          onClick={() => (setShowModalCBM_Rate && setShowModalCBM_Rate(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.GIACBM'})}`}
-        </div>
-      )}
-      {/* {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/khoang-cach' && (
-        <div
-          onClick={() => (setShowModalDistance && setShowModalDistance(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.KHOANGCACH'})}`}
-        </div>
-      )} */}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/thuong' && (
-        <div
-          onClick={() => (setShowModalPackagePrice && setShowModalPackagePrice(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}`}
-        </div>
-      )}
-            {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/cbm' && (
-        <div
-          onClick={() => (setShowModalPackageCBMPrice && setShowModalPackageCBMPrice(true))}
-          className='btn btn-sm fw-bold btn-primary'
-        >
-          {`Tạo ${intl.formatMessage({id: 'MENU.DONGGOICBM'})}`}
-        </div>
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/kg' && (
+        <>
+          <ButtonCreate
+            setData={setShowModalRegion_Rate}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.GIAKG'})}`}
+          />
+        </>
       )}
 
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/cbm' && (
+        <>
+          <ButtonCreate
+            setData={setShowModalCBM_Rate}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.GIACBM'})}`}
+          />
+        </>
+      )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/thuong' && (
+        <>
+          <ButtonCreate
+            setData={setShowModalPackagePrice}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.DONGGOITHUONG'})}`}
+          />
+        </>
+      )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/dong-goi/cbm' && (
+        <>
+          <ButtonCreate
+            setData={setShowModalPackageCBMPrice}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.DONGGOICBM'})}`}
+          />
+        </>
+      )}
     </div>
   )
 }

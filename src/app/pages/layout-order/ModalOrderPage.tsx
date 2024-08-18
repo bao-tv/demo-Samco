@@ -21,8 +21,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { number } from 'yup';
 import { provinceLiteAPIGetById } from '../../../apis/provinceAPI';
+import { receiptCreatedAPI, receiptEditAPIByID } from '../../../apis/receiptAPI';
 
-const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
+type Props = {
+  title: string,
+  refreshData?: any,
+  handleClose?: any,
+}
+
+const ModalOrderPage = (props: Props) => {
   const [provinceDetail, setProvinceDetail] = useState<any>([]);
   const [communeDetail, setCommuneDetail] = useState<any>([]);
   const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number);
@@ -35,37 +42,38 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const { control, watch, setValue, getValues, handleSubmit, clearErrors, formState: { errors }, } = useForm<IFormInput>({
     mode: 'all',
     defaultValues: {
+      id: showModalOrder.id || 0,
       sendDate: showModalOrder.sendDate || new Date(),
-      sendName: showModalOrder.sendName || '',
-      sendIdPer: showModalOrder.sendIdPer || '',
-      sendPhone: showModalOrder.sendPhone || '',
-      sendAddress: showModalOrder.sendAddress || '',
+      senderName: showModalOrder.senderName || '',
+      senderIdCard: showModalOrder.senderIdCard || '',
+      senderAddress: showModalOrder.senderAddress || '',
+      senderPhone: showModalOrder.senderPhone || '',
 
       receiptDate: receiptDate,
-      receiptName: showModalOrder.receiptName || '',
-      receiptIdPer: showModalOrder.receiptIdPer || '',
-      receiptPhone: showModalOrder.receiptPhone || '',
-      receiptProvincesAddress: showModalOrder.receiptProvincesAddress || '',
-      receiptDistrictsAddress: showModalOrder.receiptDistrictsAddress || '',
-      receiptCommunesAddress: showModalOrder.receiptCommunesAddress || '',
+      receiverName: showModalOrder.receiverName || '',
+      receiverIdCard: showModalOrder.receiverIdCard || '',
+      receiverPhone: showModalOrder.receiverPhone || '',
+      receiverProvince: showModalOrder.receiverProvince || '',
+      receiverDistrict: showModalOrder.receiverDistrict || '',
+      receiverCommune: showModalOrder.receiverCommune || '',
+      receiverAddress: showModalOrder.receiverAddress || '',
       
-      packageName: showModalOrder.packageName || '',
-      // vehicle: showModalOrder.vehicle || '',
-      packageValue: showModalOrder.packageValue || 0,
-      packageLength: showModalOrder.packageLength || 0,
-      packageWidth: showModalOrder.packageWidth || 0,
-      packageHeight: showModalOrder.packageHeight || 0,
-      packageWeight: showModalOrder.packageWeight || 0,
-      fragile: showModalOrder.fragile || false,
-      packageQuantity: showModalOrder.packageQuantity || 1,
+      itemName: showModalOrder.itemName || '',
+      itemValue: showModalOrder.itemValue || 0,
+      itemLength: showModalOrder.itemLength || 0,
+      itemWeight: showModalOrder.itemWeight || 0,
+      itemHeight: showModalOrder.itemHeight || 0,
+      itemWidth: showModalOrder.itemWidth || 0,
+      itemFragile: showModalOrder.itemFragile || false,
+      itemQuantity: showModalOrder.itemQuantity || 1,
       shipName: showModalOrder.shipName || '',
-      price: showModalOrder.price || 0,
-      coefficient: showModalOrder.coefficient || '',
+
+      serviceFee: showModalOrder.serviceFee || 0,
       packagingService: showModalOrder?.packagingService,
-      numberOfPackagingService: showModalOrder?.numberOfPackagingService || 1,
+      packagingServiceQuantity: showModalOrder?.packagingServiceQuantity || 1,
       packagingServiceData: showModalOrder?.packagingServiceData,
-      packagingServicePrice: showModalOrder?.packagingServicePrice?.price || 0,
-      totalPrice: showModalOrder.totalPrice || 0,
+      packagingServiceFee: showModalOrder?.packagingServiceFee?.price || 0,
+      totalAmount: showModalOrder.totalAmount || 0,
       indexRow: showModalOrder.indexRow || (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1),
      },
      shouldUnregister: false,
@@ -76,27 +84,27 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
     setRowDataCouponReciept && setRowDataCouponReciept({...dataForm, indexRow: (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1)});
   }
   // handle form ====================
-  const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
-    console.log('bao data: ', data);
-    if (!showModalOrder.indexRow) {
-      setRowDataOrder && await setRowDataOrder((prevRowData: any) => [...prevRowData, data]);
-    } else {
-      const cloneRowData = _.cloneDeep(rowDataOrder);
-      // console.log('bao cloneRowData: ', cloneRowData);
-
-      const updateRowData = cloneRowData?.map(item => {
-        if (item.indexRow === data.indexRow) return data;
-        return item
-      });
-      setRowDataOrder && setRowDataOrder(updateRowData);
-    }
-    ToastSuccess(showModalOrder.indexRow ? 'Cập nhật thành công' : 'Tạo mới thành công')
-    handleClose();
-    clearErrors();
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    // console.log('bao data: ', data);
+    try{
+      if(data?.id) {
+        await receiptEditAPIByID(data);
+        ToastSuccess("Bạn đã cập nhật thành công");
+      } else {
+        await receiptCreatedAPI(data);
+        ToastSuccess("Bạn đã tạo mới thành công");
+      }
+      props.refreshData();
+      props.handleClose();
+      clearErrors();
+    }catch (err) {
+    ToastError("Có lỗi xảy ra!");
   }
+}
 
   const onErrors = async (e: any) => {
     // setShowModalPreImport(true);
+    console.log('bao e: ', e)
     if (Object.keys(e).length) {
       ToastError("Bạn nhập thiếu thông tin!");
     }
@@ -105,10 +113,11 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const  IsolateReRenderPriceService: any = ({ control }: any) => {
     const dataInput: any = useWatch({
       control,
-      name: ['packageLength', 'packageWidth', 'packageHeight', 'packageWeight', 'packageQuantity', 'fragile', 'receiptCommunesAddress', 'receiptProvincesAddress', 'packageValue']
+      name: ['itemLength', 'itemWeight', 'itemHeight', 'itemWidth', 'itemQuantity', 'itemFragile', 'receiverCommune', 'receiverProvince', 'itemValue']
     })
-    console.log('bao data: ', dataInput)
-    const [province, setProvince] = useState<any>({})
+    // console.log('bao data: ', dataInput)
+    const [province, setProvince] = useState<any>({});
+    // console.log('bao province: ', province);
     useEffect(() => {
       const fetchProvinceData = async () => {
         if (dataInput[7]?.id) {
@@ -124,7 +133,6 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       fetchProvinceData();
     }, [dataInput[7]?.id]);
     
-    // const priceByKGObjectForVehicle: any = priceVehicleData.filter(item => item.distance_code === data[2]?.value)
     let pri: any = 0;
     const calPackageFragile = () => {
       const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
@@ -141,40 +149,40 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
       if (dataInput[5]) {
         calObjPackageFragile = calPackageFragile();
       }
-      const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0));
+      const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0, +province?.regionFreightPrice?.label));
       const KGConvert = (+dataInput[0] * +dataInput[1] * +dataInput[2])*3/10000 + (calObjPackageFragile?.additionalWeightAfterPacking || 0);
       // console.log('bao KGConvert: ', KGConvert)
-      const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert);
+      const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert, +province?.regionFreightPrice?.label);
       const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
       // console.log('bao CBM: ', CBM)
       const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);   
-      // console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
+      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
       // console.log('bao ', NumberConverterRejectSystax(dataInput[8]) )
       const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
       pri = getMaxValue([priByKG*1.08, priKGConvert*1.08, priByCBM]) * (dataInput[6]?.shipmentType === "Nội Tuyến" ? 1 : 1.25)*+dataInput[4] + (+valuePackage > 1000000 ? (+valuePackage - 1000000)*0.05 : 0);
-      setValue("price", pri);
+      setValue("serviceFee", pri);
     }
     return (
       <Controller
         control={control}
         render={({ field: { onChange, onBlur, value } }) => (
           <InputGroup className="mb-3">
-            <InputGroup.Text className={`group-text ${errors?.price && 'border-danger'}`}>
+            <InputGroup.Text className={`group-text ${errors?.serviceFee && 'border-danger'}`}>
               Giá dịch vụ
             </InputGroup.Text>
             <NumericFormat
               value={pri}
-              className={`text-dark ${errors?.price && 'border-danger'} form-control`}
+              className={`text-dark ${errors?.serviceFee && 'border-danger'} form-control`}
               onBlur={onBlur}
               onChange={onChange}
               allowLeadingZeros thousandSeparator=","
               disabled
               decimalScale={0}
             />
-            <InputGroup.Text className={`${errors?.price && 'border-danger'}`}>VND</InputGroup.Text>
+            <InputGroup.Text className={`${errors?.serviceFee && 'border-danger'}`}>VND</InputGroup.Text>
           </InputGroup>
           )}
-        name='price'
+        name='serviceFee'
       />
     )
   }
@@ -195,7 +203,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
         const isExists = packagingServiceData.some(item => item.code === clonepackagingService.code);
         
         // If packagingService doesn't exist, add it to packagingServiceData
-        const number = _.cloneDeepWith(+getValues("numberOfPackagingService"));
+        const number = _.cloneDeepWith(+getValues("packagingServiceQuantity"));
         if (!isExists) {
           setPackagingServiceData(prevData => [...prevData, {...clonepackagingService, quality: number}]);
           setValue('packagingService', '');
@@ -256,17 +264,17 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
     // Calculate the price based on the watched fields
     const priPackageService = useWatch({
       control,
-      name: ['fragile', 'packageQuantity'],
+      name: ['itemFragile', 'itemQuantity'],
     });
     // console.log('bao priPackageByCBM: ', priPackageByCBM)
     let calculatedPrice: number = 0
     packagingServiceData.length && packagingServiceData?.forEach((item: any) => calculatedPrice += (+item.price * +item.quality));
-    setValue("packagingServicePrice", (+calculatedPrice + (priPackageService[0] ? priPackageByCBM?.price : 0))*+priPackageService[1])
+    setValue("packagingServiceFee", (+calculatedPrice + (priPackageService[0] ? priPackageByCBM?.price : 0))*+priPackageService[1])
     // console.log('bao +calculatedPrice + (priPackageByCBM?.price || 0): ', +calculatedPrice + ([0] ? priPackageByCBM?.price : 0))
     return (
       <Controller
         control={control}
-        name="packagingServicePrice"
+        name="packagingServiceFee"
         rules={{
           required: true,
           min: 0
@@ -274,13 +282,13 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
         render={({ field: { onChange, onBlur, value } }) => (
           <div className='d-flex justify-content-center align-items-center'>
             <InputGroup className="mb-3">
-              <InputGroup.Text className={`group-text ${errors?.packagingServicePrice && 'border-danger'}`}>
+              <InputGroup.Text className={`group-text ${errors?.packagingServiceFee && 'border-danger'}`}>
                 Giá dịch vụ đóng gói
               </InputGroup.Text>
               <NumericFormat
                 value={value}
                 disabled
-                className={`text-dark ${errors?.packagingServicePrice && 'border-danger'} form-control`}
+                className={`text-dark ${errors?.packagingServiceFee && 'border-danger'} form-control`}
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
                 onBlur={onBlur}
@@ -288,7 +296,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
                 allowLeadingZeros thousandSeparator=","
                 decimalScale={0}
               />
-              <InputGroup.Text className={`${errors?.packagingServicePrice && 'border-danger'}`}>VND</InputGroup.Text>
+              <InputGroup.Text className={`${errors?.packagingServiceFee && 'border-danger'}`}>VND</InputGroup.Text>
             </InputGroup>
           </div>
         )}
@@ -299,12 +307,10 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
   const  IsolateReRenderTotalPrice: React.FC<{ control: any }> = ({ control }) => {
     const data: any = useWatch({
       control: control,
-      name: ['price', 'packagingServicePrice'],
+      name: ['serviceFee', 'packagingServiceFee'],
       exact: true,
     })
-    // console.log('bao data: ', data)
-    // setValue("sendPay", data[1]*data[0].code + data[2]);
-    setValue("totalPrice", data[0] + data[1]);
+    setValue("totalAmount", data[0] + data[1]);
     return (
       <Controller
         control={control}
@@ -315,13 +321,13 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
         }}
         render={({ field: { onChange, onBlur, value } }) => (
         <InputGroup className="mb-3">
-            <InputGroup.Text className={`group-text ${errors?.totalPrice && 'border-danger'}`}>
+            <InputGroup.Text className={`group-text ${errors?.totalAmount && 'border-danger'}`}>
               Tổng tiền
             </InputGroup.Text>
             <NumericFormat
                 value={value}
                 disabled
-                className={`text-dark ${errors?.totalPrice && 'border-danger'} form-control`}
+                className={`text-dark ${errors?.totalAmount && 'border-danger'} form-control`}
                 // type='number'
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
@@ -333,7 +339,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
             <InputGroup.Text>VND</InputGroup.Text>
         </InputGroup>
         )}
-        name='totalPrice'
+        name='totalAmount'
       />
     )
   }
@@ -345,7 +351,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
           <Sender control={control} errors={errors} />
         </div>
         <div className='group card p-5 pt-0 ms-3'>
-          <Receiver control={control} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} setCommuneDetail={setCommuneDetail} communeDetail={communeDetail} />
+          <Receiver control={control} getValues={getValues} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} setCommuneDetail={setCommuneDetail} communeDetail={communeDetail} />
         </div>
         <div className='group card p-5 pt-0 me-3'>
           <Parcelnformation control={control} errors={errors} watch={watch}/>
@@ -368,25 +374,27 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value}
+                      getOptionLabel={(option) => option.name}
+                      getOptionValue={(option) => option.id}
                       placeholder='Chọn dịch vụ đóng gói'
                     />
                   </div>
                   )}
               />
               <Controller
-                name="numberOfPackagingService"
+                name="packagingServiceQuantity"
                 control={control}
                 rules={{
                   required: true,
                   // min: 1
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <div className={`d-flex align-items-center w-25 mb-3 ${errors?.numberOfPackagingService && 'border-danger'}`}>
+                  <div className={`d-flex align-items-center w-25 mb-3 ${errors?.packagingServiceQuantity && 'border-danger'}`}>
                   {/* <span className='ms-3'>x</span> */}
                   <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
                     <InputGroup className='ms-3 w-100'>
                       <Form.Control
-                          className={`text-dark ${errors?.numberOfPackagingService && 'border-danger'}`}
+                          className={`text-dark ${errors?.packagingServiceQuantity && 'border-danger'}`}
                           type='number'
                           aria-label="Default"
                           aria-describedby="inputGroup-sizing-default"
@@ -418,7 +426,7 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
           </div> */}
           <div>
             {/* <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button> */}
-            <Button type="submit" className="btn btn-primary">{showModalOrder.indexRow ? 'Cập nhật' : 'Tạo mới'}</Button>
+            <Button type="submit" className="btn btn-primary">{showModalOrder.id ? 'Cập nhật' : 'Tạo mới'}</Button>
           </div>
         </div>
       </div>
@@ -427,4 +435,3 @@ const ModalOrderPage: React.FC<any> = ({handleClose, title}: any) => {
 }
 
 export default ModalOrderPage
-

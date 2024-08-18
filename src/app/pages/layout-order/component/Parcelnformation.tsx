@@ -22,12 +22,12 @@ const Parcelnformation = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.packageName && 'border-danger'}`}
+              className={`group-text ${props?.errors?.itemName && 'border-danger'}`}
             >
               Tên hàng
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.packageName && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.itemName && 'border-danger'}`}
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
               onBlur={onBlur}
@@ -36,11 +36,11 @@ const Parcelnformation = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='packageName'
+        name='itemName'
       />
 
       <Controller
-        name='packageValue'
+        name='itemValue'
         control={props?.control}
         rules={{
           required: true,
@@ -48,19 +48,19 @@ const Parcelnformation = (props: Props) => {
         render={({field: {onChange, onBlur, value}}: any) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.packageValue && 'border-danger'}`}
+              className={`group-text ${props?.errors?.itemValue && 'border-danger'}`}
             >
               Trị giá
             </InputGroup.Text>
             <NumericFormat
               value={value}
-              className={`text-dark ${props?.errors?.packageValue && 'border-danger'} form-control`}
+              className={`text-dark ${props?.errors?.itemValue && 'border-danger'} form-control`}
               onBlur={onBlur}
               onChange={onChange}
               allowLeadingZeros
               thousandSeparator=','
             />
-            <InputGroup.Text className={`${props?.errors?.packageValue && 'border-danger'}`}>
+            <InputGroup.Text className={`${props?.errors?.itemValue && 'border-danger'}`}>
               VND
             </InputGroup.Text>
           </InputGroup>
@@ -69,7 +69,7 @@ const Parcelnformation = (props: Props) => {
 
       <div className='d-flex'>
         <Controller
-          name='packageLength'
+          name='itemLength'
           control={props?.control}
           rules={{
             required: true,
@@ -77,11 +77,11 @@ const Parcelnformation = (props: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3 me-3'>
-              <InputGroup.Text className={`${props?.errors?.packageLength && 'border-danger'}`}>
+              <InputGroup.Text className={`${props?.errors?.itemLength && 'border-danger'}`}>
                 Dài
               </InputGroup.Text>
               <Form.Control
-                className={`text-dark ${props?.errors?.packageLength && 'border-danger'}`}
+                className={`text-dark ${props?.errors?.itemLength && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
                 aria-describedby='inputGroup-sizing-default'
@@ -93,7 +93,7 @@ const Parcelnformation = (props: Props) => {
           )}
         />
         <Controller
-          name='packageWidth'
+          name='itemWidth'
           control={props?.control}
           rules={{
             required: true,
@@ -101,11 +101,11 @@ const Parcelnformation = (props: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3  me-3'>
-              <InputGroup.Text className={`${props?.errors?.packageWidth && 'border-danger'}`}>
+              <InputGroup.Text className={`${props?.errors?.itemWidth && 'border-danger'}`}>
                 Rộng
               </InputGroup.Text>
               <Form.Control
-                className={`text-dark ${props?.errors?.packageWidth && 'border-danger'}`}
+                className={`text-dark ${props?.errors?.itemWidth && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
                 aria-describedby='inputGroup-sizing-default'
@@ -117,7 +117,7 @@ const Parcelnformation = (props: Props) => {
           )}
         />
         <Controller
-          name='packageHeight'
+          name='itemHeight'
           control={props?.control}
           rules={{
             required: true,
@@ -125,11 +125,11 @@ const Parcelnformation = (props: Props) => {
           }}
           render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3'>
-              <InputGroup.Text className={`${props?.errors?.packageHeight && 'border-danger'}`}>
+              <InputGroup.Text className={`${props?.errors?.itemHeight && 'border-danger'}`}>
                 Cao
               </InputGroup.Text>
               <Form.Control
-                className={`text-dark ${props?.errors?.packageHeight && 'border-danger'}`}
+                className={`text-dark ${props?.errors?.itemHeight && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
                 aria-describedby='inputGroup-sizing-default'
@@ -143,7 +143,7 @@ const Parcelnformation = (props: Props) => {
       </div>
 
       <Controller
-        name='packageWeight'
+        name='itemWeight'
         control={props?.control}
         rules={{
           required: true,
@@ -152,12 +152,12 @@ const Parcelnformation = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.packageWeight && 'border-danger'}`}
+              className={`group-text ${props?.errors?.itemWeight && 'border-danger'}`}
             >
               Trọng lượng
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.packageWeight && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.itemWeight && 'border-danger'}`}
               type='number'
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
@@ -166,7 +166,7 @@ const Parcelnformation = (props: Props) => {
               value={value}
             />
             <InputGroup.Text
-              className={`${props?.errors?.packageWeight && 'border-danger'}`}
+              className={`${props?.errors?.itemWeight && 'border-danger'}`}
               style={{padding: '0.75rem 1.45rem'}}
             >
               KG
@@ -178,23 +178,29 @@ const Parcelnformation = (props: Props) => {
       <div className='d-flex'>
         <Controller
           control={props?.control}
-          render={({field: {onChange, onBlur, value}}) => (
-            <InputGroup className='mb-3 w-50'>
-              <Form.Check // prettier-ignore
-                type='checkbox'
-                id={`default-checkbox`}
-                label='Hàng dễ vỡ'
-                onBlur={onBlur}
-                onChange={onChange}
-                value={value}
-              />
-            </InputGroup>
-          )}
-          name='fragile'
+          render={({field: {onChange, onBlur, value}}) => {
+            console.log('bao value itemFragile: ', value)
+            return (
+              <InputGroup className='mb-3 w-50'>
+                <Form.Check // prettier-ignore
+                  type='checkbox'
+                  id={`default-checkbox`}
+                  label='Hàng dễ vỡ'
+                  onBlur={onBlur}
+                  onChange={onChange}
+                  value={value}
+                  checked={value}
+                />
+              </InputGroup>
+            )
+          }
+          
+        }
+          name='itemFragile'
         />
 
         <Controller
-          name='packageQuantity'
+          name='packagingServiceQuantity'
           control={props?.control}
           rules={{
             required: true,
@@ -203,12 +209,12 @@ const Parcelnformation = (props: Props) => {
           render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3'>
               <InputGroup.Text
-                className={`group-text ${props?.errors?.packageQuantity && 'border-danger'}`}
+                className={`group-text ${props?.errors?.packagingServiceQuantity && 'border-danger'}`}
               >
                 Số kiện
               </InputGroup.Text>
               <Form.Control
-                className={`text-dark ${props?.errors?.packageQuantity && 'border-danger'}`}
+                className={`text-dark ${props?.errors?.packagingServiceQuantity && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
                 aria-describedby='inputGroup-sizing-default'

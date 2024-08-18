@@ -18,11 +18,11 @@ const Sender = (props: Props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
-            <InputGroup.Text className={`group-text ${props?.errors?.sendName && 'border-danger'}`}>
+            <InputGroup.Text className={`group-text ${props?.errors?.senderName && 'border-danger'}`}>
               Họ tên
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.sendName && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.senderName && 'border-danger'}`}
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
               onBlur={onBlur}
@@ -31,7 +31,7 @@ const Sender = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='sendName'
+        name='senderName'
       />
 
       <Controller
@@ -42,12 +42,12 @@ const Sender = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.sendIdPer && 'border-danger'}`}
+              className={`group-text ${props?.errors?.senderIdCard && 'border-danger'}`}
             >
               Số CCCD
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.sendIdPer && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.senderIdCard && 'border-danger'}`}
               type='number'
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
@@ -57,7 +57,7 @@ const Sender = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='sendIdPer'
+        name='senderIdCard'
       />
 
       <Controller
@@ -68,12 +68,12 @@ const Sender = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.sendPhone && 'border-danger'}`}
+              className={`group-text ${props?.errors?.senderPhone && 'border-danger'}`}
             >
               Điện thoại
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.sendPhone && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.senderPhone && 'border-danger'}`}
               type='number'
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
@@ -83,7 +83,7 @@ const Sender = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='sendPhone'
+        name='senderPhone'
       />
 
       <Controller
@@ -94,12 +94,12 @@ const Sender = (props: Props) => {
         render={({field: {onChange, onBlur, value}}) => (
           <InputGroup className='mb-3'>
             <InputGroup.Text
-              className={`group-text ${props?.errors?.sendAddress && 'border-danger'}`}
+              className={`group-text ${props?.errors?.senderAddress && 'border-danger'}`}
             >
               Địa chỉ
             </InputGroup.Text>
             <Form.Control
-              className={`text-dark ${props?.errors?.sendAddress && 'border-danger'}`}
+              className={`text-dark ${props?.errors?.senderAddress && 'border-danger'}`}
               aria-label='Default'
               aria-describedby='inputGroup-sizing-default'
               onBlur={onBlur}
@@ -108,7 +108,7 @@ const Sender = (props: Props) => {
             />
           </InputGroup>
         )}
-        name='sendAddress'
+        name='senderAddress'
       />
     </>
   )

@@ -7,15 +7,21 @@ import {useSelector} from 'react-redux'
 import {useIntl} from 'react-intl'
 import Select from 'react-select'
 import {districtCreatedAPI, districtEditAPIByID} from '../../../apis/districtAPI'
-import { regionAPIGetAll } from '../../../apis/regionAPI'
-import { useEffect } from 'react'
-import { region_priceCreatedAPI, region_priceEditAPIByID } from '../../../apis/region-priceAPI'
+import {regionAPIGetAll} from '../../../apis/regionAPI'
+import {useEffect} from 'react'
+import {region_priceCreatedAPI, region_priceEditAPIByID} from '../../../apis/region-priceAPI'
 
 type Props = {}
 
 const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
   const intl = useIntl()
-  const {dataModalRegion_Freight_Price, setShowModalRegion_Freight_Price, setDataModalRegion_Freight_Price, listRegions, setListRegions} = usePageData()
+  const {
+    dataModalRegion_Freight_Price,
+    setShowModalRegion_Freight_Price,
+    setDataModalRegion_Freight_Price,
+    listRegions,
+    setListRegions,
+  } = usePageData()
   const {
     control,
     handleSubmit,
@@ -29,6 +35,7 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
       deliveryTime: dataModalRegion_Freight_Price.deliveryTime || '',
       discount: dataModalRegion_Freight_Price.discount || '',
       proposal: dataModalRegion_Freight_Price.proposal || '',
+      label: dataModalRegion_Freight_Price.label || '',
       region: dataModalRegion_Freight_Price.region || 0,
       id: dataModalRegion_Freight_Price.id || 0,
     },
@@ -36,24 +43,23 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
   })
 
   // const {listProvince} = useSelector((state: any) => state.provinces)
-    // get list Region
-    const getListRegions = async () => {
-      try {
-        const response = await regionAPIGetAll()
-        response.status === 'OK' && setListRegions && setListRegions(response?.data)
-      } catch (error) {
-        ToastError('Có lỗi xả ra!')
-      }
+  // get list Region
+  const getListRegions = async () => {
+    try {
+      const response = await regionAPIGetAll()
+      response.status === 'OK' && setListRegions && setListRegions(response?.data)
+    } catch (error) {
+      ToastError('Có lỗi xả ra!')
     }
-    useEffect(() => {
-      getListRegions()
-    }, [])
+  }
+  useEffect(() => {
+    getListRegions()
+  }, [])
   const onSubmit: SubmitHandler<IFormRegionsInput> = async (data: IFormRegionsInput) => {
     const region_priceObjConvert = {
       ...data,
       province: {id: data.region.id || data.region},
     }
-    console.log('bao region_priceObjConvert: ', region_priceObjConvert)
     try {
       if (region_priceObjConvert.id) {
         await region_priceEditAPIByID(region_priceObjConvert)
@@ -125,14 +131,16 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               name='code'
             />
 
-<Controller
+            <Controller
               control={control}
               rules={{
                 required: true,
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <InputGroup className='mb-3'>
-                  <InputGroup.Text className={`group-text ${errors?.deliveryTime && 'border-danger'}`}>
+                  <InputGroup.Text
+                    className={`group-text ${errors?.deliveryTime && 'border-danger'}`}
+                  >
                     Thời gian dự kiến giao
                   </InputGroup.Text>
                   <Form.Control
@@ -147,12 +155,36 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               )}
               name='deliveryTime'
             />
+
             <Controller
               control={control}
               rules={{
                 required: true,
-                min: 0.1,
+                min: 0.01,
               }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InputGroup className='mb-3'>
+                  <InputGroup.Text className={`group-text ${errors?.label && 'border-danger'}`}>
+                    Bước nhảy giá
+                  </InputGroup.Text>
+                  <Form.Control
+                    className={`text-dark ${errors?.label && 'border-danger'}`}
+                    aria-label='Default'
+                    aria-describedby='inputGroup-sizing-default'
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                  />
+                </InputGroup>
+              )}
+              name='label'
+            />
+            <Controller
+              control={control}
+              // rules={{
+              //   required: true,
+              //   min: 0.1,
+              // }}
               render={({field: {onChange, onBlur, value}}) => (
                 <InputGroup className='mb-3'>
                   <p className='fs-5 group-text align-content-center'>Thuộc Khu vực</p>
@@ -175,9 +207,9 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
             />
             <Controller
               control={control}
-              rules={{
-                required: true,
-              }}
+              // rules={{
+              //   required: true,
+              // }}
               render={({field: {onChange, onBlur, value}}) => (
                 <InputGroup className='mb-3'>
                   <InputGroup.Text className={`group-text ${errors?.discount && 'border-danger'}`}>
@@ -191,8 +223,8 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
                     onChange={onChange}
                     value={value}
                   />
-                  <InputGroup.Text 
-                    className={`${errors?.discount && 'border-danger'}` }
+                  <InputGroup.Text
+                    className={`${errors?.discount && 'border-danger'}`}
                     style={{padding: '0.75rem 1.45rem'}}
                   >
                     %
@@ -202,7 +234,7 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               name='discount'
             />
 
-<Controller
+            <Controller
               control={control}
               // rules={{
               //   required: true,
@@ -224,7 +256,6 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               )}
               name='proposal'
             />
-
           </>
         </div>
       </div>
