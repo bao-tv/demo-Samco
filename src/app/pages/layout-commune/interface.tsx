@@ -96,11 +96,3 @@ export   const columnDefsCommunesSetupPage: ColDef[] = [
     district?: Array<object> | any,
     id: number,
   }
-
-  export interface IFormSearch {
-    searchCriteria?: any,
-    page: number,
-    pageSize: number,
-    direction: string,
-    sortBy: string,
-  }

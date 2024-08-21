@@ -84,6 +84,7 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/tinh' && (
         <>
+          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}...`}/>
           <ButtonCreate
             setData={setShowModalProvince}
             title={`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
@@ -118,6 +119,7 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/kg' && (
         <>
+          {/* <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.VUNGGIA'})}...`}/> */}
           <ButtonCreate
             setData={setShowModalRegion_Rate}
             title={`Tạo ${intl.formatMessage({id: 'MENU.GIAKG'})}`}
@@ -127,6 +129,7 @@ const ToolbarClassic = () => {
 
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/gia/cbm' && (
         <>
+          {/* <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.GIACBM'})}...`}/> */}
           <ButtonCreate
             setData={setShowModalCBM_Rate}
             title={`Tạo ${intl.formatMessage({id: 'MENU.GIACBM'})}`}

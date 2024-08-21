@@ -37,7 +37,6 @@ const ModalShowAndAddDistrict = (props: Props) => {
       ...data,
       province: {id: data.province.id || data.province},
     }
-    console.log('bao districtObjConvert: ', districtObjConvert)
     try {
       if (districtObjConvert.id) {
         await districtEditAPIByID(districtObjConvert)

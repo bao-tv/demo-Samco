@@ -10,6 +10,11 @@ export const region_rateAPIGetAll = async () => {
     return data;
 };
 
+export const region_rateAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/region-rate/search/', value);
+    return data;
+};
+
 export const region_rateAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/region-rate/${id}`);
     return data;

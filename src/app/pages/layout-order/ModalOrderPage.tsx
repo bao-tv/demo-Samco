@@ -1,45 +1,59 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
-import React, {useEffect, useState, useRef} from 'react'
-import Select, { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
+import React, {useEffect, useState} from 'react'
+import Select from 'react-select'
 // import { ColourOption, colourOptions } from '../data';
-import { useForm, SubmitHandler, Controller, useWatch } from "react-hook-form"
-import {InputGroup, Button, Form, OverlayTrigger } from 'react-bootstrap';
-import { IFormInput } from './component/interface';
-import { usePageData } from '../../../_metronic/layout/core';
-import ToastError, { ToastSuccess } from '../../../_metronic/helpers/crud-helper/Toast';
-import dayjs from 'dayjs';
-import { calculatePriceByKG, calculatePriceByCBM, renderTooltip, calculatePricePackageByCBM, getMaxValue, NumberConverterRejectSystax } from '../../../_metronic/helpers';
-import _, { cloneDeep } from 'lodash';
-import { NumericFormat } from 'react-number-format';
-import { useIntl } from 'react-intl';
-import Sender from './component/Sender';
-import Receiver from './component/Receiver';
-import Parcelnformation from './component/Parcelnformation';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
-import { number } from 'yup';
-import { provinceLiteAPIGetById } from '../../../apis/provinceAPI';
-import { receiptCreatedAPI, receiptEditAPIByID } from '../../../apis/receiptAPI';
+import {useForm, SubmitHandler, Controller, useWatch} from 'react-hook-form'
+import {InputGroup, Button, Form, OverlayTrigger} from 'react-bootstrap'
+import {IFormInput} from './component/interface'
+import {usePageData} from '../../../_metronic/layout/core'
+import ToastError, {ToastSuccess} from '../../../_metronic/helpers/crud-helper/Toast'
+import dayjs from 'dayjs'
+import {
+  calculatePriceByKG,
+  calculatePriceByCBM,
+  renderTooltip,
+  calculatePricePackageByCBM,
+  getMaxValue,
+  NumberConverterRejectSystax,
+} from '../../../_metronic/helpers'
+import _ from 'lodash'
+import {NumericFormat} from 'react-number-format'
+import Sender from './component/Sender'
+import Receiver from './component/Receiver'
+import Parcelnformation from './component/Parcelnformation'
+import {useSelector} from 'react-redux'
+import {RootState} from '../../../store'
+import {number} from 'yup'
+import {provinceLiteAPIGetById} from '../../../apis/provinceAPI'
+import {receiptCreatedAPI, receiptEditAPIByID} from '../../../apis/receiptAPI'
 
 type Props = {
-  title: string,
-  refreshData?: any,
-  handleClose?: any,
+  title: string
+  refreshData?: any
+  handleClose?: any
 }
 
 const ModalOrderPage = (props: Props) => {
-  const [provinceDetail, setProvinceDetail] = useState<any>([]);
-  const [communeDetail, setCommuneDetail] = useState<any>([]);
-  const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number);
+  const [provinceDetail, setProvinceDetail] = useState<any>([])
+  const [communeDetail, setCommuneDetail] = useState<any>([])
+  const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number)
   const {listPackagesPrice} = useSelector((state: RootState) => state.packagesPrice)
   const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
 
-  const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData();
-  const receiptDate = dayjs().add(3, 'day').toDate();
+  const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData()
+  const receiptDate = dayjs().add(3, 'day').toDate()
 
-  const { control, watch, setValue, getValues, handleSubmit, clearErrors, formState: { errors }, } = useForm<IFormInput>({
+  const {
+    control,
+    watch,
+    setValue,
+    getValues,
+    handleSubmit,
+    clearErrors,
+    formState: {errors},
+  } = useForm<IFormInput>({
     mode: 'all',
     defaultValues: {
       id: showModalOrder.id || 0,
@@ -57,7 +71,7 @@ const ModalOrderPage = (props: Props) => {
       receiverDistrict: showModalOrder.receiverDistrict || '',
       receiverCommune: showModalOrder.receiverCommune || '',
       receiverAddress: showModalOrder.receiverAddress || '',
-      
+
       itemName: showModalOrder.itemName || '',
       itemValue: showModalOrder.itemValue || 0,
       itemLength: showModalOrder.itemLength || 0,
@@ -75,98 +89,127 @@ const ModalOrderPage = (props: Props) => {
       packagingServiceFee: showModalOrder?.packagingServiceFee?.price || 0,
       totalAmount: showModalOrder.totalAmount || 0,
       indexRow: showModalOrder.indexRow || (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1),
-     },
-     shouldUnregister: false,
-    })
+    },
+    shouldUnregister: false,
+  })
 
   const handleShowPreImport: any = () => {
-    const dataForm:any = getValues();
-    setRowDataCouponReciept && setRowDataCouponReciept({...dataForm, indexRow: (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1)});
+    const dataForm: any = getValues()
+    setRowDataCouponReciept &&
+      setRowDataCouponReciept({
+        ...dataForm,
+        indexRow: rowDataOrder?.length ? rowDataOrder?.length + 1 : 1,
+      })
   }
   // handle form ====================
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     // console.log('bao data: ', data);
-    try{
-      if(data?.id) {
-        await receiptEditAPIByID(data);
-        ToastSuccess("Bạn đã cập nhật thành công");
+    try {
+      if (data?.id) {
+        await receiptEditAPIByID(data)
+        ToastSuccess('Bạn đã cập nhật thành công')
       } else {
-        await receiptCreatedAPI(data);
-        ToastSuccess("Bạn đã tạo mới thành công");
+        await receiptCreatedAPI(data)
+        ToastSuccess('Bạn đã tạo mới thành công')
       }
-      props.refreshData();
-      props.handleClose();
-      clearErrors();
-    }catch (err) {
-    ToastError("Có lỗi xảy ra!");
+      props.refreshData()
+      props.handleClose()
+      clearErrors()
+    } catch (err) {
+      ToastError('Có lỗi xảy ra!')
+    }
   }
-}
 
   const onErrors = async (e: any) => {
     // setShowModalPreImport(true);
     console.log('bao e: ', e)
     if (Object.keys(e).length) {
-      ToastError("Bạn nhập thiếu thông tin!");
+      ToastError('Bạn nhập thiếu thông tin!')
     }
   }
-  
-  const  IsolateReRenderPriceService: any = ({ control }: any) => {
+
+  const IsolateReRenderPriceService: any = ({control}: any) => {
     const dataInput: any = useWatch({
       control,
-      name: ['itemLength', 'itemWeight', 'itemHeight', 'itemWidth', 'itemQuantity', 'itemFragile', 'receiverCommune', 'receiverProvince', 'itemValue']
+      name: [
+        'itemLength',
+        'itemWeight',
+        'itemHeight',
+        'itemWidth',
+        'itemQuantity',
+        'itemFragile',
+        'receiverCommune',
+        'receiverProvince',
+        'itemValue',
+      ],
     })
     // console.log('bao data: ', dataInput)
-    const [province, setProvince] = useState<any>({});
+    const [province, setProvince] = useState<any>({})
     // console.log('bao province: ', province);
     useEffect(() => {
       const fetchProvinceData = async () => {
         if (dataInput[7]?.id) {
           try {
-            const response = await provinceLiteAPIGetById(dataInput[7]?.id);
-            setProvince(response?.data || {});
+            const response = await provinceLiteAPIGetById(dataInput[7]?.id)
+            setProvince(response?.data || {})
           } catch (error) {
-            console.error('Error fetching province detail:', error);
+            console.error('Error fetching province detail:', error)
           }
         }
-      };
-  
-      fetchProvinceData();
-    }, [dataInput[7]?.id]);
-    
-    let pri: any = 0;
+      }
+
+      fetchProvinceData()
+    }, [dataInput[7]?.id])
+
+    let pri: any = 0
     const calPackageFragile = () => {
-      const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
+      const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
       // console.log('bao packageByCBM: ', packageByCBM)
-      const priPackageByCBM = calculatePricePackageByCBM(listPackagesCBMPrice, packageByCBM);
-      setPriPackageByCBM(priPackageByCBM);
-      return priPackageByCBM;
+      const priPackageByCBM = calculatePricePackageByCBM(listPackagesCBMPrice, packageByCBM)
+      setPriPackageByCBM(priPackageByCBM)
+      return priPackageByCBM
     }
     // console.log('bao province: ', province);
     const priceByKGArray: any[] = province?.regionFreightPrice?.regionRates
     const priceByCBMArray: any[] = province?.regionFreightPrice?.cbmRates
     if (priceByKGArray?.length && dataInput[3]) {
-      let calObjPackageFragile: any = {};
+      let calObjPackageFragile: any = {}
       if (dataInput[5]) {
-        calObjPackageFragile = calPackageFragile();
+        calObjPackageFragile = calPackageFragile()
       }
-      const priByKG = calculatePriceByKG(priceByKGArray, +dataInput[3] + (calObjPackageFragile?.additionalWeightAfterPacking || 0, +province?.regionFreightPrice?.label));
-      const KGConvert = (+dataInput[0] * +dataInput[1] * +dataInput[2])*3/10000 + (calObjPackageFragile?.additionalWeightAfterPacking || 0);
+      const priByKG = calculatePriceByKG(
+        priceByKGArray,
+        +dataInput[3] +
+          (calObjPackageFragile?.additionalWeightAfterPacking || 0,
+          +province?.regionFreightPrice?.label)
+      )
+      const KGConvert =
+        (+dataInput[0] * +dataInput[1] * +dataInput[2] * 3) / 10000 +
+        (calObjPackageFragile?.additionalWeightAfterPacking || 0)
       // console.log('bao KGConvert: ', KGConvert)
-      const priKGConvert = calculatePriceByKG(priceByKGArray, KGConvert, +province?.regionFreightPrice?.label);
-      const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2])/1000000;
+      const priKGConvert = calculatePriceByKG(
+        priceByKGArray,
+        KGConvert,
+        +province?.regionFreightPrice?.label
+      )
+      const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
       // console.log('bao CBM: ', CBM)
-      const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM);   
-      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)  
+      const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM)
+      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)
       // console.log('bao ', NumberConverterRejectSystax(dataInput[8]) )
       const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
-      pri = getMaxValue([priByKG*1.08, priKGConvert*1.08, priByCBM]) * (dataInput[6]?.shipmentType === "Nội Tuyến" ? 1 : 1.25)*+dataInput[4] + (+valuePackage > 1000000 ? (+valuePackage - 1000000)*0.05 : 0);
-      setValue("serviceFee", pri);
+      pri =
+        getMaxValue([priByKG * 1.08, priKGConvert * 1.08, priByCBM]) *
+          (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : 1.25) *
+          +dataInput[4] +
+        (+valuePackage > 1000000 ? (+valuePackage - 1000000) * 0.05 : 0)
+      setValue('serviceFee', pri)
     }
     return (
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <InputGroup className="mb-3">
+        render={({field: {onChange, onBlur, value}}) => (
+          <InputGroup className='mb-3'>
             <InputGroup.Text className={`group-text ${errors?.serviceFee && 'border-danger'}`}>
               Giá dịch vụ
             </InputGroup.Text>
@@ -175,169 +218,187 @@ const ModalOrderPage = (props: Props) => {
               className={`text-dark ${errors?.serviceFee && 'border-danger'} form-control`}
               onBlur={onBlur}
               onChange={onChange}
-              allowLeadingZeros thousandSeparator=","
+              allowLeadingZeros
+              thousandSeparator=','
               disabled
               decimalScale={0}
             />
-            <InputGroup.Text className={`${errors?.serviceFee && 'border-danger'}`}>VND</InputGroup.Text>
+            <InputGroup.Text className={`${errors?.serviceFee && 'border-danger'}`}>
+              VND
+            </InputGroup.Text>
           </InputGroup>
-          )}
+        )}
         name='serviceFee'
       />
     )
   }
 
-  const [packagingServiceData, setPackagingServiceData] = useState<any[]>([]);
-  const IsolateReRenderOptionsPackingService: React.FC<{ control: any }> = ({ control }) => {
-  
-    const packagingService = useWatch({
+  const [packagingServiceData, setPackagingServiceData] = useState<any[]>([])
+  const IsolateReRenderOptionsPackingService: React.FC<{control: any}> = ({control}) => {
+    const packagingServiceData = useWatch({
       control,
-      name: 'packagingService',
-    });
+      name: 'packagingServiceData',
+    })
 
-    const clonepackagingService = _.cloneDeep(packagingService);
+    const packagingServiceDataClone = _.cloneDeep(packagingServiceData)
 
     useEffect(() => {
-      if (clonepackagingService?.code) {
+      if (packagingServiceDataClone?.code) {
         // Check if packagingService is already present in packagingServiceData
-        const isExists = packagingServiceData.some(item => item.code === clonepackagingService.code);
-        
+        const isExists = packagingServiceDataClone.some(
+          (item: any) => item.code === packagingServiceDataClone.code
+        )
+
         // If packagingService doesn't exist, add it to packagingServiceData
-        const number = _.cloneDeepWith(+getValues("packagingServiceQuantity"));
+        const number = _.cloneDeepWith(+getValues('packagingServiceQuantity'))
         if (!isExists) {
-          setPackagingServiceData(prevData => [...prevData, {...clonepackagingService, quality: number}]);
-          setValue('packagingService', '');
+          setPackagingServiceData((prevData) => [
+            ...prevData,
+            {...packagingServiceDataClone, quality: number},
+          ])
+          setValue('packagingService', '')
         }
       }
-    }, [clonepackagingService]);
+    }, [packagingServiceDataClone])
 
     // console.log('bao packagingServiceData: ', packagingServiceData)
-  
+
     const orderOptions = (values: readonly any[]) => {
-      const fixedOptions = values.filter((v) => v.isFixed);
-      const nonFixedOptions = values.filter((v) => !v.isFixed);
-      return [...fixedOptions, ...nonFixedOptions];
-    };
-  
+      const fixedOptions = values.filter((v) => v.isFixed)
+      const nonFixedOptions = values.filter((v) => !v.isFixed)
+      return [...fixedOptions, ...nonFixedOptions]
+    }
+
     const onChange = (newValue: any, actionMeta: any) => {
-      let updatedData = newValue;
+      let updatedData = newValue
       switch (actionMeta.action) {
         case 'remove-value':
         case 'pop-value':
           if (actionMeta.removedValue.isFixed) {
-            return;
+            return
           }
-          break;
+          break
         case 'clear':
-          newValue = packagingServiceData.filter((v) => v.isFixed);
-          break;
+          newValue = packagingServiceDataClone.filter((v:any) => v.isFixed)
+          break
       }
-      setPackagingServiceData(orderOptions(updatedData));
-    };
-    
+      setPackagingServiceData(orderOptions(updatedData))
+    }
+
     return (
       <Controller
         control={control}
-        name='packagingServiceData'
-        render={({ field }) => (
+        name='packagingService'
+        render={({field}) => (
           <Select
             className='mb-3 basic-multi-select'
             classNamePrefix='select'
-            placeholder="Dịch vụ đóng gói"
+            placeholder='Dịch vụ đóng gói'
             isMulti
-            components={{ DropdownIndicator:() => null, IndicatorSeparator:() => null }}
-            isClearable={packagingServiceData.some((v) => !v.isFixed)}
-            value={packagingServiceData}
+            components={{DropdownIndicator: () => null, IndicatorSeparator: () => null}}
+            isClearable={packagingServiceDataClone.some((v: any) => !v.isFixed)}
+            value={packagingServiceDataClone}
             onChange={(newValue, actionMeta) => {
-              field.onChange(newValue);
-              onChange(newValue, actionMeta);
+              field.onChange(newValue)
+              onChange(newValue, actionMeta)
             }}
             getOptionLabel={(option) => `${option.code} (SL: ${option.quality})`}
           />
         )}
       />
-    );
-  };
+    )
+  }
 
   // price dịch vụ ddoings gói
-  const IsolateReRenderPricePackingService: React.FC<{ control: any }> = ({ control }) => {
+  const IsolateReRenderPricePackingService: React.FC<{control: any}> = ({control}) => {
     // Calculate the price based on the watched fields
-    const priPackageService = useWatch({
+    const priPackageServiceData = useWatch({
       control,
       name: ['itemFragile', 'itemQuantity'],
-    });
+    })
     // console.log('bao priPackageByCBM: ', priPackageByCBM)
     let calculatedPrice: number = 0
-    packagingServiceData.length && packagingServiceData?.forEach((item: any) => calculatedPrice += (+item.price * +item.quality));
-    setValue("packagingServiceFee", (+calculatedPrice + (priPackageService[0] ? priPackageByCBM?.price : 0))*+priPackageService[1])
-    // console.log('bao +calculatedPrice + (priPackageByCBM?.price || 0): ', +calculatedPrice + ([0] ? priPackageByCBM?.price : 0))
+    packagingServiceData.length &&
+      packagingServiceData?.forEach((item: any) => (calculatedPrice += +item.price * +item.quality))
+    setValue(
+      'packagingServiceFee',
+      (+calculatedPrice + (priPackageServiceData[0] ? priPackageByCBM?.price : 0)) *
+        +priPackageServiceData[1]
+    )
     return (
       <Controller
         control={control}
-        name="packagingServiceFee"
+        name='packagingServiceFee'
         rules={{
           required: true,
-          min: 0
+          min: 0,
         }}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <div className='d-flex justify-content-center align-items-center'>
-            <InputGroup className="mb-3">
-              <InputGroup.Text className={`group-text ${errors?.packagingServiceFee && 'border-danger'}`}>
+            <InputGroup className='mb-3'>
+              <InputGroup.Text
+                className={`group-text ${errors?.packagingServiceFee && 'border-danger'}`}
+              >
                 Giá dịch vụ đóng gói
               </InputGroup.Text>
               <NumericFormat
                 value={value}
                 disabled
-                className={`text-dark ${errors?.packagingServiceFee && 'border-danger'} form-control`}
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
+                className={`text-dark ${
+                  errors?.packagingServiceFee && 'border-danger'
+                } form-control`}
+                aria-label='Default'
+                aria-describedby='inputGroup-sizing-default'
                 onBlur={onBlur}
                 onChange={onChange}
-                allowLeadingZeros thousandSeparator=","
+                allowLeadingZeros
+                thousandSeparator=','
                 decimalScale={0}
               />
-              <InputGroup.Text className={`${errors?.packagingServiceFee && 'border-danger'}`}>VND</InputGroup.Text>
+              <InputGroup.Text className={`${errors?.packagingServiceFee && 'border-danger'}`}>
+                VND
+              </InputGroup.Text>
             </InputGroup>
           </div>
         )}
       />
-    );
+    )
   }
-  
-  const  IsolateReRenderTotalPrice: React.FC<{ control: any }> = ({ control }) => {
+
+  const IsolateReRenderTotalPrice: React.FC<{control: any}> = ({control}) => {
     const data: any = useWatch({
       control: control,
       name: ['serviceFee', 'packagingServiceFee'],
       exact: true,
     })
-    setValue("totalAmount", data[0] + data[1]);
+    setValue('totalAmount', data[0] + data[1])
     return (
       <Controller
         control={control}
         defaultValue={data[0] + data[1]}
         rules={{
           required: true,
-          min: 0.1
+          min: 0.1,
         }}
-        render={({ field: { onChange, onBlur, value } }) => (
-        <InputGroup className="mb-3">
+        render={({field: {onChange, onBlur, value}}) => (
+          <InputGroup className='mb-3'>
             <InputGroup.Text className={`group-text ${errors?.totalAmount && 'border-danger'}`}>
               Tổng tiền
             </InputGroup.Text>
             <NumericFormat
-                value={value}
-                disabled
-                className={`text-dark ${errors?.totalAmount && 'border-danger'} form-control`}
-                // type='number'
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-                onBlur={onBlur}
-                onChange={onChange}
-                allowLeadingZeros thousandSeparator=","
-                decimalScale={0}
-              />
+              value={value}
+              disabled
+              className={`text-dark ${errors?.totalAmount && 'border-danger'} form-control`}
+              aria-label='Default'
+              aria-describedby='inputGroup-sizing-default'
+              onBlur={onBlur}
+              onChange={onChange}
+              allowLeadingZeros
+              thousandSeparator=','
+              decimalScale={0}
+            />
             <InputGroup.Text>VND</InputGroup.Text>
-        </InputGroup>
+          </InputGroup>
         )}
         name='totalAmount'
       />
@@ -351,10 +412,20 @@ const ModalOrderPage = (props: Props) => {
           <Sender control={control} errors={errors} />
         </div>
         <div className='group card p-5 pt-0 ms-3'>
-          <Receiver control={control} getValues={getValues} errors={errors} watch={watch} setValue={setValue} setProvinceDetail={setProvinceDetail} provinceDetail={provinceDetail} setCommuneDetail={setCommuneDetail} communeDetail={communeDetail} />
+          <Receiver
+            control={control}
+            getValues={getValues}
+            errors={errors}
+            watch={watch}
+            setValue={setValue}
+            setProvinceDetail={setProvinceDetail}
+            provinceDetail={provinceDetail}
+            setCommuneDetail={setCommuneDetail}
+            communeDetail={communeDetail}
+          />
         </div>
         <div className='group card p-5 pt-0 me-3'>
-          <Parcelnformation control={control} errors={errors} watch={watch}/>
+          <Parcelnformation control={control} errors={errors} watch={watch} />
         </div>
         <div className='group card p-5 pt-0 ms-3'>
           <>
@@ -362,14 +433,20 @@ const ModalOrderPage = (props: Props) => {
             <IsolateReRenderPriceService control={control} />
             <div className='d-flex'>
               <Controller
-                name="packagingService"
+                name='packagingServiceData'
                 control={control}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <div className={`d-flex align-items-center w-75 mb-3 ${errors?.packagingService && 'border-danger'}`}>
-                  <label className='form-label d-block me-1'>Dịch vụ đóng gói</label>
+                render={({field: {onChange, onBlur, value}}) => (
+                  <div
+                    className={`d-flex align-items-center w-75 mb-3 ${
+                      errors?.packagingServiceData && 'border-danger'
+                    }`}
+                  >
+                    <label className='form-label d-block me-1'>Dịch vụ đóng gói</label>
                     <Select
-                      className={`react-select-styled w-100 ${errors?.packagingService && 'rounded border border-danger'}`}
-                      classNamePrefix='react-select text-dark' 
+                      className={`react-select-styled w-100 ${
+                        errors?.packagingServiceData && 'rounded border border-danger'
+                      }`}
+                      classNamePrefix='react-select text-dark'
                       options={listPackagesPrice}
                       onBlur={onBlur}
                       onChange={onChange}
@@ -379,35 +456,39 @@ const ModalOrderPage = (props: Props) => {
                       placeholder='Chọn dịch vụ đóng gói'
                     />
                   </div>
-                  )}
+                )}
               />
               <Controller
-                name="packagingServiceQuantity"
+                name='packagingServiceQuantity'
                 control={control}
                 rules={{
                   required: true,
-                  // min: 1
                 }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <div className={`d-flex align-items-center w-25 mb-3 ${errors?.packagingServiceQuantity && 'border-danger'}`}>
-                  {/* <span className='ms-3'>x</span> */}
-                  <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
+                render={({field: {onChange, onBlur, value}}) => (
+                  <div
+                    className={`d-flex align-items-center w-25 mb-3 ${
+                      errors?.packagingServiceQuantity && 'border-danger'
+                    }`}
+                  >
+                    <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
                     <InputGroup className='ms-3 w-100'>
                       <Form.Control
-                          className={`text-dark ${errors?.packagingServiceQuantity && 'border-danger'}`}
-                          type='number'
-                          aria-label="Default"
-                          aria-describedby="inputGroup-sizing-default"
-                          onBlur={onBlur}
-                          onChange={onChange}
-                          value={value}
+                        className={`text-dark ${
+                          errors?.packagingServiceQuantity && 'border-danger'
+                        }`}
+                        type='number'
+                        aria-label='Default'
+                        aria-describedby='inputGroup-sizing-default'
+                        onBlur={onBlur}
+                        onChange={onChange}
+                        value={value}
                       />
                     </InputGroup>
                   </div>
-                  )}
+                )}
               />
             </div>
-            <IsolateReRenderOptionsPackingService control={control} />
+            {/* <IsolateReRenderOptionsPackingService control={control} /> */}
             <IsolateReRenderPricePackingService control={control} />
             <IsolateReRenderTotalPrice control={control} />
           </>
@@ -415,18 +496,15 @@ const ModalOrderPage = (props: Props) => {
       </div>
       <div className='row mt-6'>
         <div className='col justify-content-between d-flex'>
-          <OverlayTrigger
-              placement="top"
-              delay={{ show: 250, hide: 400 }}
-              overlay={renderTooltip}
-          >
-            <Button href="#" className="btn btn-secondary me-10" onClick={handleShowPreImport}><i className="bi bi-zoom-in"></i></Button>
+          <OverlayTrigger placement='top' delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+            <Button href='#' className='btn btn-secondary me-10' onClick={handleShowPreImport}>
+              <i className='bi bi-zoom-in'></i>
+            </Button>
           </OverlayTrigger>
-          {/* <div>
-          </div> */}
           <div>
-            {/* <Button href="#" className="btn btn-secondary me-10" onClick={() => reset()}>Nhập lại</Button> */}
-            <Button type="submit" className="btn btn-primary">{showModalOrder.id ? 'Cập nhật' : 'Tạo mới'}</Button>
+            <Button type='submit' className='btn btn-primary'>
+              {showModalOrder.id ? 'Cập nhật' : 'Tạo mới'}
+            </Button>
           </div>
         </div>
       </div>

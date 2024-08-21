@@ -31,7 +31,7 @@ const Pagination = (props: Props) => {
   }
   const pageSizeArray: number[] = [20, 50, 100]
   return (
-    props?.dataPagination.size && (
+    props?.dataPagination?.size && (
       <div className='d-flex justify-content-end mt-2 fs-5'>
         <div className='d-flex text-dark align-items-center'>
           <div className='me-5 mb-0 d-flex align-items-center'>
@@ -50,7 +50,7 @@ const Pagination = (props: Props) => {
             </p>
             đến
             <p className='mb-0 text-center fw-bold' style={{width: '50px'}}>
-              {props?.dataPagination?.size * (props?.dataPagination?.pageable.pageNumber + 1)}
+              {(props?.dataPagination?.size * (props?.dataPagination?.pageable.pageNumber + 1)) > props?.dataPagination?.totalElements ? props?.dataPagination?.totalElements : (props?.dataPagination?.size * (props?.dataPagination?.pageable.pageNumber + 1))}
             </p>
             của
             <p className='mb-0 text-center fw-bold' style={{width: '50px'}}>

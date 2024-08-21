@@ -10,6 +10,11 @@ export const provinceAPIGetAll = async () => {
     return data;
 };
 
+export const provinceAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/province/search/', value);
+    return data;
+};
+
 export const provinceAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/province/${id}`);
     return data;

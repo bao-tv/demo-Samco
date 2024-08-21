@@ -10,6 +10,11 @@ export const cbm_rateAPIGetAll = async () => {
     return data;
 };
 
+export const cbm_rateAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/cbm-rate/search/', value);
+    return data;
+};
+
 export const cbm_rateAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/cbm-rate/${id}`);
     return data;

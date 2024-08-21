@@ -10,6 +10,11 @@ export const packagePriceAPIGetAll = async () => {
     return data;
 };
 
+export const packagePriceAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/packaging-price/search/', value);
+    return data;
+};
+
 export const packagePriceAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/packaging-price/${id}`);
     return data;

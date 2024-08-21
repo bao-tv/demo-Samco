@@ -256,3 +256,11 @@ export interface ILayoutHTMLAttributes {
 export interface ILayoutCSSVariables {
   body: Map<string, string | number | boolean>
 }
+
+export interface IFormSearch {
+  searchCriteria?: any,
+  page: number,
+  pageSize: number,
+  direction: string,
+  sortBy: string,
+}

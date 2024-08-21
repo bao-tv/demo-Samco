@@ -10,6 +10,11 @@ export const receiptAPIGetAll = async () => {
     return data;
 };
 
+export const receiptAPIGetByPagination = async (value) => {
+    const {data} = await axiosClient.post('/receipt/search/', value);
+    return data;
+};
+
 export const receiptAPIDeleteById = async (id) => {
     const {data} = await axiosClient.delete(`/receipt/${id}`);
     return data;

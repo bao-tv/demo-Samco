@@ -12,7 +12,6 @@ import { region_priceAPIGetAll } from '../../../apis/region-priceAPI'
 type Props = {}
 
 const ModalShowAndAdd_Region_Rate = (props: any) => {
-  const intl = useIntl()
   const {
     dataModalRegion_Rate,
     listRegion_Freight_Prices,
@@ -27,6 +26,7 @@ const ModalShowAndAdd_Region_Rate = (props: any) => {
   } = useForm<any>({
     mode: 'all',
     defaultValues: {
+      name: dataModalRegion_Rate.name || "",
       fromKg: dataModalRegion_Rate.fromKg || 0,
       toKg: dataModalRegion_Rate.toKg || 0,
       price: dataModalRegion_Rate.price || 0,
@@ -82,6 +82,28 @@ const ModalShowAndAdd_Region_Rate = (props: any) => {
       <div className='row'>
         <div className=' card mb-5 p-5 pt-0 me-3'>
           <>
+          <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <InputGroup className='mb-3'>
+                  <InputGroup.Text className={`group-text ${errors?.name && 'border-danger'}`}>
+                    Tên
+                  </InputGroup.Text>
+                  <Form.Control
+                    className={`text-dark ${errors?.name && 'border-danger'}`}
+                    aria-label='Default'
+                    aria-describedby='inputGroup-sizing-default'
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    value={value}
+                  />
+                </InputGroup>
+              )}
+              name='name'
+            />
             <Controller
               control={control}
               rules={{
