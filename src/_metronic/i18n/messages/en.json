@@ -1,5 +1,4 @@
 {
-  "MENU.THONGTINCHUNG": "Thông tin chung",
   "MENU.THONGDAUVAO": "Thông tin đầu vào",
   "MENU.PHIEUNHANHANG": "Phiếu nhận hàng",
   "MENU.PHIEUNHANHANGDAXOA": "Phiếu nhận hàng đã xóa",
@@ -23,6 +22,10 @@
   "MENU.TINHNHANHANG": "Tỉnh/Thành phố",
   "MENU.HUYENNHANHANG": "Quận/Huyện",
   "MENU.XANHANHANG": "Phường/Xã",
+
+  "MENU.THONGTINCHUNG": "Thông tin chung",
+  "MENU.THUESUAT": "Thuế suất",
+
   
   "TRANSLATOR.SELECT": "Select your language",
   "MENU.NEW": "new",

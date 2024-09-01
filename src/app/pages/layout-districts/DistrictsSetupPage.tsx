@@ -12,7 +12,7 @@ import { defaultSearch } from '../../../_metronic/assets/define/Define'
 type Props = {}
 
 const DistrictsSetupPage = (props: Props) => {
-  const intl = useIntl()
+  const intl = useIntl();
   const {
     listDistricts,
     setListDistricts,

@@ -29,6 +29,14 @@ export interface PageDataContextModel {
   showModalOrder?: any
   setShowModalOrder?: (_datas: any) => void
 
+  showModalTaxRate?: any
+  setShowModalTaxRate?: (_datas: any) => void
+  dataModalTaxRate?: any
+  setDataModalTaxRate?: (_datas: any) => void
+  // listTaxRates?: any
+  // setListTaxRates?: (_datas: any) => void
+  gridRefTaxRateSetup?: any,
+
   showModalRegion?: any
   setShowModalRegion?: (_datas: any) => void
   dataModalRegion?: any
@@ -125,6 +133,11 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [dataModalOrder, setDataModalOrder] = useState<any>({})
   const [showModalOrder, setShowModalOrder] = useState<any>(false)
 
+  const [showModalTaxRate, setShowModalTaxRate] = useState<any>(false)
+  const [dataModalTaxRate, setDataModalTaxRate] = useState<any>({})
+  // const [listTaxRates, setListTaxRates] = useState<any[]>([])
+  const gridRefTaxRateSetup = useRef(null);
+
   const [showModalRegion, setShowModalRegion] = useState<any>(false)
   const [dataModalRegion, setDataModalRegion] = useState<any>({})
   const [listRegions, setListRegions] = useState<any[]>([])
@@ -191,6 +204,14 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setDataModalOrder,
     showModalOrder,
     setShowModalOrder,
+
+    showModalTaxRate,
+    setShowModalTaxRate,
+    dataModalTaxRate,
+    setDataModalTaxRate,
+    // listTaxRates,
+    // setListTaxRates,
+    gridRefTaxRateSetup,
 
     showModalRegion,
     setShowModalRegion,

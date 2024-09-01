@@ -200,7 +200,7 @@ const Parcelnformation = (props: Props) => {
         />
 
         <Controller
-          name='packagingServiceQuantity'
+          name='itemQuantity'
           control={props?.control}
           rules={{
             required: true,
@@ -209,12 +209,12 @@ const Parcelnformation = (props: Props) => {
           render={({field: {onChange, onBlur, value}}) => (
             <InputGroup className='mb-3'>
               <InputGroup.Text
-                className={`group-text ${props?.errors?.packagingServiceQuantity && 'border-danger'}`}
+                className={`group-text ${props?.errors?.itemQuantity && 'border-danger'}`}
               >
                 Số kiện
               </InputGroup.Text>
               <Form.Control
-                className={`text-dark ${props?.errors?.packagingServiceQuantity && 'border-danger'}`}
+                className={`text-dark ${props?.errors?.itemQuantity && 'border-danger'}`}
                 type='number'
                 aria-label='Default'
                 aria-describedby='inputGroup-sizing-default'

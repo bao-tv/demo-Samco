@@ -1,28 +1,26 @@
 import {useForm, SubmitHandler, Controller} from 'react-hook-form'
 import {InputGroup, Button, Form} from 'react-bootstrap'
-import {IFormCommunesInput} from './interface'
+import {IFormCommunesInput, PropsModalShowAndAddCommune, prodDataInit} from './interface'
 import ToastError, {ToastSuccess} from '../../../_metronic/helpers/crud-helper/Toast'
 import {usePageData} from '../../../_metronic/layout/core'
 import {useSelector} from 'react-redux'
 import {useIntl} from 'react-intl'
-import {communeCreatedAPI, communeEditAPIByID} from '../../../apis/communeAPI'
+import {communeAPIGetByDistrict, communeCreatedAPI, communeEditAPIByID} from '../../../apis/communeAPI'
 import Select from 'react-select'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { provinceLiteAPIGetById } from '../../../apis/provinceAPI'
+import { districtAPIGetByProvince } from '../../../apis/districtAPI'
 
-type Props = {}
-
-const ModalShowAndAddCommune = (props: any) => {
-  const intl = useIntl()
-  const {dataModalCommune, setShowModalCommune, setDataModalCommune} = usePageData()
+const ModalShowAndAddCommune = (props: PropsModalShowAndAddCommune) => {
+  const {dataModalCommune} = usePageData()
 
   const {
     control,
     handleSubmit,
     formState: {errors},
     reset,
-    watch,
     setValue,
+    getValues,
   } = useForm<any>({
     mode: 'all',
     defaultValues: {
@@ -36,8 +34,6 @@ const ModalShowAndAddCommune = (props: any) => {
     shouldUnregister: false,
   })
   const {listProvinceLite} = useSelector((state: any) => state.provinceLites)
-  const listDistrictConvert = listProvinceLite.filter((ele: any) => ele.id === watch('province').id)[0]
-    ?.districts
   const [listDistricts, setListDistricts] = useState<any[]>([])
   const onSubmit: SubmitHandler<IFormCommunesInput> = async (data: IFormCommunesInput) => {
     const communeObjConvert = {
@@ -54,8 +50,7 @@ const ModalShowAndAddCommune = (props: any) => {
         ToastSuccess('Bạn đã tạo mới thành công')
       }
       props.refreshData()
-      setDataModalCommune && setDataModalCommune({})
-      setShowModalCommune && setShowModalCommune(false)
+      props.handleClose()
     } catch (err) {
       ToastError('Có lỗi xảy ra!')
     }
@@ -66,6 +61,25 @@ const ModalShowAndAddCommune = (props: any) => {
       ToastError('Bạn nhập thiếu thông tin!')
     }
   }
+
+  const dataInit = async ({provinceId}: prodDataInit) => {
+    console.log('bao provinceId: ', provinceId)
+    try {
+      if (provinceId) {
+        const districtInProvince = await districtAPIGetByProvince(provinceId)
+        setListDistricts(districtInProvince?.data || [])
+      } else {
+        setListDistricts([])
+      }
+    } catch (error) {
+      console.error('Failed to fetch data:', error)
+    }
+  }
+
+  useEffect(() => {
+    const provinceId = getValues('province')?.id
+    provinceId && dataInit({provinceId})
+  }, [])
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit, onErrors)}>
@@ -137,8 +151,8 @@ const ModalShowAndAddCommune = (props: any) => {
                         onChange={async (selectedOption) => {
                           onChange(selectedOption)
                           setValue('district', '')
-                          const responseProvinceDetail = await provinceLiteAPIGetById(selectedOption?.id);
-                          setListDistricts(responseProvinceDetail?.data?.districts)
+                          const districtInProvince = await districtAPIGetByProvince(selectedOption?.id)
+                          setListDistricts(districtInProvince?.data || [])
                         }}
                         value={value}
                         getOptionLabel={(option) => option?.name}
@@ -167,7 +181,7 @@ const ModalShowAndAddCommune = (props: any) => {
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value}
-                      isDisabled={!listDistricts?.length}
+                      isDisabled={!listDistricts?.length && !getValues('district')}
                       getOptionLabel={(option) => option.name}
                       getOptionValue={(option) => option.id}
                       placeholder='Chọn một Quận/Huyện'
@@ -190,8 +204,8 @@ const ModalShowAndAddCommune = (props: any) => {
                         name='group'
                         label='Nội tỉnh'
                         onBlur={onBlur}
-                        onChange={() => onChange('IN_PROVINCE')}
-                        checked={value === 'IN_PROVINCE'}
+                        onChange={() => onChange('Nội tỉnh')}
+                        checked={value === 'Nội tỉnh'}
                       />
                       <Form.Check
                         className={`ms-5 ${errors?.shipmentType && 'rounded border border-danger'}`}
@@ -200,8 +214,8 @@ const ModalShowAndAddCommune = (props: any) => {
                         name='group'
                         label='Ngoại tỉnh'
                         onBlur={onBlur}
-                        onChange={() => onChange('OUT_PROVINCE')}
-                        checked={value === 'OUT_PROVINCE'}
+                        onChange={() => onChange('Ngoại tỉnh')}
+                        checked={value === 'Ngoại tỉnh'}
                       />
                     </InputGroup>
                   )

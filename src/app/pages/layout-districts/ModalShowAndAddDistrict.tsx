@@ -1,26 +1,20 @@
 import {useForm, SubmitHandler, Controller} from 'react-hook-form'
 import {InputGroup, Button, Form} from 'react-bootstrap'
-import {IFormDistrictsInput} from './interface'
+import {IFormDistrictsInput, PropsModalShowAndAddDistrict} from './interface'
 import ToastError, {ToastSuccess} from '../../../_metronic/helpers/crud-helper/Toast'
 import {usePageData} from '../../../_metronic/layout/core'
 import {useSelector} from 'react-redux'
 import Select from 'react-select'
 import {districtCreatedAPI, districtEditAPIByID} from '../../../apis/districtAPI'
 
-type Props = {
-  title: string,
-  refreshData?: any,
-  handleClose?: any,
-}
-
-const ModalShowAndAddDistrict = (props: Props) => {
+const ModalShowAndAddDistrict = (props: PropsModalShowAndAddDistrict) => {
   const {dataModalDistrict} = usePageData()
   const {
     control,
     handleSubmit,
     formState: {errors},
     reset,
-  } = useForm<any>({
+  } = useForm<IFormDistrictsInput>({
     mode: 'all',
     defaultValues: {
       code: dataModalDistrict.code || '',

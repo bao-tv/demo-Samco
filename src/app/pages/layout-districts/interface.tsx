@@ -76,3 +76,9 @@ export   const columnDefsDistrictsSetupPage: ColDef[] = [
     province?: Array<object> | any,
     id: number,
   }
+
+  export type PropsModalShowAndAddDistrict = {
+    title: string,
+    refreshData?: any,
+    handleClose?: any,
+  }

@@ -14,7 +14,7 @@ import MainLayout from '../../../_metronic/partials/layout/mainLayout/MainLayout
 type Props = {}
 
 const OrderSetupPage = (props: Props) => {
-  const intl = useIntl()
+  const intl = useIntl();
   const {
     rowDataOrder,
     gridRefOrderSetup,
@@ -30,12 +30,13 @@ const OrderSetupPage = (props: Props) => {
   const [dataPagination, setDataPagination] = useState<any>({})
   const [dataSearch, setDataSearch] = useState<IFormSearch>(defaultSearch)
   const getListReceivers = async (valuePagination: IFormSearch) => {
+    // console.log('bao run')
     try {
       const response = await receiptAPIGetByPagination(valuePagination)
       response.status === 'OK' && setRowDataOrder && setRowDataOrder(response?.data.content || [])
-      setDataPagination(response?.data)
+      setDataPagination({...response?.data, content: {}})
     } catch (error) {
-      ToastError('Có lỗi xả ra!')
+      ToastError('Có lỗi xảy ra!')
     }
   }
   const handleCloseOrderPage = () => {
@@ -44,9 +45,10 @@ const OrderSetupPage = (props: Props) => {
   }
 
   useEffect(() => {
+    // console.log('bao dataSearch: ', dataSearch);
     setDataSearch({
       searchCriteria: {
-        name: searchData,
+        // name: searchData,
       },
       page: 0,
       pageSize: 20,

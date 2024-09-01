@@ -50,11 +50,11 @@ const Region_Freight_Prices_SetupPage = (props: Props) => {
           handleClose={handleCloseModalRegion_Freight_Price}
           content={
             <ModalShowAndAdd_Region_Freight_Price
-              title={intl.formatMessage({id: 'MENU.GIACUOCTHEOKG'})}
+              title={intl.formatMessage({id: 'MENU.VUNGGIA'})}
               refreshData={getListRegion_Freight_Prices}
             />
           }
-          title={intl.formatMessage({id: 'MENU.GIACUOCTHEOKG'})}
+          title={intl.formatMessage({id: 'MENU.VUNGGIA'})}
           size='lg'
         />
       }

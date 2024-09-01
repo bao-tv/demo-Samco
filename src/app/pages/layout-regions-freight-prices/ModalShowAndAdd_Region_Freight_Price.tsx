@@ -94,7 +94,7 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               render={({field: {onChange, onBlur, value}}) => (
                 <InputGroup className='mb-3'>
                   <InputGroup.Text className={`group-text ${errors?.name && 'border-danger'}`}>
-                    Tên giá cước theo KG
+                    Tên vùng giá
                   </InputGroup.Text>
                   <Form.Control
                     className={`text-dark ${errors?.name && 'border-danger'}`}
@@ -116,7 +116,7 @@ const ModalShowAndAdd_Region_Freight_Price = (props: any) => {
               render={({field: {onChange, onBlur, value}}) => (
                 <InputGroup className='mb-3'>
                   <InputGroup.Text className={`group-text ${errors?.code && 'border-danger'}`}>
-                    Mã giá cước theo KG
+                    Mã giá vùng giá
                   </InputGroup.Text>
                   <Form.Control
                     className={`text-dark ${errors?.code && 'border-danger'}`}

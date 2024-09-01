@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import clsx from 'clsx'
 import React, {useEffect, useState} from 'react'
 import Select from 'react-select'
 // import { ColourOption, colourOptions } from '../data';
@@ -9,7 +8,6 @@ import {InputGroup, Button, Form, OverlayTrigger} from 'react-bootstrap'
 import {IFormInput} from './component/interface'
 import {usePageData} from '../../../_metronic/layout/core'
 import ToastError, {ToastSuccess} from '../../../_metronic/helpers/crud-helper/Toast'
-import dayjs from 'dayjs'
 import {
   calculatePriceByKG,
   calculatePriceByCBM,
@@ -18,7 +16,7 @@ import {
   getMaxValue,
   NumberConverterRejectSystax,
 } from '../../../_metronic/helpers'
-import _ from 'lodash'
+import _, { values } from 'lodash'
 import {NumericFormat} from 'react-number-format'
 import Sender from './component/Sender'
 import Receiver from './component/Receiver'
@@ -41,9 +39,9 @@ const ModalOrderPage = (props: Props) => {
   const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number)
   const {listPackagesPrice} = useSelector((state: RootState) => state.packagesPrice)
   const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
+  const {listTax} = useSelector((state: RootState) => state.taxRate)
 
-  const {rowDataOrder, setRowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData()
-  const receiptDate = dayjs().add(3, 'day').toDate()
+  const {rowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData()
 
   const {
     control,
@@ -63,7 +61,7 @@ const ModalOrderPage = (props: Props) => {
       senderAddress: showModalOrder.senderAddress || '',
       senderPhone: showModalOrder.senderPhone || '',
 
-      receiptDate: receiptDate,
+      receiptDate: showModalOrder.receiverProvince?.regionFreightPrice?.deliveryTime || 0,
       receiverName: showModalOrder.receiverName || '',
       receiverIdCard: showModalOrder.receiverIdCard || '',
       receiverPhone: showModalOrder.receiverPhone || '',
@@ -83,15 +81,15 @@ const ModalOrderPage = (props: Props) => {
       shipName: showModalOrder.shipName || '',
 
       serviceFee: showModalOrder.serviceFee || 0,
-      packagingService: showModalOrder?.packagingService,
       packagingServiceQuantity: showModalOrder?.packagingServiceQuantity || 1,
-      packagingServiceData: showModalOrder?.packagingServiceData,
-      packagingServiceFee: showModalOrder?.packagingServiceFee?.price || 0,
+      packagingServiceDetail: showModalOrder?.packagingServiceDetail || {},
+      packagingServiceFee: showModalOrder?.packagingServiceFee || 0,
       totalAmount: showModalOrder.totalAmount || 0,
       indexRow: showModalOrder.indexRow || (rowDataOrder?.length ? rowDataOrder?.length + 1 : 1),
     },
     shouldUnregister: false,
   })
+  const [packagingServiceData, setPackagingServiceData] = useState<any[]>(showModalOrder?.packagingServices || [])
 
   const handleShowPreImport: any = () => {
     const dataForm: any = getValues()
@@ -103,13 +101,14 @@ const ModalOrderPage = (props: Props) => {
   }
   // handle form ====================
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    // console.log('bao data: ', data);
+    const dataConvert = {...data, itemValue: NumberConverterRejectSystax(data.itemValue), packagingServices: packagingServiceData}
+    // console.log('bao data: ', dataConvert);
     try {
-      if (data?.id) {
-        await receiptEditAPIByID(data)
+      if (dataConvert?.id) {
+        await receiptEditAPIByID(dataConvert)
         ToastSuccess('Bạn đã cập nhật thành công')
       } else {
-        await receiptCreatedAPI(data)
+        await receiptCreatedAPI(dataConvert)
         ToastSuccess('Bạn đã tạo mới thành công')
       }
       props.refreshData()
@@ -122,7 +121,7 @@ const ModalOrderPage = (props: Props) => {
 
   const onErrors = async (e: any) => {
     // setShowModalPreImport(true);
-    console.log('bao e: ', e)
+    // console.log('bao e: ', e)
     if (Object.keys(e).length) {
       ToastError('Bạn nhập thiếu thông tin!')
     }
@@ -133,9 +132,9 @@ const ModalOrderPage = (props: Props) => {
       control,
       name: [
         'itemLength',
-        'itemWeight',
         'itemHeight',
         'itemWidth',
+        'itemWeight',
         'itemQuantity',
         'itemFragile',
         'receiverCommune',
@@ -143,9 +142,7 @@ const ModalOrderPage = (props: Props) => {
         'itemValue',
       ],
     })
-    // console.log('bao data: ', dataInput)
     const [province, setProvince] = useState<any>({})
-    // console.log('bao province: ', province);
     useEffect(() => {
       const fetchProvinceData = async () => {
         if (dataInput[7]?.id) {
@@ -162,6 +159,8 @@ const ModalOrderPage = (props: Props) => {
     }, [dataInput[7]?.id])
 
     let pri: any = 0
+    const taxService: number = +listTax[0]?.tax || 0;
+    // console.log('bao taxService: ', taxService);
     const calPackageFragile = () => {
       const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
       // console.log('bao packageByCBM: ', packageByCBM)
@@ -186,20 +185,17 @@ const ModalOrderPage = (props: Props) => {
       const KGConvert =
         (+dataInput[0] * +dataInput[1] * +dataInput[2] * 3) / 10000 +
         (calObjPackageFragile?.additionalWeightAfterPacking || 0)
-      // console.log('bao KGConvert: ', KGConvert)
       const priKGConvert = calculatePriceByKG(
         priceByKGArray,
         KGConvert,
         +province?.regionFreightPrice?.label
       )
       const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
-      // console.log('bao CBM: ', CBM)
       const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM)
-      console.log('bao priByKG, priKGConvert, priByCBM: ', priByKG, priKGConvert, priByCBM)
-      // console.log('bao ', NumberConverterRejectSystax(dataInput[8]) )
+      console.log('bao price kg - kg/c cmb: ', priByKG, priKGConvert, priByCBM)
       const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
       pri =
-        getMaxValue([priByKG * 1.08, priKGConvert * 1.08, priByCBM]) *
+        getMaxValue([priByKG * (1 + taxService/100), priKGConvert * (1 + taxService/100), priByCBM]) * 1.19 *
           (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : 1.25) *
           +dataInput[4] +
         (+valuePackage > 1000000 ? (+valuePackage - 1000000) * 0.05 : 0)
@@ -233,79 +229,33 @@ const ModalOrderPage = (props: Props) => {
     )
   }
 
-  const [packagingServiceData, setPackagingServiceData] = useState<any[]>([])
   const IsolateReRenderOptionsPackingService: React.FC<{control: any}> = ({control}) => {
-    const packagingServiceData = useWatch({
-      control,
-      name: 'packagingServiceData',
-    })
-
-    const packagingServiceDataClone = _.cloneDeep(packagingServiceData)
-
-    useEffect(() => {
-      if (packagingServiceDataClone?.code) {
-        // Check if packagingService is already present in packagingServiceData
-        const isExists = packagingServiceDataClone.some(
-          (item: any) => item.code === packagingServiceDataClone.code
-        )
-
-        // If packagingService doesn't exist, add it to packagingServiceData
-        const number = _.cloneDeepWith(+getValues('packagingServiceQuantity'))
-        if (!isExists) {
-          setPackagingServiceData((prevData) => [
-            ...prevData,
-            {...packagingServiceDataClone, quality: number},
-          ])
-          setValue('packagingService', '')
-        }
-      }
-    }, [packagingServiceDataClone])
-
-    // console.log('bao packagingServiceData: ', packagingServiceData)
-
-    const orderOptions = (values: readonly any[]) => {
-      const fixedOptions = values.filter((v) => v.isFixed)
-      const nonFixedOptions = values.filter((v) => !v.isFixed)
-      return [...fixedOptions, ...nonFixedOptions]
+    console.log('bao packagingServiceData: ', packagingServiceData);
+    const handleRemove = (id: any) => {
+      setPackagingServiceData(packagingServiceData.filter((e) => e.packagingPrice.id != id))
     }
-
-    const onChange = (newValue: any, actionMeta: any) => {
-      let updatedData = newValue
-      switch (actionMeta.action) {
-        case 'remove-value':
-        case 'pop-value':
-          if (actionMeta.removedValue.isFixed) {
-            return
-          }
-          break
-        case 'clear':
-          newValue = packagingServiceDataClone.filter((v:any) => v.isFixed)
-          break
-      }
-      setPackagingServiceData(orderOptions(updatedData))
+    const handleChangeIsReused = (id: any) => {
+      setPackagingServiceData(packagingServiceData.map((e) => {
+        if(e.packagingPrice.id == id) return {...e, isReused: !e.isReused}
+        return e
+      }))
     }
-
     return (
-      <Controller
-        control={control}
-        name='packagingService'
-        render={({field}) => (
-          <Select
-            className='mb-3 basic-multi-select'
-            classNamePrefix='select'
-            placeholder='Dịch vụ đóng gói'
-            isMulti
-            components={{DropdownIndicator: () => null, IndicatorSeparator: () => null}}
-            isClearable={packagingServiceDataClone.some((v: any) => !v.isFixed)}
-            value={packagingServiceDataClone}
-            onChange={(newValue, actionMeta) => {
-              field.onChange(newValue)
-              onChange(newValue, actionMeta)
-            }}
-            getOptionLabel={(option) => `${option.code} (SL: ${option.quality})`}
-          />
-        )}
-      />
+      <div className='mb-3 d-flex justify-content-start align-items-center'>
+        {packagingServiceData.map((item, index) => {
+          return (
+            <>
+              <div className={`border rounded-3 ${index!==0 ? 'ms-2' : ''}`}>
+                <span>{item.packagingPrice.code}</span>
+                <span className='ms-1'>(SL: {item.quantity})</span>
+                <span className='ms-1'><Button variant={`${item.isReused ? 'warning' : 'success'}`} className='p-2' size='sm' onClick={() => handleChangeIsReused(item.packagingPrice.id)}>{`${item.isReused ? 'TC' : 'Mới'}`}</Button></span>
+                <span className='ms-1'><Button variant="outline-secondary" className='p-2' size='sm' onClick={() => handleRemove(item.packagingPrice.id)}>X</Button></span>
+              </div>
+              <span className='ms-1'>;</span>
+            </>
+          )
+        })}
+      </div>
     )
   }
 
@@ -316,14 +266,20 @@ const ModalOrderPage = (props: Props) => {
       control,
       name: ['itemFragile', 'itemQuantity'],
     })
-    // console.log('bao priPackageByCBM: ', priPackageByCBM)
-    let calculatedPrice: number = 0
-    packagingServiceData.length &&
-      packagingServiceData?.forEach((item: any) => (calculatedPrice += +item.price * +item.quality))
+    let calculatedPrice: number = 0;
+    const taxService: number = +listTax?.tax || 0;
+    if (packagingServiceData.length > 0) {
+      packagingServiceData.forEach((item: any) => {
+        // console.log('bao item: ',item,)
+        calculatedPrice += item.quantity * (item.isReused ? item.packagingPrice.reusePrice : item.packagingPrice.price);
+        // console.log(first)
+        // console.log('bao calculatedPrice: ', calculatedPrice)
+      });
+    }
     setValue(
       'packagingServiceFee',
-      (+calculatedPrice + (priPackageServiceData[0] ? priPackageByCBM?.price : 0)) *
-        +priPackageServiceData[1]
+      (calculatedPrice + (priPackageServiceData[0] ? priPackageByCBM?.price : 0)) *
+        +priPackageServiceData[1] * (1 + taxService/100)
     )
     return (
       <Controller
@@ -433,23 +389,50 @@ const ModalOrderPage = (props: Props) => {
             <IsolateReRenderPriceService control={control} />
             <div className='d-flex'>
               <Controller
-                name='packagingServiceData'
+                name='packagingServiceDetail'
                 control={control}
                 render={({field: {onChange, onBlur, value}}) => (
                   <div
                     className={`d-flex align-items-center w-75 mb-3 ${
-                      errors?.packagingServiceData && 'border-danger'
+                      errors?.packagingServiceDetail && 'border-danger'
                     }`}
                   >
-                    <label className='form-label d-block me-1'>Dịch vụ đóng gói</label>
+                    <label className='form-label d-block me-1'>Chọn dịch vụ đóng gói</label>
                     <Select
                       className={`react-select-styled w-100 ${
-                        errors?.packagingServiceData && 'rounded border border-danger'
+                        errors?.packagingServiceDetail && 'rounded border border-danger'
                       }`}
                       classNamePrefix='react-select text-dark'
                       options={listPackagesPrice}
                       onBlur={onBlur}
-                      onChange={onChange}
+                      onChange={(val:any) => {
+                        onChange(val);
+                        if (val?.code) {
+                          // Check if packagingService is already present in packagingServiceDetail
+                          const isExists = packagingServiceData?.some(
+                            (item: any) => item.packagingPrice.id  === val.id
+                          );
+                      
+                          // If packagingService doesn't exist, add it to packagingServiceDetail
+                          const quantityPackaging = +getValues('packagingServiceQuantity');
+                          if (!isExists) {
+                            setPackagingServiceData((prevData) => [
+                              ...prevData,
+                              { packagingPrice: val, quantity: quantityPackaging, isReused: false },
+                            ]);
+                          } else {
+                            const newArray = packagingServiceData.map((item: any) => {
+                              if (item.packagingPrice.id === val.id) {
+                                return { ...item, quantity: quantityPackaging }
+                              }
+                              return item;
+                            });
+                            setPackagingServiceData(newArray);
+                          }
+                        }
+                        setValue('packagingServiceDetail', '');
+                      }}
+                      
                       value={value}
                       getOptionLabel={(option) => option.name}
                       getOptionValue={(option) => option.id}
@@ -488,7 +471,7 @@ const ModalOrderPage = (props: Props) => {
                 )}
               />
             </div>
-            {/* <IsolateReRenderOptionsPackingService control={control} /> */}
+            <IsolateReRenderOptionsPackingService control={control} />
             <IsolateReRenderPricePackingService control={control} />
             <IsolateReRenderTotalPrice control={control} />
           </>

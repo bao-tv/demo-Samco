@@ -12,9 +12,16 @@ import Region_Freight_Prices_SetupPage from '../../pages/layout-regions-freight-
 import Region_Rates_SetupPage from '../../pages/layout-regions-rates/Region_Rates_SetupPage'
 import CBM_Rates_SetupPage from '../../pages/layout-cbm-rates/CBM_Rates_SetupPage'
 import PackageCBMPriceSetupPage from '../../pages/layout-pack-cbm/PackageCBMPriceSetupPage'
+import TaxRateSetupPage from '../../pages/layout-taxRate/TaxRateSetupPage'
 
 type Props = {}
 const DefinePagesBreadCrumbs: Array<PageLink> = [
+  {
+    title: 'Thuế suất',
+    path: '/dinh-nghia/chung/thue-suat',
+    isSeparator: false,
+    isActive: false,
+  },
   {
     title: 'Khu vực',
     path: '/dinh-nghia/vi-tri/khu-vuc',
@@ -69,6 +76,44 @@ const DefinePage = (props: Props) => {
   const intl = useIntl()
   return (
     <Routes>
+      <Route path='chung'>
+        <Route
+          path='thue-suat'
+          element={
+            <>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.THUESUAT'})}</PageTitle>
+              <TaxRateSetupPage />
+            </>
+          }
+        />
+        <Route
+          path='tinh'
+          element={
+            <>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.TINHNHANHANG'})}</PageTitle>
+              <ProvinceSetupPage />
+            </>
+          }
+        />
+        <Route
+          path='huyen'
+          element={
+            <>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}</PageTitle>
+              <DistrictsSetupPage />
+            </>
+          }
+        />
+        <Route
+          path='xa'
+          element={
+            <>
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.XANHANHANG'})}</PageTitle>
+              <CommunesSetupPage />
+            </>
+          }
+        />
+      </Route>
       <Route path='vi-tri'>
         <Route
           path='khu-vuc'

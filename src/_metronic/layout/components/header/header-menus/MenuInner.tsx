@@ -49,6 +49,16 @@ export function MenuInner() {
       </MenuInnerWithSub>
 
       <MenuInnerWithSub title='Thông tin đầu vào' to='/dinh-nghia' menuPlacement='bottom-start' menuTrigger='click'>
+      <MenuInnerWithSub 
+          icon="bi bi-cash-coin" 
+          to='/dinh-nghia/chung' 
+          title={intl.formatMessage({id: 'MENU.THONGTINCHUNG'})}
+          hasArrow={true}
+          menuPlacement='right-start'
+          menuTrigger={`{default:'click', lg: 'hover'}`}
+        >
+          <MenuItem icon="bi bi-bookmarks" to='/dinh-nghia/chung/thue-suat' title={intl.formatMessage({id: 'MENU.THUESUAT'})}/>
+        </MenuInnerWithSub>
         <MenuInnerWithSub
           title='Vị trí'
           to='/dinh-nghia/vi-tri'

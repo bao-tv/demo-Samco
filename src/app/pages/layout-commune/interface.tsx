@@ -64,7 +64,7 @@ export   const columnDefsCommunesSetupPage: ColDef[] = [
   {
     headerName: 'Nội/Ngoại Tỉnh',
     field: 'shipmentType',
-    cellRenderer: ShippingType,
+    // cellRenderer: ShippingType,
     width: 150,
   },
   {
@@ -89,10 +89,20 @@ export   const columnDefsCommunesSetupPage: ColDef[] = [
   },
 ];
 
+export type PropsModalShowAndAddCommune = {
+  title: string,
+  refreshData?: any,
+  handleClose?: any,
+}
+
   export interface IFormCommunesInput {
     code?: string,
     name?: string,
     province?: Array<object> | any,
     district?: Array<object> | any,
     id: number,
+  }
+  
+  export interface prodDataInit {
+    provinceId: number,
   }

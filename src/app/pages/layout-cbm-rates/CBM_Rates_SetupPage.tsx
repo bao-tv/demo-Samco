@@ -70,7 +70,7 @@ const CBM_Rates_SetupPage = (props: Props) => {
           content={
             <ModalShowAndAdd_CBM_Rate
               title={intl.formatMessage({id: 'MENU.GIACUOCTHEOCBM'})}
-              refreshData={getListCBM_Rates}
+              refreshData={() => getListCBM_Rates(dataSearch)}
               handleClose={handleCloseModalCBM_Rate}
             />
           }

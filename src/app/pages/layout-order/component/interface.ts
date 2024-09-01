@@ -1,5 +1,5 @@
 import {ColDef} from 'ag-grid-community'
-import {FormatsDate, ButtonActionsRender, RenderAddress} from '../../../../_metronic/helpers'
+import {FormatsDate, ButtonActionsRender, RenderAddress, FormatsDateReceiver} from '../../../../_metronic/helpers'
 // import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {
@@ -27,14 +27,30 @@ export interface IFormInput {
   itemQuantity?: number
   shipName?: string
   serviceFee?: number
-  packagingService?: any
+  packagingServices?: any
   packagingServiceQuantity?: any
-  packagingServiceData?: any
+  packagingServiceDetail?: any
   packagingServiceFee?: number
   totalAmount?: number
   // sendPay?: number,
   // receiptPay?: number,
   indexRow?: number
+}
+export interface prodDataInit {
+  provinceId: number,
+  districtId: number,
+}
+
+export type PropsReceiver = {
+  control: any
+  errors: any
+  watch: any
+  setValue: any
+  getValues: any
+  setProvinceDetail: any
+  provinceDetail: any
+  setCommuneDetail: any
+  communeDetail: any
 }
 export const columnDefsOrderManagerment: ColDef[] = [
   {
@@ -50,7 +66,7 @@ export const columnDefsOrderManagerment: ColDef[] = [
   },
   {
     headerName: 'Ngày gửi',
-    field: 'sendDate',
+    field: 'createdDate',
     width: 110,
     cellRenderer: FormatsDate,
   },
@@ -78,7 +94,7 @@ export const columnDefsOrderManagerment: ColDef[] = [
     headerName: 'Ngày nhận',
     field: 'receiptDate',
     width: 110,
-    cellRenderer: FormatsDate,
+    cellRenderer: FormatsDateReceiver,
   },
   {
     headerName: 'Tên người nhận',

@@ -69,7 +69,7 @@ const Region_Rates_SetupPage = (props: Props) => {
           content={
             <ModalShowAndAdd_Region_Rate
               title={intl.formatMessage({id: 'MENU.GIACUOCTHEOKG'})}
-              refreshData={getListRegion_Rates}
+              refreshData={() => getListRegion_Rates(dataSearch)}
               handleClose={handleCloseModalRegion_Rate}
             />
           }

@@ -30,7 +30,7 @@ const MainLayout: React.FC<Props> = ({
     isLoading,
     heightBottom = '50px' // Default value here
 }) => {
-    console.log('bao heightBottom: ', heightBottom)
+    // console.log('bao heightBottom: ', heightBottom)
   const containerStyle = useMemo(() => ({width: '100%', height: '100%'}), [])
   const gridStyle = useMemo(() => ({height: `calc(100% - ${heightBottom})`, width: '100%'}), [])
   const {modeCurrent} = useThemeMode();

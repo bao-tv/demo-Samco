@@ -68,7 +68,7 @@ const ProvinceSetupPage = (props: Props) => {
             <ModalShowAndAddProvince
               title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}
               handleClose={handleCloseModalProvince}
-              refreshData={getListProvinces}
+              refreshData={() => getListProvinces(dataSearch)}
             />
           }
           title={intl.formatMessage({id: 'MENU.TINHNHANHANG'})}

@@ -13,6 +13,7 @@ const ToolbarClassic = () => {
   const {config} = useLayout()
   const intl = useIntl()
   const {
+    setShowModalTaxRate,
     setShowModalRegion,
     setShowModalOrder,
     setShowModalProvince,
@@ -74,6 +75,14 @@ const ToolbarClassic = () => {
             <ButtonCreate setData={setShowModalOrder} title={`Tạo Phiếu nhận hàng`} />
           </>
         )}
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/chung/thue-suat' && (
+        <>
+          <ButtonCreate
+            setData={setShowModalTaxRate}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.THUESUAT'})}`}
+          />
+        </>
+      )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/khu-vuc' && (
         <>
           <ButtonCreate
@@ -84,7 +93,10 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/tinh' && (
         <>
-          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}...`}/>
+          <SearchData
+            handleClick={(value: any) => setSearchData && setSearchData(value)}
+            placeholder={`Tìm ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}...`}
+          />
           <ButtonCreate
             setData={setShowModalProvince}
             title={`Tạo ${intl.formatMessage({id: 'MENU.TINHNHANHANG'})}`}
@@ -93,7 +105,10 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/huyen' && (
         <>
-          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}...`}/>
+          <SearchData
+            handleClick={(value: any) => setSearchData && setSearchData(value)}
+            placeholder={`Tìm ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}...`}
+          />
           <ButtonCreate
             setData={setShowModalDistrict}
             title={`Tạo ${intl.formatMessage({id: 'MENU.HUYENNHANHANG'})}`}
@@ -102,7 +117,10 @@ const ToolbarClassic = () => {
       )}
       {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/vi-tri/xa' && (
         <>
-          <SearchData handleClick={(value: any) => setSearchData && setSearchData(value)} placeholder={`Tìm ${intl.formatMessage({id: 'MENU.XANHANHANG'})}...`}/>
+          <SearchData
+            handleClick={(value: any) => setSearchData && setSearchData(value)}
+            placeholder={`Tìm ${intl.formatMessage({id: 'MENU.XANHANHANG'})}...`}
+          />
           <ButtonCreate
             setData={setShowModalCommune}
             title={`Tạo ${intl.formatMessage({id: 'MENU.XANHANHANG'})}`}

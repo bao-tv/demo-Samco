@@ -6,32 +6,20 @@ import {useSelector} from 'react-redux'
 import Select from 'react-select'
 import {districtAPIGetByProvince} from '../../../../apis/districtAPI'
 import {communeAPIGetByDistrict} from '../../../../apis/communeAPI'
+import { PropsReceiver, prodDataInit } from './interface'
 
-type Props = {
-  control: any
-  errors: any
-  watch: any
-  setValue: any
-  getValues: any
-  setProvinceDetail: any
-  provinceDetail: any
-  setCommuneDetail: any
-  communeDetail: any
-}
-
-const Receiver = (props: Props) => {
+const Receiver = (props: PropsReceiver) => {
   const intl = useIntl()
   const {listProvinceLite} = useSelector((state: any) => state.provinceLites)
   const [listDistricts, setListDistricts] = useState<any>([])
   const [listCommunes, setListCommunes] = useState<any>([])
-  const dataInit = async () => {
+
+  const dataInit = async ({provinceId, districtId}: prodDataInit) => {
     try {
-      const provinceId = props.getValues('receiverProvince')?.id
       if (provinceId) {
         const districtInProvince = await districtAPIGetByProvince(provinceId)
         setListDistricts(districtInProvince?.data || [])
 
-        const districtId = props.getValues('receiverDistrict')?.id
         if (districtId) {
           const communeInDistrict = await communeAPIGetByDistrict(districtId)
           setListCommunes(communeInDistrict?.data || [])
@@ -48,7 +36,9 @@ const Receiver = (props: Props) => {
   }
 
   useEffect(() => {
-    props.getValues('receiverProvince') && dataInit()
+    const provinceId = props.getValues('receiverProvince')?.id
+    const districtId = props.getValues('receiverDistrict')?.id
+    provinceId && dataInit({provinceId, districtId})
   }, [])
 
   return (
@@ -158,7 +148,7 @@ const Receiver = (props: Props) => {
                 onBlur={onBlur}
                 onChange={async (selectedOption) => {
                   onChange(selectedOption)
-                  console.log('bao selectedOption: ', selectedOption)
+                  // console.log('bao selectedOption: ', selectedOption)
                   props?.setValue('receiverDistrict', '')
                   props?.setValue('receiverCommune', '')
                   const districtInProvince = await districtAPIGetByProvince(selectedOption?.id)

@@ -37,7 +37,7 @@ const Pagination = (props: Props) => {
           <div className='me-5 mb-0 d-flex align-items-center'>
             <p className='mb-0 text-nowrap me-3'>Kích thước trang: </p>
             <Form.Select onChange={(e) => {
-                console.log('bao e, ', e.currentTarget.value)
+                // console.log('bao e, ', e.currentTarget.value)
                 changePageSize(e.currentTarget.value)
             }
             }>
