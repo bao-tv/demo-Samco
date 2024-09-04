@@ -57,7 +57,7 @@ export function MenuInner() {
           menuPlacement='right-start'
           menuTrigger={`{default:'click', lg: 'hover'}`}
         >
-          <MenuItem icon="bi bi-bookmarks" to='/dinh-nghia/chung/thue-suat' title={intl.formatMessage({id: 'MENU.THUESUAT'})}/>
+          <MenuItem icon="bi bi-bookmarks" to='/dinh-nghia/chung/phan-tram' title={intl.formatMessage({id: 'MENU.PHI-THUE'})}/>
         </MenuInnerWithSub>
         <MenuInnerWithSub
           title='Vị trí'

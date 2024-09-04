@@ -2,6 +2,7 @@ import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'reac
 import qs from 'qs'
 import {ID, QueryResponseContextProps, QueryState} from './models'
 import { Tooltip } from 'react-bootstrap'
+import dayjs from 'dayjs'
 
 function createResponseContext<T>(initialState: QueryResponseContextProps<T>) {
   return createContext(initialState)
@@ -198,6 +199,26 @@ const getMaxValue = (arr: any[]) => {
   return Math.max(...arr);
 }
 
+interface PropsReceiptDate {
+  createdDate: string | Date;
+  daysToAdd?: string | number;
+}
+
+const receiptDate = ({createdDate, daysToAdd}: PropsReceiptDate): string => {
+  let date = new Date(createdDate) || new Date();
+  // If createdDate is invalid, use the current date as fallback
+  if (isNaN(date.getTime())) {
+    date = new Date();
+  }
+  // Add the days
+  date.setUTCDate(date.getUTCDate() + Number(daysToAdd))
+  if (!isNaN(date.getTime())) {
+    return date.toISOString();
+  }
+
+  return '';
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -214,4 +235,5 @@ export {
   calculatePricePackageByCBM,
   NumberConverterRejectSystax,
   getMaxValue,
+  receiptDate,
 }

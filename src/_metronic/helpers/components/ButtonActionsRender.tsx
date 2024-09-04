@@ -2,17 +2,20 @@ import React, {useCallback, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import { usePageData } from '../../layout/core';
 import _ from 'lodash';
-import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
+// import Receipt from '../../../_metronic/layout/components/Coupon/Receipt';
+// import generatePDF, { Margin, Options } from "react-to-pdf";
 import ToastError, { ToastSuccess } from '../crud-helper/Toast';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ModalToasts from './ModalToasts';
 import { receiptAPIDeleteById, receiptAPIGetAll } from '../../../apis/receiptAPI';
 import { useIntl } from 'react-intl';
+import { useRef } from 'react';
+import { Document, Page, Text, PDFDownloadLink } from '@react-pdf/renderer';
+// import ReportTemplate from './ReportTemplate';
 
 export const ButtonActionsRender = (props: any) => {
   const intl = useIntl();
-    const {setShowModalOrder, setRowDataOrder, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
+    const {setShowModalOrder, setRowDataOrder, reportTemplateRef, rowDataOrder, rowDataCouponReciept, setRowDataCouponReciept, setIsLoading} = usePageData();
     const [titleOrder, setTitleOrder] = useState<any>('');
     const handleEditRow = (params: any) => {
         setShowModalOrder && setShowModalOrder(props?.data || false)
@@ -20,52 +23,18 @@ export const ButtonActionsRender = (props: any) => {
     const handleRemoveRow = useCallback(() => {
       setTitleOrder(`Bạn có muốn xóa ${intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})}: ${props?.data?.id}`);
     }, []);
-    const options: Options = {
-        filename: "goods-delivery.pdf",
-        method: "save",
-        // default is Resolution.MEDIUM = 3, which should be enough, higher values
-        // increases the image quality but also the size of the PDF, so be careful
-        // using values higher than 10 when having multiple pages generated, it
-        // might cause the page to crash or hang.
-        // resolution: Resolution.EXTREME,
-        page: {
-          // margin is in MM, default is Margin.NONE = 0
-          margin: Margin.SMALL,
-          // default is 'A4'
-          format: "A5",
-          // default is 'portrait'
-          orientation: "landscape"
-        },
-        canvas: {
-          // default is 'image/jpeg' for better size performance
-          mimeType: "image/jpeg",
-          qualityRatio: 0.1
-        },
-        // Customize any value passed to the jsPDF instance and html2canvas
-        // function. You probably will not need this and things can break,
-        // so use with caution.
-        overrides: {
-          // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-          pdf: {
-            compress: true
-          },
-          // see https://html2canvas.hertzen.com/configuration for more options
-          canvas: {
-            useCORS: false
-          }
-        }
-      };
-    const getTargetElement = () => document.getElementById("containerReceipt");
-    const downloadPdf = () => generatePDF(getTargetElement, options);
+
     const handlePrintRow = async () => {
         try {
           setIsLoading(true); // Show loading GIF
           if (setRowDataCouponReciept) {
             await setRowDataCouponReciept({ print: true, data: props.data });
           }
-          await downloadPdf();
+          
+          // await downloadPdf();
+
         } catch (error) {
-          console.error('Error:', error);
+          console.error('bao Error:', error);
         } finally {
           setIsLoading(false); // Hide loading GIF
           ToastSuccess('In phiếu thành công');
@@ -73,6 +42,7 @@ export const ButtonActionsRender = (props: any) => {
             setRowDataCouponReciept(false);
           }
         }
+
     }
     const buttonOK = async () => {
       try {

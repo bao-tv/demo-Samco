@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import {IFormSearch, usePageData} from '../../../_metronic/layout/core'
 import {CreateAppModal} from '../../../_metronic/partials'
 import {columnDefsOrderManagerment} from './component/interface'
@@ -18,6 +18,7 @@ const OrderSetupPage = (props: Props) => {
   const {
     rowDataOrder,
     gridRefOrderSetup,
+    reportTemplateRef,
     showModalOrder,
     setShowModalOrder,
     setDataModalOrder,
@@ -85,7 +86,10 @@ const OrderSetupPage = (props: Props) => {
         }
       />
       <ModalShowImport />
-      {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data} />}
+      {/* {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data} />} */}
+      {rowDataCouponReciept.data && <div ref={reportTemplateRef}>
+        <ReceiptLayoutPrints data={rowDataCouponReciept.data} />
+      </div>}
     </>
   )
 }

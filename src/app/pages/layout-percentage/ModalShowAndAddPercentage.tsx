@@ -1,11 +1,11 @@
 import {useForm, SubmitHandler, Controller} from 'react-hook-form'
 import {InputGroup, Button, Form} from 'react-bootstrap'
-import {IFormTaxRateRateInput} from './interface'
+import {IFormPercentageInput} from './interface'
 import ToastError, {ToastSuccess} from '../../../_metronic/helpers/crud-helper/Toast'
 import {usePageData} from '../../../_metronic/layout/core'
-import {taxRateCreatedAPI, taxRateEditAPIByID} from '../../../apis/taxRateAPI'
-import { useDispatch } from 'react-redux'
-import { taxRate } from '../../../slices/taxRateSlices'
+import {deliveryConfigCreatedAPI, deliveryConfigEditAPIByID} from '../../../apis/deliveryConfigAPI'
+import {useDispatch} from 'react-redux'
+import {Percentage} from '../../../slices/percentageSlices'
 
 type Props = {
   title: string
@@ -13,8 +13,8 @@ type Props = {
   handleClose?: any
 }
 
-const ModalShowAndAddTaxRate = (props: Props) => {
-  const {dataModalTaxRate} = usePageData()
+const ModalShowAndAddPercentage = (props: Props) => {
+  const {dataModalPercentage} = usePageData()
   const dispath = useDispatch()
   const {
     control,
@@ -24,24 +24,25 @@ const ModalShowAndAddTaxRate = (props: Props) => {
   } = useForm<any>({
     mode: 'all',
     defaultValues: {
-      code: dataModalTaxRate.code || '',
-      name: dataModalTaxRate.name || '',
-      tax: dataModalTaxRate.tax || '',
-      id: dataModalTaxRate.id || 0,
+      code: dataModalPercentage.code || '',
+      name: dataModalPercentage.name || '',
+      percentage: dataModalPercentage.percentage || '',
+      note: dataModalPercentage.note || '',
+      id: dataModalPercentage.id || 0,
     },
     shouldUnregister: false,
   })
-  const onSubmit: SubmitHandler<IFormTaxRateRateInput> = async (data: IFormTaxRateRateInput) => {
+  const onSubmit: SubmitHandler<IFormPercentageInput> = async (data: IFormPercentageInput) => {
     const objectConvert = {...data, provinces: [], prices: []}
     try {
       if (data.id) {
-        await taxRateEditAPIByID(objectConvert)
+        await deliveryConfigEditAPIByID(objectConvert)
         ToastSuccess('Bạn đã cập nhật thành công')
       } else {
-        await taxRateCreatedAPI(objectConvert)
+        await deliveryConfigCreatedAPI(objectConvert)
         ToastSuccess('Bạn đã tạo mới thành công')
       }
-      dispath( taxRate());
+      dispath(Percentage())
       props.handleClose()
     } catch (err) {
       ToastError('Có lỗi xảy ra!')
@@ -68,11 +69,12 @@ const ModalShowAndAddTaxRate = (props: Props) => {
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
                     <InputGroup.Text className={`group-text ${errors?.code && 'border-danger'}`}>
-                      Mã thuế suất
+                      Mã Phí/Thuế
                     </InputGroup.Text>
                     <Form.Control
                       className={`text-dark ${errors?.code && 'border-danger'}`}
                       aria-label='Default'
+                      disabled={dataModalPercentage.id}
                       aria-describedby='inputGroup-sizing-default'
                       onBlur={onBlur}
                       onChange={onChange}
@@ -91,7 +93,7 @@ const ModalShowAndAddTaxRate = (props: Props) => {
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
                     <InputGroup.Text className={`group-text ${errors?.name && 'border-danger'}`}>
-                      Tên thuế suất
+                      Tên Phí/Thuế
                     </InputGroup.Text>
                     <Form.Control
                       className={`text-dark ${errors?.name && 'border-danger'}`}
@@ -113,23 +115,47 @@ const ModalShowAndAddTaxRate = (props: Props) => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                   <InputGroup className='mb-3'>
-                    <InputGroup.Text className={`group-text ${errors?.taxRate && 'border-danger'}`}>
-                      Thuế suất
+                    <InputGroup.Text
+                      className={`group-text ${errors?.percentage && 'border-danger'}`}
+                    >
+                      Phí/Thuế
                     </InputGroup.Text>
                     <Form.Control
-                      className={`text-dark ${errors?.taxRate && 'border-danger'}`}
+                      className={`text-dark ${errors?.percentage && 'border-danger'}`}
                       aria-label='Default'
                       aria-describedby='inputGroup-sizing-default'
                       onBlur={onBlur}
                       onChange={onChange}
                       value={value}
                     />
-                    <InputGroup.Text className={`group-text ${errors?.taxRate && 'border-danger'}`}>
+                    <InputGroup.Text
+                      className={`group-text ${errors?.percentage && 'border-danger'}`}
+                    >
                       %
                     </InputGroup.Text>
                   </InputGroup>
                 )}
-                name='tax'
+                name='percentage'
+              />
+
+              <Controller
+                control={control}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <InputGroup className='mb-3'>
+                    <InputGroup.Text className={`group-text ${errors?.note && 'border-danger'}`}>
+                      Ghi chí
+                    </InputGroup.Text>
+                    <Form.Control
+                      className={`text-dark ${errors?.note && 'border-danger'}`}
+                      aria-label='Default'
+                      aria-describedby='inputGroup-sizing-default'
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      value={value}
+                    />
+                  </InputGroup>
+                )}
+                name='note'
               />
             </>
           </div>
@@ -138,7 +164,7 @@ const ModalShowAndAddTaxRate = (props: Props) => {
           <div className='col justify-content-end d-flex'>
             <div>
               <Button type='submit' className='btn btn-primary'>{`${
-                dataModalTaxRate.id ? 'Cập nhật' : 'Tạo mới'
+                dataModalPercentage.id ? 'Cập nhật' : 'Tạo mới'
               } ${props.title}`}</Button>
             </div>
           </div>
@@ -148,4 +174,4 @@ const ModalShowAndAddTaxRate = (props: Props) => {
   )
 }
 
-export default ModalShowAndAddTaxRate
+export default ModalShowAndAddPercentage

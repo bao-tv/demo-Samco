@@ -14,6 +14,8 @@ export interface PageDataContextModel {
   searchData?: string,
   setSearchData?: (_title: string) => void
 
+  reportTemplateRef?: any,
+  gridRefOrderSetup?: any,
   pageTitle?: string
   setPageTitle: (_title: string) => void
   pageDescription?: string
@@ -29,13 +31,13 @@ export interface PageDataContextModel {
   showModalOrder?: any
   setShowModalOrder?: (_datas: any) => void
 
-  showModalTaxRate?: any
-  setShowModalTaxRate?: (_datas: any) => void
-  dataModalTaxRate?: any
-  setDataModalTaxRate?: (_datas: any) => void
-  // listTaxRates?: any
-  // setListTaxRates?: (_datas: any) => void
-  gridRefTaxRateSetup?: any,
+  showModalPercentage?: any
+  setShowModalPercentage?: (_datas: any) => void
+  dataModalPercentage?: any
+  setDataModalPercentage?: (_datas: any) => void
+  // listPercentages?: any
+  // setListPercentages?: (_datas: any) => void
+  gridRefPercentageSetup?: any,
 
   showModalRegion?: any
   setShowModalRegion?: (_datas: any) => void
@@ -107,7 +109,6 @@ export interface PageDataContextModel {
   setListPackageCBMPrice?: (_datas: any) => void
   gridRefPackageCBMPriceSetup?: any,
 
-  gridRefOrderSetup?: any
   setIsLoading?: any,
   isLoading?: any,
 }
@@ -125,6 +126,7 @@ const PageDataContext = createContext<PageDataContextModel>({
 const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [searchData, setSearchData] = useState<string>('')
 
+  const reportTemplateRef = useRef(null);
   const [pageTitle, setPageTitle] = useState<string>('')
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
@@ -133,10 +135,10 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [dataModalOrder, setDataModalOrder] = useState<any>({})
   const [showModalOrder, setShowModalOrder] = useState<any>(false)
 
-  const [showModalTaxRate, setShowModalTaxRate] = useState<any>(false)
-  const [dataModalTaxRate, setDataModalTaxRate] = useState<any>({})
-  // const [listTaxRates, setListTaxRates] = useState<any[]>([])
-  const gridRefTaxRateSetup = useRef(null);
+  const [showModalPercentage, setShowModalPercentage] = useState<any>(false)
+  const [dataModalPercentage, setDataModalPercentage] = useState<any>({})
+  // const [listPercentages, setListPercentages] = useState<any[]>([])
+  const gridRefPercentageSetup = useRef(null);
 
   const [showModalRegion, setShowModalRegion] = useState<any>(false)
   const [dataModalRegion, setDataModalRegion] = useState<any>({})
@@ -189,6 +191,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     searchData,
     setSearchData,
 
+    reportTemplateRef,
     gridRefOrderSetup,
     pageTitle,
     setPageTitle,
@@ -205,13 +208,13 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     showModalOrder,
     setShowModalOrder,
 
-    showModalTaxRate,
-    setShowModalTaxRate,
-    dataModalTaxRate,
-    setDataModalTaxRate,
-    // listTaxRates,
-    // setListTaxRates,
-    gridRefTaxRateSetup,
+    showModalPercentage,
+    setShowModalPercentage,
+    dataModalPercentage,
+    setDataModalPercentage,
+    // listPercentages,
+    // setListPercentages,
+    gridRefPercentageSetup,
 
     showModalRegion,
     setShowModalRegion,

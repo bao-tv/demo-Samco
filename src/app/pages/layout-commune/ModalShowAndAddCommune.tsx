@@ -63,7 +63,7 @@ const ModalShowAndAddCommune = (props: PropsModalShowAndAddCommune) => {
   }
 
   const dataInit = async ({provinceId}: prodDataInit) => {
-    console.log('bao provinceId: ', provinceId)
+    // console.log('bao provinceId: ', provinceId)
     try {
       if (provinceId) {
         const districtInProvince = await districtAPIGetByProvince(provinceId)

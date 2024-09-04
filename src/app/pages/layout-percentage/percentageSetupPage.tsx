@@ -1,20 +1,17 @@
-import {useMemo, useCallback, useState, useEffect} from 'react'
+import {useMemo, useCallback} from 'react'
 import {AgGridReact} from 'ag-grid-react'
 import {CreateAppModal, useThemeMode} from '../../../_metronic/partials'
-import {columnDefsTaxRateSetupPage} from './interface'
+import {columnDefsPercentageSetupPage} from './interface'
 import {usePageData} from '../../../_metronic/layout/core'
 import {useIntl} from 'react-intl'
-import {regionAPIGetAll} from '../../../apis/regionAPI'
-import ToastError from '../../../_metronic/helpers/crud-helper/Toast'
-import ModalShowAndAddTaxRate from './ModalShowAndAddRegion'
-import { taxRateAPIGetAll } from '../../../apis/taxRateAPI'
+import ModalShowAndAddPercentage from './ModalShowAndAddPercentage'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../store'
 
 type Props = {}
 
-const TaxRateSetupPage = (props: Props) => {
-  const {listTax} = useSelector((state: RootState) => state.taxRate)
+const PercentageSetupPage = (props: Props) => {
+  const {listPercentage} = useSelector((state: RootState) => state.Percentage)
   // console.log('bao listTax: ', listTax);
   const intl = useIntl()
   const containerStyle = useMemo(() => ({width: '100%', height: '100%'}), [])
@@ -25,14 +22,14 @@ const TaxRateSetupPage = (props: Props) => {
     console.log('bao onCellValueChanged: ' + event.colDef.field + ' = ' + event.newValue)
   }, [])
   const {
-    gridRefTaxRateSetup,
-    showModalTaxRate,
-    setShowModalTaxRate,
-    setDataModalTaxRate,
+    gridRefPercentageSetup,
+    showModalPercentage,
+    setShowModalPercentage,
+    setDataModalPercentage,
   } = usePageData()
-  const handleCloseModalTaxRate = () => {
-    setShowModalTaxRate && setShowModalTaxRate(false)
-    setDataModalTaxRate && setDataModalTaxRate({})
+  const handleCloseModalPercentage = () => {
+    setShowModalPercentage && setShowModalPercentage(false)
+    setDataModalPercentage && setDataModalPercentage({})
   }
   return (
     <div style={containerStyle}>
@@ -42,29 +39,29 @@ const TaxRateSetupPage = (props: Props) => {
           className={modeCurrent === 'dark' ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
         >
           <AgGridReact
-            ref={gridRefTaxRateSetup}
-            rowData={listTax}
-            columnDefs={columnDefsTaxRateSetupPage}
+            ref={gridRefPercentageSetup}
+            rowData={listPercentage}
+            columnDefs={columnDefsPercentageSetupPage}
             onGridReady={onGridReady}
             onCellValueChanged={onCellValueChanged}
           />
         </div>
       </div>
       <CreateAppModal
-        show={showModalTaxRate}
-        handleClose={handleCloseModalTaxRate}
+        show={showModalPercentage}
+        handleClose={handleCloseModalPercentage}
         content={
-          <ModalShowAndAddTaxRate
-            title={intl.formatMessage({id: 'MENU.THUESUAT'})}
-            // refreshData={getListTaxRates}
-            handleClose={handleCloseModalTaxRate}
+          <ModalShowAndAddPercentage
+            title={intl.formatMessage({id: 'MENU.PHI-THUE'})}
+            // refreshData={getListPercentages}
+            handleClose={handleCloseModalPercentage}
           />
         }
-        title={intl.formatMessage({id: 'MENU.THUESUAT'})}
+        title={intl.formatMessage({id: 'MENU.PHI-THUE'})}
         size='lg'
       />
     </div>
   )
 }
 
-export default TaxRateSetupPage
+export default PercentageSetupPage

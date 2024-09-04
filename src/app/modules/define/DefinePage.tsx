@@ -12,13 +12,13 @@ import Region_Freight_Prices_SetupPage from '../../pages/layout-regions-freight-
 import Region_Rates_SetupPage from '../../pages/layout-regions-rates/Region_Rates_SetupPage'
 import CBM_Rates_SetupPage from '../../pages/layout-cbm-rates/CBM_Rates_SetupPage'
 import PackageCBMPriceSetupPage from '../../pages/layout-pack-cbm/PackageCBMPriceSetupPage'
-import TaxRateSetupPage from '../../pages/layout-taxRate/TaxRateSetupPage'
+import PercentageSetupPage from '../../pages/layout-percentage/percentageSetupPage'
 
 type Props = {}
 const DefinePagesBreadCrumbs: Array<PageLink> = [
   {
-    title: 'Thuế suất',
-    path: '/dinh-nghia/chung/thue-suat',
+    title: 'Phần trăm',
+    path: '/dinh-nghia/chung/phan-tram',
     isSeparator: false,
     isActive: false,
   },
@@ -78,11 +78,11 @@ const DefinePage = (props: Props) => {
     <Routes>
       <Route path='chung'>
         <Route
-          path='thue-suat'
+          path='phan-tram'
           element={
             <>
-              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.THUESUAT'})}</PageTitle>
-              <TaxRateSetupPage />
+              <PageTitle breadcrumbs={DefinePagesBreadCrumbs}>{intl.formatMessage({id: 'MENU.PHI-THUE'})}</PageTitle>
+              <PercentageSetupPage />
             </>
           }
         />

@@ -39,9 +39,10 @@ const ModalOrderPage = (props: Props) => {
   const [priPackageByCBM, setPriPackageByCBM] = useState<any>(number)
   const {listPackagesPrice} = useSelector((state: RootState) => state.packagesPrice)
   const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
-  const {listTax} = useSelector((state: RootState) => state.taxRate)
+  const {percentage} = useSelector((state: RootState) => state.Percentage)
 
   const {rowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData()
+  // console.log('bao showModalOrder: ', showModalOrder);
 
   const {
     control,
@@ -101,7 +102,7 @@ const ModalOrderPage = (props: Props) => {
   }
   // handle form ====================
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const dataConvert = {...data, itemValue: NumberConverterRejectSystax(data.itemValue), packagingServices: packagingServiceData}
+    const dataConvert = {...data, itemValue: NumberConverterRejectSystax(data.itemValue) || 0, packagingServices: packagingServiceData}
     // console.log('bao data: ', dataConvert);
     try {
       if (dataConvert?.id) {
@@ -143,24 +144,26 @@ const ModalOrderPage = (props: Props) => {
       ],
     })
     const [province, setProvince] = useState<any>({})
-    useEffect(() => {
-      const fetchProvinceData = async () => {
-        if (dataInput[7]?.id) {
-          try {
-            const response = await provinceLiteAPIGetById(dataInput[7]?.id)
-            setProvince(response?.data || {})
-          } catch (error) {
-            console.error('Error fetching province detail:', error)
-          }
+    
+    const fetchProvinceData = async () => {
+      if (dataInput[7]?.id) {
+        try {
+          const response = await provinceLiteAPIGetById(dataInput[7]?.id)
+          setProvince(response?.data || {})
+        } catch (error) {
+          console.error('Error fetching province detail:', error)
         }
       }
-
+    }
+    useEffect(() => {
       fetchProvinceData()
     }, [dataInput[7]?.id])
 
     let pri: any = 0
-    const taxService: number = +listTax[0]?.tax || 0;
-    // console.log('bao taxService: ', taxService);
+
+    // const percentage.TSDVVC: number = +listPercentage[0]?.tax || 0;
+    // const taxPackage: number = +listPercentage[0]?.tax || 0;
+    // console.log('bao percentage.TSDVVC: ', percentage.TSDVVC);
     const calPackageFragile = () => {
       const packageByCBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
       // console.log('bao packageByCBM: ', packageByCBM)
@@ -195,10 +198,10 @@ const ModalOrderPage = (props: Props) => {
       console.log('bao price kg - kg/c cmb: ', priByKG, priKGConvert, priByCBM)
       const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
       pri =
-        getMaxValue([priByKG * (1 + taxService/100), priKGConvert * (1 + taxService/100), priByCBM]) * 1.19 *
-          (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : 1.25) *
+        getMaxValue([priByKG * (1 + percentage.TSDVVC/100), priKGConvert * (1 + percentage.TSDVVC/100), priByCBM]) * (1 + percentage.PPXD/100) *
+          (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : (1 + percentage.PPGHNT/100)) *
           +dataInput[4] +
-        (+valuePackage > 1000000 ? (+valuePackage - 1000000) * 0.05 : 0)
+        (+valuePackage > 1000000 ? (+valuePackage - 1000000) * (percentage.PPHGTC/100) : 0)
       setValue('serviceFee', pri)
     }
     return (
@@ -267,7 +270,7 @@ const ModalOrderPage = (props: Props) => {
       name: ['itemFragile', 'itemQuantity'],
     })
     let calculatedPrice: number = 0;
-    const taxService: number = +listTax?.tax || 0;
+    // const percentage.TSDVVC: number = +listPercentage?.tax || 0;
     if (packagingServiceData.length > 0) {
       packagingServiceData.forEach((item: any) => {
         // console.log('bao item: ',item,)
@@ -279,7 +282,7 @@ const ModalOrderPage = (props: Props) => {
     setValue(
       'packagingServiceFee',
       (calculatedPrice + (priPackageServiceData[0] ? priPackageByCBM?.price : 0)) *
-        +priPackageServiceData[1] * (1 + taxService/100)
+        +priPackageServiceData[1] * (1 + percentage.TSDVDG/100)
     )
     return (
       <Controller

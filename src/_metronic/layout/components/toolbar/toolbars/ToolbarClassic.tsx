@@ -13,7 +13,7 @@ const ToolbarClassic = () => {
   const {config} = useLayout()
   const intl = useIntl()
   const {
-    setShowModalTaxRate,
+    setShowModalPercentage,
     setShowModalRegion,
     setShowModalOrder,
     setShowModalProvince,
@@ -75,11 +75,11 @@ const ToolbarClassic = () => {
             <ButtonCreate setData={setShowModalOrder} title={`Tạo Phiếu nhận hàng`} />
           </>
         )}
-      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/chung/thue-suat' && (
+      {config.app?.toolbar?.primaryButton && location.pathname === '/dinh-nghia/chung/phan-tram' && (
         <>
           <ButtonCreate
-            setData={setShowModalTaxRate}
-            title={`Tạo ${intl.formatMessage({id: 'MENU.THUESUAT'})}`}
+            setData={setShowModalPercentage}
+            title={`Tạo ${intl.formatMessage({id: 'MENU.PHI-THUE'})}`}
           />
         </>
       )}

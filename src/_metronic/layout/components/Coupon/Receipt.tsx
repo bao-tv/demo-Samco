@@ -1,8 +1,7 @@
 import React from 'react'
-import { toAbsoluteUrl } from '../../../helpers'
+import { receiptDate, toAbsoluteUrl } from '../../../helpers'
 import dayjs from 'dayjs'
 import { Button } from 'react-bootstrap';
-import generatePDF, { Resolution, Margin, Options } from "react-to-pdf";
 import Barcode from 'react-barcode';
 
 type Props = {
@@ -33,7 +32,7 @@ const Receipt = ({data}: Props) => {
                                 <p className='m-0'>Giờ gửi: <span>{dayjs(data?.sendDate).format('hh:mm A')}</span></p>
                             </div>
                             <div className="col-6 text-start">
-                                <p className='m-0'>Ngày giao hàng dự kiến: <span>{dayjs(data?.receiptDate).format('DD/MM/YYYY')}</span></p>
+                                <p className='m-0'>Ngày giao hàng dự kiến: <span>{dayjs(receiptDate({ createdDate: data?.sendDate || '', daysToAdd: +data?.receiptDate }))?.format('DD/MM/YYYY') || ''}</span></p>
                                 <p className='m-0'>Nhân viên tiếp nhận: </p>
                             </div>
                         </div>
@@ -63,17 +62,17 @@ const Receipt = ({data}: Props) => {
                     <p className='fw-bold fs-3'>A. THÔNG TIN NGƯỜI GỬI VÀ NHẬN HÀNG</p>
                     <div className=''>
                         <p className='fw-bold'>1. Người gửi:</p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span><span>{data?.sendName}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.sendIdPer}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.senderAddress}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.sendAddress}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span><span>{data?.senderName}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.senderIdCard}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span><span>{data?.senderPhone}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{data?.senderAddress}</span></p>
                     </div>
                     <div>
                         <p className='fw-bold'>2. Người nhận:</p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Họ tên:</span> <span>{data?.receiverName}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiptIdPer}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Số CCCD:</span><span>{data?.receiverIdCard}</span></p>
                         <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Điện thoại:</span> <span>{data?.receiverPhone}</span></p>
-                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{ `${data?.receiptAddress?.label ? data?.receiptAddress?.label : ''} - ${data?.receiptProvinceAddress?.label ? data?.receiptProvinceAddress?.label : ''}`}</span></p>
+                        <p className='mb-1 d-flex'><span className='d-block' style={{width: '120px'}}>Địa chỉ:</span><span>{`${data?.receiverAddress}, ${data?.receiverCommune?.name}, ${data?.receiverDistrict?.name}, ${data?.receiverProvince?.name}`}</span></p>
                     </div>
                 </div>
                 <div className="col-7 fs-4 p-0">
@@ -83,14 +82,15 @@ const Receipt = ({data}: Props) => {
                         <div className='container px-3'>
                             <div className="row">
                                 <div className="col-7">
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>a. Tên hàng:</p><span>{data?.packageName}</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>b. Trị giá:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageValue?.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>c. Trọng lượng:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.packageWeight?.toLocaleString()}</span><span>Kg</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>d. Số kiện:</p><span>{data?.packageQuantity?.toLocaleString()}</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>a. Tên hàng:</p><span>{data?.itemName}</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>b. Trị giá:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.itemValue?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>c. Trọng lượng:</p><span style={{width: 'calc(100% - 200px)'}}>{data?.itemWeight?.toLocaleString()}</span><span>Kg</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>d. Số kiện:</p><span>{data?.itemQuantity?.toLocaleString()}</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '150px'}}>e. Phân tuyến:</p><span>{data?.receiverCommune?.shipmentType.toLocaleString()}</span></p>
                                 </div>
                                 <div className='col-5'>
-                                    <p>e. Yêu cầu đơn vị vận chuyển</p>
-                                    <p>{data?.shipName?.fullName}</p>
+                                    <p>(Trường hợp nơi nhận thuộc khu vực huyện xã sẽ cộng thêm 25% vào giá dịch vụ vận chuyển)</p>
+                                    {/* <p>{data?.shipName?.fullName}</p> */}
                                 </div>
                             </div>
                         </div>
@@ -99,25 +99,25 @@ const Receipt = ({data}: Props) => {
                         <p className='fw-bold px-3'>2. Tiền dịch vụ vận chuyển</p>
                         <div className='container px-3'>
                             <div className="row">
-                                <div className="col-7">
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>a. Giá dịch vụ:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.price?.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>b. Hệ số dịch vụ:</p><span>{data?.coefficient?.code}</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>c. Giá dịch vụ đóng gói:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packagingServicePrice?.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>d. Giá trị hàng hóa (khách hàng khai):</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packageValue?.toLocaleString()}</span><span>đồng</span></p>
-                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>e. Tiền dịch vụ (a*b)+c:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
+                                <div className="col">
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '400px'}}>a. Giá dịch vụ khai giá trị hàng hóa:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.itemValue?.toLocaleString()}</span><span>đồng</span></p>
+                                    {/* <p className='mb-1 d-flex'><p className='m-0' style={{width: '190px'}}>b. Hệ số dịch vụ:</p><span>{data?.coefficient?.code}</span></p> */}
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '400px'}}>b. Giá dịch vụ đóng gói:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.packagingServiceFee?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '400px'}}>c. Giá dịch vụ vận chuyển:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.serviceFee?.toLocaleString()}</span><span>đồng</span></p>
+                                    <p className='mb-1 d-flex'><p className='m-0' style={{width: '400px'}}>e. Tiền dịch vụ (a*b)+c:</p><span style={{width: 'calc(100% - 240px)'}}>{data?.totalAmount?.toLocaleString()}</span><span>đồng</span></p>
                                 </div>
-                                <div className='col-5 fst-italic'>
+                                {/* <div className='col-5 fst-italic'>
                                     <p className='mb-0 fw-bold'>Ghi chú:</p>
                                     <p className='mb-0 fw-bold'>Mục 2.b hệ số dịch vụ gồm:</p>
                                     <p className='mb-0'>- Hàng quá tải (1,2)</p>
                                     <p className='mb-0'>- Hàng quá khổ (1,2)</p>
                                     <p className='mb-0'>- Hàng quá tải và quá khổ (1,2)</p>
                                     <p className='mb-0'>- Hàng giao tận nơi (1,3)</p>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
-                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalPrice?.toLocaleString()}</span><span>đồng</span></p>
+                    <p className='fw-bold border-dark px-3 m-0 d-flex h-50px align-items-center'><p className='m-0' style={{width: '200px'}}>3. Người gửi thanh toán:</p><span className='fs-1' style={{width: 'calc(100% - 250px)'}}>{data?.totalAmount?.toLocaleString()}</span><span>đồng</span></p>
                     {/* <p className='fw-bold px-3 d-flex'><p className='m-0' style={{width: '200px'}}>4. Phải thu người nhận:</p><span style={{width: 'calc(100% - 250px)'}}>{data?.receiptPay}</span><span>đồng</span></p> */}
                 </div>
             </div>

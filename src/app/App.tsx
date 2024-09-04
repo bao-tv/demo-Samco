@@ -9,7 +9,8 @@ import { useDispatch } from 'react-redux'
 import { provinceLite } from '../slices/provinceLiteSlices'
 import { packagesPrice } from '../slices/packagePriceSlice'
 import { packagesCBMPrice } from '../slices/packageCBMPriceSlice'
-import { taxRate } from '../slices/taxRateSlices'
+import { Percentage } from '../slices/percentageSlices'
+// import ReactDOM from 'react-dom';
 
 const App = () => {
   const dispath = useDispatch();
@@ -17,7 +18,7 @@ const App = () => {
     dispath( provinceLite());
     dispath( packagesPrice());
     dispath( packagesCBMPrice());
-    dispath( taxRate());
+    dispath( Percentage());
   }, []);
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
@@ -33,5 +34,7 @@ const App = () => {
     </Suspense>
   )
 }
+
+// ReactDOM.render(<App />, document.getElementById('root'));
 
 export {App}
