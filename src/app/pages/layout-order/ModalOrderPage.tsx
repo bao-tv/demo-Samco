@@ -97,7 +97,9 @@ const ModalOrderPage = (props: Props) => {
     setRowDataCouponReciept &&
       setRowDataCouponReciept({
         ...dataForm,
-        indexRow: rowDataOrder?.length ? rowDataOrder?.length + 1 : 1,
+        // indexRow: rowDataOrder?.length ? rowDataOrder?.length + 1 : 1,
+        isShowReceipt: true,
+        isPrintReceipt: false,
       })
   }
   // handle form ====================

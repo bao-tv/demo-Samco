@@ -1,7 +1,6 @@
 import React from 'react'
 import { receiptDate, toAbsoluteUrl } from '../../../helpers'
 import dayjs from 'dayjs'
-import { Button } from 'react-bootstrap';
 import Barcode from 'react-barcode';
 
 type Props = {
