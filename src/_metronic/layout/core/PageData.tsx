@@ -14,7 +14,9 @@ export interface PageDataContextModel {
   searchData?: string,
   setSearchData?: (_title: string) => void
 
-  reportTemplateRef?: any,
+  reportTemplateRef1?: any,
+  reportTemplateRef2?: any,
+  reportTemplateRef3?: any,
   gridRefOrderSetup?: any,
   pageTitle?: string
   setPageTitle: (_title: string) => void
@@ -126,7 +128,9 @@ const PageDataContext = createContext<PageDataContextModel>({
 const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [searchData, setSearchData] = useState<string>('')
 
-  const reportTemplateRef = useRef(null);
+  const reportTemplateRef1 = useRef(null);
+  const reportTemplateRef2 = useRef(null);
+  const reportTemplateRef3 = useRef(null);
   const [pageTitle, setPageTitle] = useState<string>('')
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
@@ -191,7 +195,9 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     searchData,
     setSearchData,
 
-    reportTemplateRef,
+    reportTemplateRef1,
+    reportTemplateRef2,
+    reportTemplateRef3,
     gridRefOrderSetup,
     pageTitle,
     setPageTitle,

@@ -10,8 +10,6 @@ import {receiptAPIGetByPagination} from '../../../apis/receiptAPI'
 import ToastError from '../../../_metronic/helpers/crud-helper/Toast'
 import {defaultSearch} from '../../../_metronic/assets/define/Define'
 import MainLayout from '../../../_metronic/partials/layout/mainLayout/MainLayout'
-import { Document, Text, Page } from '@react-pdf/renderer';
-import { PDFViewer } from '@react-pdf/renderer';
 
 type Props = {}
 
@@ -20,7 +18,6 @@ const OrderSetupPage = (props: Props) => {
   const {
     rowDataOrder,
     gridRefOrderSetup,
-    reportTemplateRef,
     showModalOrder,
     setShowModalOrder,
     setDataModalOrder,
@@ -29,7 +26,7 @@ const OrderSetupPage = (props: Props) => {
     setRowDataOrder,
     searchData,
   } = usePageData()
-  console.log('bao rowDataCouponReciept: ', rowDataCouponReciept);
+  // console.log('bao rowDataCouponReciept: ', rowDataCouponReciept);
   const [dataPagination, setDataPagination] = useState<any>({})
   const [dataSearch, setDataSearch] = useState<IFormSearch>(defaultSearch)
   const getListReceivers = async (valuePagination: IFormSearch) => {
@@ -90,9 +87,7 @@ const OrderSetupPage = (props: Props) => {
       <ModalShowImport />
       {/* {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data} />} */}
       {rowDataCouponReciept.data && 
-      < >
-        <ReceiptLayoutPrints data={rowDataCouponReciept.data} /> 
-      </>
+        <ReceiptLayoutPrints data={rowDataCouponReciept?.data} /> 
       }
     </>
   )

@@ -1,5 +1,6 @@
 import {ColDef} from 'ag-grid-community'
-import {FormatsDate, ButtonActionsRender, RenderAddress, FormatsDateReceiver} from '../../../../_metronic/helpers'
+import {FormatsDate, RenderAddress, FormatsDateReceiver} from '../../../../_metronic/helpers'
+import ButtonActionsRender from '../../../../_metronic/helpers/components/ButtonActionsRender'
 // import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {

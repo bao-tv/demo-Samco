@@ -8,10 +8,9 @@ type Props = {
 }
 
 const Receipt = ({data}: Props) => {
-    console.log('bao data: ', data);
     
   return (
-    <div className='containerReceipt'>
+    <div className=''>
         <div className='container' >
             <div className='row fs-4 border border-dark'>
                 <div className="col-2 pt-3">
