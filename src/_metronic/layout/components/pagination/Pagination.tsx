@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form'
 type Props = {
   dataPagination?: any
   setDataSearch?: any
+  handlegGetDataTranfToWarehouse?: any
 }
 
 const Pagination = (props: Props) => {
@@ -32,7 +33,13 @@ const Pagination = (props: Props) => {
   const pageSizeArray: number[] = [20, 50, 100]
   return (
     props?.dataPagination?.size && (
-      <div className='d-flex justify-content-end mt-2 fs-5'>
+      <div className={`d-flex ${props?.handlegGetDataTranfToWarehouse ? 'justify-content-between' : 'justify-content-end'} mt-2 fs-5`}>
+        {props?.handlegGetDataTranfToWarehouse && <>
+          <div>
+            <Button onClick={props?.handlegGetDataTranfToWarehouse}>Phiếu Xuất Kho</Button>
+          </div>
+        </>
+        }
         <div className='d-flex text-dark align-items-center'>
           <div className='me-5 mb-0 d-flex align-items-center'>
             <p className='mb-0 text-nowrap me-3'>Kích thước trang: </p>
@@ -41,7 +48,7 @@ const Pagination = (props: Props) => {
                 changePageSize(e.currentTarget.value)
             }
             }>
-                {pageSizeArray.map(item => <option value={item}>{item}</option>)}
+                {pageSizeArray.map((item, index) => <option key={index} value={item}>{item}</option>)}
             </Form.Select>
           </div>
           <div className='ms-5 me-5 mb-0 d-flex'>

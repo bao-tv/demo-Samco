@@ -2,6 +2,7 @@ import {useMemo, useCallback, useEffect, useState} from 'react'
 import {AgGridReact} from 'ag-grid-react'
 import Pagination from '../../../layout/components/pagination/Pagination'
 import { useThemeMode } from '../theme-mode/ThemeModeProvider'
+// import './styleMainLayout.css'
 
 
 type Props = {
@@ -14,6 +15,9 @@ type Props = {
     modal?: any,
     isLoading?: any,
     heightBottom?: any | '50px',
+    rowClassRules?: any,
+    rowSelection?: 'single' | 'multiple',
+    handlegGetDataTranfToWarehouse?: any
 }
 
 const MainLayout: React.FC<Props> = ({
@@ -23,12 +27,19 @@ const MainLayout: React.FC<Props> = ({
     defaultCol = {
         flex: 1,
         filter: true,
+    sortable: true,
+    resizable: true,
+        menuTabs: [],
+            headerComponentParams: { menuIcon: 'fa-bars' },
       },
     dataPagination,
     setDataSearch,
     modal,
     isLoading,
-    heightBottom = '50px' // Default value here
+    heightBottom = '50px', // Default value here
+    rowClassRules,
+    rowSelection,
+    handlegGetDataTranfToWarehouse,
 }) => {
     // console.log('bao heightBottom: ', heightBottom)
   const containerStyle = useMemo(() => ({width: '100%', height: '100%'}), [])
@@ -66,8 +77,10 @@ const MainLayout: React.FC<Props> = ({
             rowData={rowData}
             columnDefs={columnDef}
             defaultColDef={defaultCol}
+            rowClassRules={rowClassRules}
+            rowSelection={rowSelection}
           />
-          <Pagination dataPagination={dataPagination} setDataSearch={setDataSearch}/>
+          <Pagination dataPagination={dataPagination} setDataSearch={setDataSearch} handlegGetDataTranfToWarehouse={handlegGetDataTranfToWarehouse}/>
         </div>
       </div>
       {modal}

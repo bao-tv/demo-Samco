@@ -17,6 +17,7 @@ export interface PageDataContextModel {
   reportTemplateRef1?: any,
   reportTemplateRef2?: any,
   reportTemplateRef3?: any,
+  tranferToWarehouseTemplateRef?: any,
   gridRefOrderSetup?: any,
   pageTitle?: string
   setPageTitle: (_title: string) => void
@@ -32,13 +33,20 @@ export interface PageDataContextModel {
   setDataModalOrder?: (_datas: any) => void
   showModalOrder?: any
   setShowModalOrder?: (_datas: any) => void
+  gridRefSubPackage?: any
+  showModalSubPackage?: any
+  setShowModalSubPackage?: (_datas: any) => void
+  rowDataSubPackage?: any
+  setRowDataSubPackage?: (_datas: any) => void
+
+  listWarehouses?: any
+  setListWarehouses?: (_datas: any) => void
+  gridRefWarehouseSetup?: any,
 
   showModalPercentage?: any
   setShowModalPercentage?: (_datas: any) => void
   dataModalPercentage?: any
   setDataModalPercentage?: (_datas: any) => void
-  // listPercentages?: any
-  // setListPercentages?: (_datas: any) => void
   gridRefPercentageSetup?: any,
 
   showModalRegion?: any
@@ -131,6 +139,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const reportTemplateRef1 = useRef(null);
   const reportTemplateRef2 = useRef(null);
   const reportTemplateRef3 = useRef(null);
+  const tranferToWarehouseTemplateRef = useRef(null);
   const [pageTitle, setPageTitle] = useState<string>('')
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
@@ -138,6 +147,14 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const [rowDataCouponReciept, setRowDataCouponReciept] = useState<any>(false)
   const [dataModalOrder, setDataModalOrder] = useState<any>({})
   const [showModalOrder, setShowModalOrder] = useState<any>(false)
+  const gridRefSubPackage = useRef(null);
+  const [showModalSubPackage, setShowModalSubPackage] = useState<any>(false)
+  const [rowDataSubPackage, setRowDataSubPackage] = useState<any[]>([])
+
+  // const [showModalWarehouse, setShowModalWarehouse] = useState<any>(false)
+  // const [dataModalWarehouse, setDataModalWarehouse] = useState<any>({})
+  const [listWarehouses, setListWarehouses] = useState<any[]>([])
+  const gridRefWarehouseSetup = useRef(null);
 
   const [showModalPercentage, setShowModalPercentage] = useState<any>(false)
   const [dataModalPercentage, setDataModalPercentage] = useState<any>({})
@@ -198,6 +215,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     reportTemplateRef1,
     reportTemplateRef2,
     reportTemplateRef3,
+    tranferToWarehouseTemplateRef,
     gridRefOrderSetup,
     pageTitle,
     setPageTitle,
@@ -213,6 +231,15 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     setDataModalOrder,
     showModalOrder,
     setShowModalOrder,
+    gridRefSubPackage,
+    showModalSubPackage,
+    setShowModalSubPackage,
+    rowDataSubPackage,
+    setRowDataSubPackage,
+
+    listWarehouses,
+    setListWarehouses,
+    gridRefWarehouseSetup,
 
     showModalPercentage,
     setShowModalPercentage,

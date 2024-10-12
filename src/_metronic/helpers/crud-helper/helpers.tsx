@@ -119,6 +119,12 @@ const renderTooltip = (props: any) => (
   </Tooltip>
 );
 
+const renderTooltipSubPackage = (props: any) => (
+  <Tooltip id="button-tooltip" {...props}>
+    Thêm kiện hàng phụ
+  </Tooltip>
+);
+
 function roundToNearestHalf(value: number, step = 0.5) {
   step || (step = 1.0);
   const inv = 1.0 / step;
@@ -230,6 +236,7 @@ export {
   useDebounce,
   isNotEmpty,
   renderTooltip,
+  renderTooltipSubPackage,
   calculatePriceByKG,
   calculatePriceByCBM,
   calculatePricePackageByCBM,

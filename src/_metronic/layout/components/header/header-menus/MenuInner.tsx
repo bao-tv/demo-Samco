@@ -45,7 +45,7 @@ export function MenuInner() {
         menuPlacement='bottom-start'
         menuTrigger='click'
       >
-        KHO
+        <MenuItem to='/quan-ly-kho/hang-trong-kho' title={intl.formatMessage({id: 'MENU.HANGTRONGKHO'})} hasBullet={true} />
       </MenuInnerWithSub>
 
       <MenuInnerWithSub title='Thông tin đầu vào' to='/dinh-nghia' menuPlacement='bottom-start' menuTrigger='click'>

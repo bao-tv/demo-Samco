@@ -15,8 +15,9 @@ import {
   calculatePricePackageByCBM,
   getMaxValue,
   NumberConverterRejectSystax,
+  renderTooltipSubPackage,
 } from '../../../_metronic/helpers'
-import _, { values } from 'lodash'
+import _, {values} from 'lodash'
 import {NumericFormat} from 'react-number-format'
 import Sender from './component/Sender'
 import Receiver from './component/Receiver'
@@ -26,6 +27,7 @@ import {RootState} from '../../../store'
 import {number} from 'yup'
 import {provinceLiteAPIGetById} from '../../../apis/provinceAPI'
 import {receiptCreatedAPI, receiptEditAPIByID} from '../../../apis/receiptAPI'
+import SubPackages from './component/SubPackages'
 
 type Props = {
   title: string
@@ -41,7 +43,15 @@ const ModalOrderPage = (props: Props) => {
   const {listPackagesCBMPrice} = useSelector((state: RootState) => state.packagesCBMPrice)
   const {percentage} = useSelector((state: RootState) => state.Percentage)
 
-  const {rowDataOrder, setRowDataCouponReciept, showModalOrder} = usePageData()
+  const {
+    rowDataOrder,
+    setRowDataCouponReciept,
+    showModalOrder,
+    rowDataSubPackage,
+    setShowModalSubPackage,
+    setRowDataSubPackage,
+    gridRefSubPackage,
+  } = usePageData()
   // console.log('bao showModalOrder: ', showModalOrder);
 
   const {
@@ -56,6 +66,10 @@ const ModalOrderPage = (props: Props) => {
     mode: 'all',
     defaultValues: {
       id: showModalOrder.id || 0,
+      receiptCode: showModalOrder.receiptCode || `CODE${showModalOrder.id}`,
+      billStatus: showModalOrder.billStatus || 'CREATED',
+      settlementStatus: showModalOrder.settlementStatus || 'PENDING',
+      subPackages: showModalOrder.subPackages || [],
       sendDate: showModalOrder.sendDate || new Date(),
       senderName: showModalOrder.senderName || '',
       senderIdCard: showModalOrder.senderIdCard || '',
@@ -90,7 +104,9 @@ const ModalOrderPage = (props: Props) => {
     },
     shouldUnregister: false,
   })
-  const [packagingServiceData, setPackagingServiceData] = useState<any[]>(showModalOrder?.packagingServices || [])
+  const [packagingServiceData, setPackagingServiceData] = useState<any[]>(
+    showModalOrder?.packagingServices || []
+  )
 
   const handleShowPreImport: any = () => {
     const dataForm: any = getValues()
@@ -102,10 +118,18 @@ const ModalOrderPage = (props: Props) => {
         isPrintReceipt: false,
       })
   }
+
+  const handleShowSubPackage: any = () => {
+    setShowModalSubPackage && setShowModalSubPackage(true)
+  }
   // handle form ====================
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const dataConvert = {...data, itemValue: NumberConverterRejectSystax(data.itemValue) || 0, packagingServices: packagingServiceData}
-    // console.log('bao data: ', dataConvert);
+    const dataConvert = {
+      ...data,
+      itemValue: NumberConverterRejectSystax(data.itemValue) || 0,
+      packagingServices: packagingServiceData,
+      subPackages: rowDataSubPackage,
+    }
     try {
       if (dataConvert?.id) {
         await receiptEditAPIByID(dataConvert)
@@ -123,8 +147,6 @@ const ModalOrderPage = (props: Props) => {
   }
 
   const onErrors = async (e: any) => {
-    // setShowModalPreImport(true);
-    // console.log('bao e: ', e)
     if (Object.keys(e).length) {
       ToastError('Bạn nhập thiếu thông tin!')
     }
@@ -146,7 +168,7 @@ const ModalOrderPage = (props: Props) => {
       ],
     })
     const [province, setProvince] = useState<any>({})
-    
+
     const fetchProvinceData = async () => {
       if (dataInput[7]?.id) {
         try {
@@ -197,13 +219,18 @@ const ModalOrderPage = (props: Props) => {
       )
       const CBM = (+dataInput[0] * +dataInput[1] * +dataInput[2]) / 1000000
       const priByCBM = calculatePriceByCBM(priceByCBMArray, +CBM)
-      console.log('bao price kg - kg/c cmb: ', priByKG, priKGConvert, priByCBM)
+      // console.log('bao price kg - kg/c cmb: ', priByKG, priKGConvert, priByCBM)
       const valuePackage: number | string = NumberConverterRejectSystax(dataInput[8])
       pri =
-        getMaxValue([priByKG * (1 + percentage.TSDVVC/100), priKGConvert * (1 + percentage.TSDVVC/100), priByCBM]) * (1 + percentage.PPXD/100) *
-          (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : (1 + percentage.PPGHNT/100)) *
+        getMaxValue([
+          priByKG * (1 + percentage.TSDVVC / 100),
+          priKGConvert * (1 + percentage.TSDVVC / 100),
+          priByCBM,
+        ]) *
+          (1 + percentage.PPXD / 100) *
+          (dataInput[6]?.shipmentType === 'Nội Tuyến' ? 1 : 1 + percentage.PPGHNT / 100) *
           +dataInput[4] +
-        (+valuePackage > 1000000 ? (+valuePackage - 1000000) * (percentage.PPHGTC/100) : 0)
+        (+valuePackage > 1000000 ? (+valuePackage - 1000000) * (percentage.PPHGTC / 100) : 0)
       setValue('serviceFee', pri)
     }
     return (
@@ -235,26 +262,44 @@ const ModalOrderPage = (props: Props) => {
   }
 
   const IsolateReRenderOptionsPackingService: React.FC<{control: any}> = ({control}) => {
-    console.log('bao packagingServiceData: ', packagingServiceData);
+    // console.log('bao packagingServiceData: ', packagingServiceData);
     const handleRemove = (id: any) => {
       setPackagingServiceData(packagingServiceData.filter((e) => e.packagingPrice.id != id))
     }
     const handleChangeIsReused = (id: any) => {
-      setPackagingServiceData(packagingServiceData.map((e) => {
-        if(e.packagingPrice.id == id) return {...e, isReused: !e.isReused}
-        return e
-      }))
+      setPackagingServiceData(
+        packagingServiceData.map((e) => {
+          if (e.packagingPrice.id == id) return {...e, isReused: !e.isReused}
+          return e
+        })
+      )
     }
     return (
       <div className='mb-3 d-flex justify-content-start align-items-center'>
         {packagingServiceData.map((item, index) => {
           return (
             <>
-              <div className={`border rounded-3 ${index!==0 ? 'ms-2' : ''}`}>
+              <div className={`border rounded-3 ${index !== 0 ? 'ms-2' : ''}`}>
                 <span>{item.packagingPrice.code}</span>
                 <span className='ms-1'>(SL: {item.quantity})</span>
-                <span className='ms-1'><Button variant={`${item.isReused ? 'warning' : 'success'}`} className='p-2' size='sm' onClick={() => handleChangeIsReused(item.packagingPrice.id)}>{`${item.isReused ? 'TC' : 'Mới'}`}</Button></span>
-                <span className='ms-1'><Button variant="outline-secondary" className='p-2' size='sm' onClick={() => handleRemove(item.packagingPrice.id)}>X</Button></span>
+                <span className='ms-1'>
+                  <Button
+                    variant={`${item.isReused ? 'warning' : 'success'}`}
+                    className='p-2'
+                    size='sm'
+                    onClick={() => handleChangeIsReused(item.packagingPrice.id)}
+                  >{`${item.isReused ? 'TC' : 'Mới'}`}</Button>
+                </span>
+                <span className='ms-1'>
+                  <Button
+                    variant='outline-secondary'
+                    className='p-2'
+                    size='sm'
+                    onClick={() => handleRemove(item.packagingPrice.id)}
+                  >
+                    X
+                  </Button>
+                </span>
               </div>
               <span className='ms-1'>;</span>
             </>
@@ -271,20 +316,23 @@ const ModalOrderPage = (props: Props) => {
       control,
       name: ['itemFragile', 'itemQuantity'],
     })
-    let calculatedPrice: number = 0;
+    let calculatedPrice: number = 0
     // const percentage.TSDVVC: number = +listPercentage?.tax || 0;
     if (packagingServiceData.length > 0) {
       packagingServiceData.forEach((item: any) => {
         // console.log('bao item: ',item,)
-        calculatedPrice += item.quantity * (item.isReused ? item.packagingPrice.reusePrice : item.packagingPrice.price);
+        calculatedPrice +=
+          item.quantity *
+          (item.isReused ? item.packagingPrice.reusePrice : item.packagingPrice.price)
         // console.log(first)
         // console.log('bao calculatedPrice: ', calculatedPrice)
-      });
+      })
     }
     setValue(
       'packagingServiceFee',
       (calculatedPrice + (priPackageServiceData[0] ? priPackageByCBM?.price : 0)) *
-        +priPackageServiceData[1] * (1 + percentage.TSDVDG/100)
+        +priPackageServiceData[1] *
+        (1 + percentage.TSDVDG / 100)
     )
     return (
       <Controller
@@ -367,136 +415,152 @@ const ModalOrderPage = (props: Props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-      <div className='row'>
-        <div className='group card p-5 pt-0 me-3'>
-          <Sender control={control} errors={errors} />
-        </div>
-        <div className='group card p-5 pt-0 ms-3'>
-          <Receiver
-            control={control}
-            getValues={getValues}
-            errors={errors}
-            watch={watch}
-            setValue={setValue}
-            setProvinceDetail={setProvinceDetail}
-            provinceDetail={provinceDetail}
-            setCommuneDetail={setCommuneDetail}
-            communeDetail={communeDetail}
-          />
-        </div>
-        <div className='group card p-5 pt-0 me-3'>
-          <Parcelnformation control={control} errors={errors} watch={watch} />
-        </div>
-        <div className='group card p-5 pt-0 ms-3'>
-          <>
-            <p className='list-unstyled text-gray-700 fw-bold fs-3'>Tiền dịch vụ</p>
-            <IsolateReRenderPriceService control={control} />
-            <div className='d-flex'>
-              <Controller
-                name='packagingServiceDetail'
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <div
-                    className={`d-flex align-items-center w-75 mb-3 ${
-                      errors?.packagingServiceDetail && 'border-danger'
-                    }`}
-                  >
-                    <label className='form-label d-block me-1'>Chọn dịch vụ đóng gói</label>
-                    <Select
-                      className={`react-select-styled w-100 ${
-                        errors?.packagingServiceDetail && 'rounded border border-danger'
+    <>
+      <form onSubmit={handleSubmit(onSubmit, onErrors)}>
+        <div className='row'>
+          <div className='group card p-5 pt-0 me-3'>
+            <Sender control={control} errors={errors} />
+          </div>
+          <div className='group card p-5 pt-0 ms-3'>
+            <Receiver
+              control={control}
+              getValues={getValues}
+              errors={errors}
+              watch={watch}
+              setValue={setValue}
+              setProvinceDetail={setProvinceDetail}
+              provinceDetail={provinceDetail}
+              setCommuneDetail={setCommuneDetail}
+              communeDetail={communeDetail}
+            />
+          </div>
+          <div className='group card p-5 pb-0 pt-0 me-3'>
+            <Parcelnformation control={control} errors={errors} watch={watch} />
+          </div>
+          <div className='group card p-5 pb-0 pt-0 ms-3'>
+            <>
+              <p className='list-unstyled text-gray-700 fw-bold fs-3'>Tiền dịch vụ</p>
+              <IsolateReRenderPriceService control={control} />
+              <div className='d-flex'>
+                <Controller
+                  name='packagingServiceDetail'
+                  control={control}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <div
+                      className={`d-flex align-items-center w-75 mb-3 ${
+                        errors?.packagingServiceDetail && 'border-danger'
                       }`}
-                      classNamePrefix='react-select text-dark'
-                      options={listPackagesPrice}
-                      onBlur={onBlur}
-                      onChange={(val:any) => {
-                        onChange(val);
-                        if (val?.code) {
-                          // Check if packagingService is already present in packagingServiceDetail
-                          const isExists = packagingServiceData?.some(
-                            (item: any) => item.packagingPrice.id  === val.id
-                          );
-                      
-                          // If packagingService doesn't exist, add it to packagingServiceDetail
-                          const quantityPackaging = +getValues('packagingServiceQuantity');
-                          if (!isExists) {
-                            setPackagingServiceData((prevData) => [
-                              ...prevData,
-                              { packagingPrice: val, quantity: quantityPackaging, isReused: false },
-                            ]);
-                          } else {
-                            const newArray = packagingServiceData.map((item: any) => {
-                              if (item.packagingPrice.id === val.id) {
-                                return { ...item, quantity: quantityPackaging }
-                              }
-                              return item;
-                            });
-                            setPackagingServiceData(newArray);
-                          }
-                        }
-                        setValue('packagingServiceDetail', '');
-                      }}
-                      
-                      value={value}
-                      getOptionLabel={(option) => option.name}
-                      getOptionValue={(option) => option.id}
-                      placeholder='Chọn dịch vụ đóng gói'
-                    />
-                  </div>
-                )}
-              />
-              <Controller
-                name='packagingServiceQuantity'
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <div
-                    className={`d-flex align-items-center w-25 mb-3 ${
-                      errors?.packagingServiceQuantity && 'border-danger'
-                    }`}
-                  >
-                    <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
-                    <InputGroup className='ms-3 w-100'>
-                      <Form.Control
-                        className={`text-dark ${
-                          errors?.packagingServiceQuantity && 'border-danger'
+                    >
+                      <label className='form-label d-block me-1'>Chọn dịch vụ đóng gói</label>
+                      <Select
+                        className={`react-select-styled w-100 ${
+                          errors?.packagingServiceDetail && 'rounded border border-danger'
                         }`}
-                        type='number'
-                        aria-label='Default'
-                        aria-describedby='inputGroup-sizing-default'
+                        classNamePrefix='react-select text-dark'
+                        options={listPackagesPrice}
                         onBlur={onBlur}
-                        onChange={onChange}
+                        onChange={(val: any) => {
+                          onChange(val)
+                          if (val?.code) {
+                            // Check if packagingService is already present in packagingServiceDetail
+                            const isExists = packagingServiceData?.some(
+                              (item: any) => item.packagingPrice.id === val.id
+                            )
+
+                            // If packagingService doesn't exist, add it to packagingServiceDetail
+                            const quantityPackaging = +getValues('packagingServiceQuantity')
+                            if (!isExists) {
+                              setPackagingServiceData((prevData) => [
+                                ...prevData,
+                                {packagingPrice: val, quantity: quantityPackaging, isReused: false},
+                              ])
+                            } else {
+                              const newArray = packagingServiceData.map((item: any) => {
+                                if (item.packagingPrice.id === val.id) {
+                                  return {...item, quantity: quantityPackaging}
+                                }
+                                return item
+                              })
+                              setPackagingServiceData(newArray)
+                            }
+                          }
+                          setValue('packagingServiceDetail', '')
+                        }}
                         value={value}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        placeholder='Chọn dịch vụ đóng gói'
                       />
-                    </InputGroup>
-                  </div>
-                )}
-              />
-            </div>
-            <IsolateReRenderOptionsPackingService control={control} />
-            <IsolateReRenderPricePackingService control={control} />
-            <IsolateReRenderTotalPrice control={control} />
-          </>
+                    </div>
+                  )}
+                />
+                <Controller
+                  name='packagingServiceQuantity'
+                  control={control}
+                  rules={{
+                    required: true,
+                  }}
+                  render={({field: {onChange, onBlur, value}}) => (
+                    <div
+                      className={`d-flex align-items-center w-25 mb-3 ${
+                        errors?.packagingServiceQuantity && 'border-danger'
+                      }`}
+                    >
+                      <label className='form-label d-block ms-3 mb-0'>Số lượng</label>
+                      <InputGroup className='ms-3 w-100'>
+                        <Form.Control
+                          className={`text-dark ${
+                            errors?.packagingServiceQuantity && 'border-danger'
+                          }`}
+                          type='number'
+                          aria-label='Default'
+                          aria-describedby='inputGroup-sizing-default'
+                          onBlur={onBlur}
+                          onChange={onChange}
+                          value={value}
+                        />
+                      </InputGroup>
+                    </div>
+                  )}
+                />
+              </div>
+              <IsolateReRenderOptionsPackingService control={control} />
+              <IsolateReRenderPricePackingService control={control} />
+              <IsolateReRenderTotalPrice control={control} />
+            </>
+          </div>
         </div>
-      </div>
-      <div className='row mt-6'>
-        <div className='col justify-content-between d-flex'>
-          <OverlayTrigger placement='top' delay={{show: 250, hide: 400}} overlay={renderTooltip}>
-            <Button href='#' className='btn btn-secondary me-10' onClick={handleShowPreImport}>
-              <i className='bi bi-zoom-in'></i>
-            </Button>
-          </OverlayTrigger>
-          <div>
+        <div className='row mt-6'>
+          <div className='col justify-content-between d-flex'>
+            <div className='position-relative'>
+              <OverlayTrigger
+                placement='top'
+                delay={{show: 250, hide: 400}}
+                overlay={renderTooltipSubPackage}
+              >
+                <Button href='#' className='btn btn-secondary me-10' onClick={handleShowSubPackage}>
+                  <i className='bi bi-box2 fs-2 p-0'></i>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                placement='top'
+                delay={{show: 250, hide: 400}}
+                overlay={renderTooltip}
+              >
+                <Button href='#' className='btn btn-secondary me-10' onClick={handleShowPreImport}>
+                  <i className='bi bi-zoom-in fs-2 p-0'></i>
+                </Button>
+              </OverlayTrigger>
+            </div>
+            <div></div>
             <Button type='submit' className='btn btn-primary'>
               {showModalOrder.id ? 'Cập nhật' : 'Tạo mới'}
             </Button>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <SubPackages data={showModalOrder.subPackages || []}/>
+    </>
   )
 }
 

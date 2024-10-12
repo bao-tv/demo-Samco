@@ -40,13 +40,10 @@ const ProvinceSetupPage = (props: Props) => {
   }
   useEffect(() => {
     setDataSearch({
+      ...defaultSearch,
       searchCriteria: {
         name: searchData,
       },
-      page: 0,
-      pageSize: 20,
-      direction: 'ASC',
-      sortBy: 'id',
     })
   }, [searchData])
   useEffect(() => {

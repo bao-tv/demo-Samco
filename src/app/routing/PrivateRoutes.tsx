@@ -6,6 +6,8 @@ import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
 import {MenuTestPage} from '../pages/MenuTestPage'
 import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
 import {WithChildren} from '../../_metronic/helpers'
+import WarehousesSetupPage from '../pages/warehouse/WarehousesSetupPage'
+import WarehousePage from '../modules/warehouse/WarehousePage'
 
 const PrivateRoutes = () => {
   const OrderManagement = lazy(() => import('../modules/orderPage/OrderPage'))
@@ -33,6 +35,14 @@ const PrivateRoutes = () => {
           element={
             <SuspensedView>
               <OrderManagement />
+            </SuspensedView>
+          }
+        />
+        <Route
+          path='quan-ly-kho/*'
+          element={
+            <SuspensedView>
+              <WarehousePage />
             </SuspensedView>
           }
         />

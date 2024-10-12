@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, InputGroup} from 'react-bootstrap'
+import {Button, Form, InputGroup} from 'react-bootstrap'
 import {Controller} from 'react-hook-form'
 import {NumericFormat} from 'react-number-format'
 import Select from 'react-select'
@@ -179,7 +179,6 @@ const Parcelnformation = (props: Props) => {
         <Controller
           control={props?.control}
           render={({field: {onChange, onBlur, value}}) => {
-            console.log('bao value itemFragile: ', value)
             return (
               <InputGroup className='mb-3 w-50'>
                 <Form.Check // prettier-ignore

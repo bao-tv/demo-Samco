@@ -9,11 +9,19 @@ type Props = {
 }
 
 const ReceiptLayoutPrints = ({data}: Props) => {
+  const receiptNumberData =
+    dayjs(
+      receiptDate({
+        createdDate: data?.createdDate || '',
+        daysToAdd: +data?.receiverProvince?.regionFreightPrice?.deliveryTime,
+      })
+    )?.format('DD/MM/YYYY') || '';
+    console.log('bao data: ', data);
   const {reportTemplateRef1, reportTemplateRef2, reportTemplateRef3} = usePageData()
   return (
-    <div className='' style={{width: '1240px'}}>
+    <div className={`some-other-class ${data.length === 0 ? 'd-none' : ''}`} style={{width: '1240px'}}>
       <div className='container' style={{width: '1240px'}} ref={reportTemplateRef1}>
-      <div className='row fs-4 border border-dark'>
+        <div className='row fs-4 border border-dark'>
           <div className='col-2 pt-3'>
             <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt='Logo' className='w-100' />
           </div>
@@ -34,23 +42,15 @@ const ReceiptLayoutPrints = ({data}: Props) => {
               <div className='row'>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày gửi: <span>{dayjs(data?.sendDate).format('DD/MM/YYYY')}</span>
+                    Ngày gửi: <span>{dayjs(data?.createdDate).format('DD/MM/YYYY')}</span>
                   </p>
                   <p className='m-0'>
-                    Giờ gửi: <span>{dayjs(data?.sendDate).format('hh:mm A')}</span>
+                    Giờ gửi: <span>{dayjs(data?.createdDate).format('hh:mm A')}</span>
                   </p>
                 </div>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày giao hàng dự kiến:{' '}
-                    <span>
-                      {dayjs(
-                        receiptDate({
-                          createdDate: data?.sendDate || '',
-                          daysToAdd: +data?.receiptDate,
-                        })
-                      )?.format('DD/MM/YYYY') || ''}
-                    </span>
+                    Ngày giao hàng dự kiến: <span>{receiptNumberData}</span>
                   </p>
                   <p className='m-0'>Nhân viên tiếp nhận: </p>
                 </div>
@@ -276,7 +276,7 @@ const ReceiptLayoutPrints = ({data}: Props) => {
       </div>
 
       <div className='container' style={{width: '1240px'}} ref={reportTemplateRef2}>
-      <div className='row fs-4 border border-dark'>
+        <div className='row fs-4 border border-dark'>
           <div className='col-2 pt-3'>
             <img src={toAbsoluteUrl('/media/logos/logo-new.png')} alt='Logo' className='w-100' />
           </div>
@@ -297,23 +297,15 @@ const ReceiptLayoutPrints = ({data}: Props) => {
               <div className='row'>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày gửi: <span>{dayjs(data?.sendDate).format('DD/MM/YYYY')}</span>
+                    Ngày gửi: <span>{dayjs(data?.createdDate).format('DD/MM/YYYY')}</span>
                   </p>
                   <p className='m-0'>
-                    Giờ gửi: <span>{dayjs(data?.sendDate).format('hh:mm A')}</span>
+                    Giờ gửi: <span>{dayjs(data?.createdDate).format('hh:mm A')}</span>
                   </p>
                 </div>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày giao hàng dự kiến:{' '}
-                    <span>
-                      {dayjs(
-                        receiptDate({
-                          createdDate: data?.sendDate || '',
-                          daysToAdd: +data?.receiptDate,
-                        })
-                      )?.format('DD/MM/YYYY') || ''}
-                    </span>
+                    Ngày giao hàng dự kiến: <span>{receiptNumberData}</span>
                   </p>
                   <p className='m-0'>Nhân viên tiếp nhận: </p>
                 </div>
@@ -560,23 +552,15 @@ const ReceiptLayoutPrints = ({data}: Props) => {
               <div className='row'>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày gửi: <span>{dayjs(data?.sendDate).format('DD/MM/YYYY')}</span>
+                    Ngày gửi: <span>{dayjs(data?.createdDate).format('DD/MM/YYYY')}</span>
                   </p>
                   <p className='m-0'>
-                    Giờ gửi: <span>{dayjs(data?.sendDate).format('hh:mm A')}</span>
+                    Giờ gửi: <span>{dayjs(data?.createdDate).format('hh:mm A')}</span>
                   </p>
                 </div>
                 <div className='col-6 text-start'>
                   <p className='m-0'>
-                    Ngày giao hàng dự kiến:{' '}
-                    <span>
-                      {dayjs(
-                        receiptDate({
-                          createdDate: data?.sendDate || '',
-                          daysToAdd: +data?.receiptDate,
-                        })
-                      )?.format('DD/MM/YYYY') || ''}
-                    </span>
+                    Ngày giao hàng dự kiến: <span>{receiptNumberData}</span>
                   </p>
                   <p className='m-0'>Nhân viên tiếp nhận: </p>
                 </div>

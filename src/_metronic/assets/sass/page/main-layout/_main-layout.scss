@@ -1,0 +1,22 @@
+.PENDING_APPROVAL_COLOR {
+    background-color: #ff980052 !important ;
+}
+
+.DELIVERED_COLOR {
+    background-color: #9e9e9e !important ;
+}
+
+.sick-days-breach {
+    background-color: #cc333344 !important;
+}
+
+.example-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#myGrid {
+    flex: 1 1 0px;
+    width: 100%;
+}

@@ -5,6 +5,10 @@ import ButtonActionsRender from '../../../../_metronic/helpers/components/Button
 
 export interface IFormInput {
   id?: any
+  receiptCode?: string
+  billStatus?: string
+  settlementStatus?: string
+  subPackages?: any[]
   sendDate?: any
   senderName?: string
   senderIdCard?: string
@@ -55,9 +59,24 @@ export type PropsReceiver = {
 }
 export const columnDefsOrderManagerment: ColDef[] = [
   {
-    headerName: 'ID',
-    field: 'id',
-    width: 60,
+    headerName: '',
+    field: 'id', // Transfer status
+    width: 80,
+    filter: false,
+    // idReplace: '1',
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    checkboxSelection: true,
+    cellStyle: {
+      textAlign: 'center',
+      // background: 'white',
+      padding: '0 10x !important',
+      borderRight: '1px solid #dde2eb',
+      borderBottom: '1px solid #dde2eb',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   },
   {
     headerName: 'Actions',
@@ -146,5 +165,11 @@ export const columnDefsOrderManagerment: ColDef[] = [
     headerName: 'Tổng tiền dịch vụ',
     field: 'totalAmount',
     width: 150,
+  },
+  {
+    headerName: 'Tình trạng phiếu',
+    field: 'billStatus',
+    width: 110,
+    // cellRenderer: FormatsDate,
   },
 ]
