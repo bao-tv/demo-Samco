@@ -49,6 +49,7 @@ const OrderSetupPage = (props: Props) => {
     try {
       const response = await receiptAPIGetByPagination(valuePagination)
       response.status === 'OK' && setRowDataOrder && setRowDataOrder(response?.data.content || [])
+      // console.log('bao response: ', response);
       setDataPagination({...response?.data, content: {}})
     } catch (error) {
       ToastError('Có lỗi xảy ra!')
@@ -86,6 +87,7 @@ const OrderSetupPage = (props: Props) => {
       console.error('Error:', error)
       ToastError('In phiếu thất bại')
     } finally {
+      console.log('bao ');
       setIsLoading(false) // Hide loading GIF
       setSelectedRows([])
     }
@@ -100,17 +102,18 @@ const OrderSetupPage = (props: Props) => {
     }
   }, [])
 
-  useEffect(() => {
-    setDataSearch({
-      ...convertDefaultSearch,
-      searchCriteria: {
-        name: searchData,
-      },
-    })
-  }, [searchData])
+  // useEffect(() => {
+  //   setDataSearch({
+  //     ...convertDefaultSearch,
+  //     searchCriteria: {
+  //       name: searchData,
+  //     },
+  //   })
+  // }, [searchData])
   useEffect(() => {
     getListReceivers(dataSearch)
   }, [dataSearch])
+  // console.log('bao dataPagination: ', dataPagination);
   return (
     <>
       <MainLayout
