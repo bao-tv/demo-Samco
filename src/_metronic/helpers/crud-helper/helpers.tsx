@@ -1,8 +1,9 @@
-import {createContext, Dispatch, SetStateAction, useEffect, useState} from 'react'
+import {createContext, Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react'
 import qs from 'qs'
 import {ID, QueryResponseContextProps, QueryState} from './models'
 import { Tooltip } from 'react-bootstrap'
 import dayjs from 'dayjs'
+import { number } from 'yup'
 
 function createResponseContext<T>(initialState: QueryResponseContextProps<T>) {
   return createContext(initialState)
@@ -193,6 +194,11 @@ const calculatePricePackageByCBM = (arrayPrice: any[], PricePackageByCBM: number
   return totalPrice ;
 }
 
+const NumberFormat = (number: any) => {
+  if(!number) return "";
+  return Math.floor(number).toLocaleString();
+}
+
 const NumberConverterRejectSystax = (number: any) => {
   if(!number) return "";
   return Number(number?.toString()?.replace(/,/g, ''));
@@ -225,6 +231,61 @@ const receiptDate = ({createdDate, daysToAdd}: PropsReceiptDate): string => {
   return '';
 }
 
+const rowClassRules = {
+  // row style function
+  "CREATED_COLOR": (params: any) => {
+    return params.data.billStatus === 'CREATED'
+  },
+  "PENDING_APPROVAL_COLOR": (params: any) => {
+    return params.data.billStatus === 'PENDING_APPROVAL'
+  },
+  "APPROVED_COLOR": (params: any) => {
+    return params.data.billStatus === 'APPROVED'
+  },
+  "IN_WAREHOUSE_COLOR": (params: any) => {
+    return params.data.billStatus === 'IN_WAREHOUSE'
+  },
+  "DELIVERED_COLOR": (params: any) => {
+    return params.data.billStatus === "DELIVERED";
+  },
+}
+
+const RenderBillStatus = (params: any) => {
+  if (params.data) {
+    switch (params.value) {
+      case 'CREATED':
+        return 'Đã tạo';
+      case 'PENDING_APPROVAL':
+        return 'Đang chuyển kho';
+        case 'IN_WAREHOUSE':
+          return 'Trong kho';
+          case 'IN_TRANSIT':
+          return 'Đang chuyển cho đơn vị vận chuyển';
+          case 'DELIVERED':
+          return 'Đang vận chuyển';
+          case 'CANCELED':
+          return 'Hủy bỏ';
+      default:
+        return '';  // Return an empty string or handle other cases
+    }
+  }
+  return '';
+}
+
+const RenderSettlementStatus = (params: any) => {
+  if (params.data) {
+    switch (params.value) {
+      case 'PENDING':
+        return 'Chưa chuyển cho kế toán';
+      case 'COMPLETED':
+        return 'Đã hoàn thành';
+      default:
+        return '';  // Return an empty string or handle other cases
+    }
+  }
+  return '';
+}
+
 export {
   createResponseContext,
   stringifyRequestQuery,
@@ -240,7 +301,11 @@ export {
   calculatePriceByKG,
   calculatePriceByCBM,
   calculatePricePackageByCBM,
+  NumberFormat,
   NumberConverterRejectSystax,
   getMaxValue,
   receiptDate,
+  rowClassRules,
+  RenderBillStatus,
+  RenderSettlementStatus,
 }

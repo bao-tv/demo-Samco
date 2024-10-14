@@ -1,7 +1,6 @@
 import {ColDef} from 'ag-grid-community'
-import {FormatsDate, RenderAddress, FormatsDateReceiver} from '../../../../_metronic/helpers'
+import {FormatsDate, RenderAddress, FormatsDateReceiver, NumberFormat, RenderBillStatus, RenderSettlementStatus} from '../../../../_metronic/helpers'
 import ButtonActionsRender from '../../../../_metronic/helpers/components/ButtonActionsRender'
-// import  from '../../../_metronic/helpers/components/ButtonActionsRender';
 
 export interface IFormInput {
   id?: any
@@ -57,6 +56,7 @@ export type PropsReceiver = {
   setCommuneDetail: any
   communeDetail: any
 }
+
 export const columnDefsOrderManagerment: ColDef[] = [
   {
     headerName: '',
@@ -144,32 +144,43 @@ export const columnDefsOrderManagerment: ColDef[] = [
   {
     headerName: 'Trị giá hàng',
     field: 'itemValue',
+    valueFormatter: p => NumberFormat(p.value),
     width: 110,
   },
   {
     headerName: 'Số kiện hàng',
     field: 'itemQuantity',
+    valueFormatter: p => NumberFormat(p.value),
     width: 120,
   },
   {
     headerName: 'Giá dịch vụ',
     field: 'serviceFee',
+    valueFormatter: p => NumberFormat(p.value),
     width: 110,
   },
   {
     headerName: 'Giá đóng gói',
     field: 'packagingServiceFee',
+    valueFormatter: p => NumberFormat(p.value),
     width: 120,
   },
   {
     headerName: 'Tổng tiền dịch vụ',
     field: 'totalAmount',
+    valueFormatter: p => NumberFormat(p.value),
     width: 150,
   },
   {
     headerName: 'Tình trạng phiếu',
     field: 'billStatus',
     width: 110,
-    // cellRenderer: FormatsDate,
+    cellRenderer: RenderBillStatus,
+  },
+  {
+    headerName: 'Tài chính',
+    field: 'settlementStatus',
+    width: 110,
+    cellRenderer: RenderSettlementStatus,
   },
 ]

@@ -1,13 +1,28 @@
 import { ColDef } from 'ag-grid-community';
 import ButtonActionsRender from '../../../_metronic/helpers/components/ButtonActionsRender';
-import { FormatsDate, FormatsDateReceiver, RenderAddress } from '../../../_metronic/helpers';
+import { FormatsDate, FormatsDateReceiver, NumberFormat, RenderAddress } from '../../../_metronic/helpers';
 
 
 export   const columnDefsWarehousesSetupPage: ColDef[] = [
   {
-    headerName: 'ID',
-    field: 'id',
-    width: 60,
+    headerName: '',
+    field: 'id', // Transfer status
+    width: 80,
+    filter: false,
+    // idReplace: '1',
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    checkboxSelection: true,
+    cellStyle: {
+      textAlign: 'center',
+      // background: 'white',
+      padding: '0 10x !important',
+      borderRight: '1px solid #dde2eb',
+      borderBottom: '1px solid #dde2eb',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   },
   {
     headerName: 'Actions',
@@ -75,26 +90,31 @@ export   const columnDefsWarehousesSetupPage: ColDef[] = [
   {
     headerName: 'Trị giá hàng',
     field: 'itemValue',
+    valueFormatter: p => NumberFormat(p.value),
     width: 110,
   },
   {
     headerName: 'Số kiện hàng',
     field: 'itemQuantity',
+    valueFormatter: p => NumberFormat(p.value),
     width: 120,
   },
   {
     headerName: 'Giá dịch vụ',
     field: 'serviceFee',
+    valueFormatter: p => NumberFormat(p.value),
     width: 110,
   },
   {
     headerName: 'Giá đóng gói',
     field: 'packagingServiceFee',
+    valueFormatter: p => NumberFormat(p.value),
     width: 120,
   },
   {
     headerName: 'Tổng tiền dịch vụ',
     field: 'totalAmount',
+    valueFormatter: p => NumberFormat(p.value),
     width: 150,
   },
   {

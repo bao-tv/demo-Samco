@@ -1,10 +1,19 @@
+.CREATED_COLOR {
+    background-color: #fff !important ;
+}
+
 .PENDING_APPROVAL_COLOR {
-    background-color: #ff980052 !important ;
+    background-color: #fae0b8 !important ;
+}
+
+.IN_WAREHOUSE_COLOR {
+    background-color: #fbbf63 !important ;
 }
 
 .DELIVERED_COLOR {
-    background-color: #9e9e9e !important ;
-}
+    background-color: #cdcccc !important ;
+}   
+
 
 .sick-days-breach {
     background-color: #cc333344 !important;

@@ -6,6 +6,7 @@ type Props = {
   dataPagination?: any
   setDataSearch?: any
   handlegGetDataTranfToWarehouse?: any
+  handlegGetDataTranfMoneySelected?: any
 }
 
 const Pagination = (props: Props) => {
@@ -34,12 +35,20 @@ const Pagination = (props: Props) => {
   return (
     props?.dataPagination?.size && (
       <div className={`d-flex ${props?.handlegGetDataTranfToWarehouse ? 'justify-content-between' : 'justify-content-end'} mt-2 fs-5`}>
-        {props?.handlegGetDataTranfToWarehouse && <>
-          <div>
-            <Button onClick={props?.handlegGetDataTranfToWarehouse}>Phiếu Xuất Kho</Button>
-          </div>
-        </>
-        }
+        <div className='d-flex'>
+          {props?.handlegGetDataTranfToWarehouse && <>
+            <div>
+              <Button onClick={props?.handlegGetDataTranfToWarehouse}>Phiếu Nhập Kho</Button>
+            </div>
+          </>
+          }
+          {props?.handlegGetDataTranfToWarehouse && <>
+            <div className='ms-2'>
+              <Button onClick={props?.handlegGetDataTranfMoneySelected}>Bảng kê thu tiền</Button>
+            </div>
+          </>
+          }
+        </div>
         <div className='d-flex text-dark align-items-center'>
           <div className='me-5 mb-0 d-flex align-items-center'>
             <p className='mb-0 text-nowrap me-3'>Kích thước trang: </p>

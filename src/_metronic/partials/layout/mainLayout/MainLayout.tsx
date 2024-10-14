@@ -1,50 +1,51 @@
 import {useMemo, useCallback, useEffect, useState} from 'react'
 import {AgGridReact} from 'ag-grid-react'
 import Pagination from '../../../layout/components/pagination/Pagination'
-import { useThemeMode } from '../theme-mode/ThemeModeProvider'
+import {useThemeMode} from '../theme-mode/ThemeModeProvider'
 // import './styleMainLayout.css'
 
-
 type Props = {
-    gridRef: any,
-    rowData: any[] | undefined,
-    columnDef: any,
-    defaultCol?: any
-    dataPagination?: any,
-    setDataSearch?: any,
-    modal?: any,
-    isLoading?: any,
-    heightBottom?: any | '50px',
-    rowClassRules?: any,
-    rowSelection?: 'single' | 'multiple',
-    handlegGetDataTranfToWarehouse?: any
+  gridRef: any
+  rowData: any[] | undefined
+  columnDef: any
+  defaultCol?: any
+  dataPagination?: any
+  setDataSearch?: any
+  modal?: any
+  isLoading?: any
+  heightBottom?: any | '50px'
+  rowClassRules?: any
+  rowSelection?: 'single' | 'multiple'
+  handlegGetDataTranfToWarehouse?: any
+  handlegGetDataTranfMoneySelected?: any
 }
 
 const MainLayout: React.FC<Props> = ({
-    gridRef,
-    rowData,
-    columnDef,
-    defaultCol = {
-        flex: 1,
-        filter: true,
+  gridRef,
+  rowData,
+  columnDef,
+  defaultCol = {
+    flex: 1,
+    filter: true,
     sortable: true,
     resizable: true,
-        menuTabs: [],
-            headerComponentParams: { menuIcon: 'fa-bars' },
-      },
-    dataPagination,
-    setDataSearch,
-    modal,
-    isLoading,
-    heightBottom = '50px', // Default value here
-    rowClassRules,
-    rowSelection,
-    handlegGetDataTranfToWarehouse,
+    menuTabs: [],
+    headerComponentParams: {menuIcon: 'fa-bars'},
+  },
+  dataPagination,
+  setDataSearch,
+  modal,
+  isLoading,
+  heightBottom = '50px', // Default value here
+  rowClassRules,
+  rowSelection,
+  handlegGetDataTranfToWarehouse,
+  handlegGetDataTranfMoneySelected,
 }) => {
-    // console.log('bao heightBottom: ', heightBottom)
+  // console.log('bao heightBottom: ', heightBottom)
   const containerStyle = useMemo(() => ({width: '100%', height: '100%'}), [])
   const gridStyle = useMemo(() => ({height: `calc(100% - ${heightBottom})`, width: '100%'}), [])
-  const {modeCurrent} = useThemeMode();
+  const {modeCurrent} = useThemeMode()
   return (
     <div style={containerStyle}>
       <div style={{height: '100%', boxSizing: 'border-box'}}>
@@ -52,7 +53,7 @@ const MainLayout: React.FC<Props> = ({
           style={gridStyle}
           className={modeCurrent === 'dark' ? 'ag-theme-quartz-dark' : 'ag-theme-quartz'}
         >
-            {isLoading && (
+          {isLoading && (
             <div
               className='h-100 d-flex justify-content-center align-items-center bg-black bg-opacity-25'
               style={{
@@ -80,7 +81,12 @@ const MainLayout: React.FC<Props> = ({
             rowClassRules={rowClassRules}
             rowSelection={rowSelection}
           />
-          <Pagination dataPagination={dataPagination} setDataSearch={setDataSearch} handlegGetDataTranfToWarehouse={handlegGetDataTranfToWarehouse}/>
+          <Pagination
+            dataPagination={dataPagination}
+            setDataSearch={setDataSearch}
+            handlegGetDataTranfToWarehouse={handlegGetDataTranfToWarehouse}
+            handlegGetDataTranfMoneySelected={handlegGetDataTranfMoneySelected}
+          />
         </div>
       </div>
       {modal}

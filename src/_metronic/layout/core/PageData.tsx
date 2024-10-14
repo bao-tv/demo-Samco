@@ -18,6 +18,7 @@ export interface PageDataContextModel {
   reportTemplateRef2?: any,
   reportTemplateRef3?: any,
   tranferToWarehouseTemplateRef?: any,
+  tranferMoneyTemplateRef?: any,
   gridRefOrderSetup?: any,
   pageTitle?: string
   setPageTitle: (_title: string) => void
@@ -140,6 +141,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
   const reportTemplateRef2 = useRef(null);
   const reportTemplateRef3 = useRef(null);
   const tranferToWarehouseTemplateRef = useRef(null);
+  const tranferMoneyTemplateRef = useRef(null);
   const [pageTitle, setPageTitle] = useState<string>('')
   const [pageDescription, setPageDescription] = useState<string>('')
   const [pageBreadcrumbs, setPageBreadcrumbs] = useState<Array<PageLink>>([])
@@ -216,6 +218,7 @@ const PageDataProvider: FC<WithChildren> = ({children}) => {
     reportTemplateRef2,
     reportTemplateRef3,
     tranferToWarehouseTemplateRef,
+    tranferMoneyTemplateRef,
     gridRefOrderSetup,
     pageTitle,
     setPageTitle,

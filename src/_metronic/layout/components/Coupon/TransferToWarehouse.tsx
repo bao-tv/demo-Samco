@@ -1,6 +1,6 @@
 import React from 'react'
 import {usePageData} from '../../core'
-import {toAbsoluteUrl} from '../../../helpers'
+import {NumberFormat, toAbsoluteUrl} from '../../../helpers'
 import dayjs from 'dayjs'
 import Table from 'react-bootstrap/Table'
 
@@ -79,7 +79,7 @@ const TransferToWarehouse = ({data}: Props) => {
           </div>
         </div>
         <div className='row border-start border-end border-bottom border-dark'>
-          <Table bordered={true} variant='light'>
+          <Table className=' mb-0' bordered={true} variant='light'>
             <thead>
               <tr>
                 <th className='bg-warning-subtle'>STT</th>
@@ -104,22 +104,22 @@ const TransferToWarehouse = ({data}: Props) => {
                     <td>{item?.id}</td>
                     <td>{item?.receiptCode}</td>
                     <td>{item?.itemName}</td>
-                    <td>{!item?.isNull && (item?.itemQuantity + item?.subPackages?.length)}</td>
-                    <td>{!item?.isNull &&  item?.itemWeight}</td>
-                    <td>{!item?.isNull &&  item?.totalAmount}</td>
-                    <td>{!item?.isNull && (item?.itemFragile ? 'Bình thường' : 'Dẽ vỡ')}</td>
+                    <td>{!item?.isNull && NumberFormat(item?.itemQuantity + item?.subPackages?.length)}</td>
+                    <td>{!item?.isNull &&  NumberFormat(item?.itemWeight)}</td>
+                    <td>{!item?.isNull &&  NumberFormat(item?.totalAmount)}</td>
+                    <td>{!item?.isNull && (item?.itemFragile ? 'Bình thường' : 'Dễ vỡ')}</td>
                     <td>{item?.receiverProvince.name}</td>
                   </tr>
                 )
               })}
               <tr>
-                <td>Tổng</td>
-                <td colSpan={3}>{data?.length}</td>
-                <td>{totalItem}</td>
-                <td>{totalKG}</td>
-                <td>{totalMoney}</td>
-                <td></td>
-                <td></td>
+                <td className='fw-bold fs-3'>Tổng</td>
+                <td className='fw-bold fs-3' colSpan={3}>{data?.length}</td>
+                <td className='fw-bold fs-3'>{NumberFormat(totalItem)}</td>
+                <td className='fw-bold fs-3'>{NumberFormat(totalKG)}</td>
+                <td className='fw-bold fs-3'>{NumberFormat(totalMoney)}</td>
+                <td className='fw-bold fs-3'></td>
+                <td className='fw-bold fs-3'></td>
               </tr>
             </tbody>
           </Table>

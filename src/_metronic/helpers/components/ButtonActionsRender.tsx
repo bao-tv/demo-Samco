@@ -31,20 +31,19 @@ export default function ButtonActionsRender(props: any) {
     reportTemplateRef3,
     setRowDataCouponReciept,
     setIsLoading,
-    setRowDataSubPackage
+    setRowDataSubPackage,
   } = usePageData()
   const [titleOrder, setTitleOrder] = useState<any>('')
   const [func, setFunc] = useState<string>('')
   const handleEditRow = (params: any) => {
     setShowModalOrder && setShowModalOrder(props?.data || false)
     setRowDataSubPackage && setRowDataSubPackage(props?.data.subPackages)
-
   }
   const buttonOKRemoveRow = async () => {
     const convertDefaultSearch: any = {
       ...defaultSearch,
       searchCriteria: {
-        billStatus: ['CREATED','PENDING_APPROVAL']
+        billStatus: ['CREATED', 'PENDING_APPROVAL'],
       },
     }
     try {
@@ -135,13 +134,12 @@ export default function ButtonActionsRender(props: any) {
     const convertDefaultSearch: any = {
       ...defaultSearch,
       searchCriteria: {
-        billStatus: ['IN_WAREHOUSE','PENDING_APPROVAL', 'DELIVERED']
+        billStatus: ['IN_WAREHOUSE', 'PENDING_APPROVAL', 'DELIVERED'],
       },
     }
     try {
       const response =
-        props?.data?.id &&
-        (await receiptEditAPIByID({...props?.data, billStatus: 'IN_WAREHOUSE'}))
+        props?.data?.id && (await receiptEditAPIByID({...props?.data, billStatus: 'IN_WAREHOUSE'}))
       response.status === 'OK' && ToastSuccess('Bạn đã nhận vào kho thành công!')
       const responseData = await receiptAPIGetByPagination(convertDefaultSearch)
       responseData.status === 'OK' && setRowDataOrder && setRowDataOrder(responseData?.data.content)
@@ -154,13 +152,12 @@ export default function ButtonActionsRender(props: any) {
     const convertDefaultSearch: any = {
       ...defaultSearch,
       searchCriteria: {
-        billStatus: ['IN_WAREHOUSE','PENDING_APPROVAL', 'DELIVERED']
+        billStatus: ['IN_WAREHOUSE', 'PENDING_APPROVAL', 'DELIVERED'],
       },
     }
     try {
       const response =
-        props?.data?.id &&
-        (await receiptEditAPIByID({...props?.data, billStatus: 'DELIVERED'}))
+        props?.data?.id && (await receiptEditAPIByID({...props?.data, billStatus: 'DELIVERED'}))
       response.status === 'OK' && ToastSuccess('Bạn chuyển đến đơn vị vận chuyển thành công!')
       const responseData = await receiptAPIGetByPagination(convertDefaultSearch)
       responseData.status === 'OK' && setRowDataOrder && setRowDataOrder(responseData?.data.content)
@@ -186,7 +183,7 @@ export default function ButtonActionsRender(props: any) {
         )
         setFunc('TRANFERS')
         break
-      
+
       case 'IN_WAREHOUSE':
         setTitleOrder(
           `Bạn có muốn nhận ${intl.formatMessage({id: 'MENU.PHIEUNHANHANG'})}: ${
@@ -222,7 +219,7 @@ export default function ButtonActionsRender(props: any) {
                   className='me-2 p-2'
                   style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
                   onClick={handleEditRow}
-                  disabled={props?.data?.billStatus === 'PENDING_APPROVAL'}
+                  disabled={props?.data?.billStatus !== 'CREATED'}
                 >
                   <i className='p-0 bi bi-pencil-square fs-2'></i>
                 </Button>
@@ -236,7 +233,7 @@ export default function ButtonActionsRender(props: any) {
                   variant='danger'
                   style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
                   onClick={() => handleAction('DELETE')}
-                  disabled={props?.data?.billStatus === 'PENDING_APPROVAL'}
+                  disabled={props?.data?.billStatus !== 'CREATED'}
                 >
                   <i className='p-0 bi bi-x-circle fs-2'></i>
                 </Button>
@@ -250,7 +247,7 @@ export default function ButtonActionsRender(props: any) {
                   variant='info'
                   style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
                   onClick={() => handleAction('TRANFERS')}
-                  disabled={props?.data?.billStatus === 'PENDING_APPROVAL'}
+                  disabled={props?.data?.billStatus !== 'CREATED'}
                 >
                   <i className='p-0 bi bi-shop-window fs-2'></i>
                 </Button>
@@ -258,7 +255,7 @@ export default function ButtonActionsRender(props: any) {
             </OverlayTrigger>
           </>
         )}
-         {location.pathname === '/quan-ly-kho/hang-trong-kho' && (
+        {location.pathname === '/quan-ly-kho/hang-trong-kho' && (
           <>
             <OverlayTrigger overlay={<Tooltip id='tooltip-disabled'>Nhận hàng vào kho</Tooltip>}>
               <span className='d-inline-block'>
@@ -268,13 +265,18 @@ export default function ButtonActionsRender(props: any) {
                   variant='info'
                   style={{padding: 'calc(0.45rem + 1px) calc(1rem + 1px)'}}
                   onClick={() => handleAction('IN_WAREHOUSE')}
-                  disabled={props?.data?.billStatus === 'IN_WAREHOUSE' || props?.data?.billStatus === 'DELIVERED'}
+                  disabled={
+                    props?.data?.billStatus === 'IN_WAREHOUSE' ||
+                    props?.data?.billStatus === 'DELIVERED'
+                  }
                 >
                   <i className='p-0 bi bi-shop-window fs-2'></i>
                 </Button>
               </span>
             </OverlayTrigger>
-            <OverlayTrigger overlay={<Tooltip id='tooltip-disabled'>Chuyển đến đơn vị vận chuyển</Tooltip>}>
+            <OverlayTrigger
+              overlay={<Tooltip id='tooltip-disabled'>Chuyển đến đơn vị vận chuyển</Tooltip>}
+            >
               <span className='d-inline-block'>
                 <Button
                   size='sm'
@@ -290,6 +292,7 @@ export default function ButtonActionsRender(props: any) {
             </OverlayTrigger>
           </>
         )}
+
         <OverlayTrigger overlay={<Tooltip id='tooltip-disabled'>In phiếu nhận</Tooltip>}>
           <span className='d-inline-block'>
             <Button
@@ -303,7 +306,6 @@ export default function ButtonActionsRender(props: any) {
             </Button>
           </span>
         </OverlayTrigger>
-        
       </div>
       <ModalToasts
         title={titleOrder}

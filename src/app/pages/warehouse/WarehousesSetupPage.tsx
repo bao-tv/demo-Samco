@@ -10,6 +10,7 @@ import MainLayout from '../../../_metronic/partials/layout/mainLayout/MainLayout
 import {defaultSearch} from '../../../_metronic/assets/define/Define'
 import { receiptAPIGetByPagination } from '../../../apis/receiptAPI'
 import ReceiptLayoutPrints from '../../../_metronic/layout/components/Coupon/ReceiptLayoutPrints'
+import { rowClassRules } from '../../../_metronic/helpers'
 
 type Props = {}
 
@@ -45,26 +46,14 @@ const WarehousesSetupPage = (props: Props) => {
     }
   }
 
-  const rowClassRules = useMemo<any>(() => {
-    return {
-      // row style function
-      "PENDING_APPROVAL_COLOR": (params: any) => {
-        return params.data.billStatus === "PENDING_APPROVAL";
-      },
-      "DELIVERED_COLOR": (params: any) => {
-        return params.data.billStatus === "DELIVERED";
-      },
-    };
-  }, []);
-
-  useEffect(() => {
-    setDataSearch({
-      ...convertDefaultSearch,
-      searchCriteria: {
-        name: searchData,
-      },
-    })
-  }, [searchData])
+  // useEffect(() => {
+  //   setDataSearch({
+  //     ...convertDefaultSearch,
+  //     searchCriteria: {
+  //       name: searchData,
+  //     },
+  //   })
+  // }, [searchData])
   useEffect(() => {
     getListReceivers(dataSearch)
   }, [dataSearch])
@@ -81,6 +70,7 @@ const WarehousesSetupPage = (props: Props) => {
         defaultCol={false}
         isLoading={isLoading}
         rowClassRules={rowClassRules}
+        rowSelection='multiple'
       />
             {/* {rowDataCouponReciept.data && <ReceiptLayoutPrints data={rowDataCouponReciept.data} />} */}
             {rowDataCouponReciept.data && 
