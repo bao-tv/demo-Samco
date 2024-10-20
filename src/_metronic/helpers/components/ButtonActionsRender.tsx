@@ -43,7 +43,7 @@ export default function ButtonActionsRender(props: any) {
     const convertDefaultSearch: any = {
       ...defaultSearch,
       searchCriteria: {
-        billStatus: ['CREATED', 'PENDING_APPROVAL'],
+        billStatus: ['CREATED', 'PENDING_APPROVAL', 'IN_WAREHOUSE', 'DELIVERED'],
       },
     }
     try {

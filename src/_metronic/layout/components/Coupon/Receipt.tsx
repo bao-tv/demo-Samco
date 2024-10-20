@@ -8,7 +8,7 @@ type Props = {
 }
 
 const Receipt = ({data}: Props) => {
-    
+    console.log('bao data: ', data);
   return (
     <div className=''>
         <div className='container' >
@@ -39,18 +39,18 @@ const Receipt = ({data}: Props) => {
                 <div className="col-3 text-center fw-bold border-start border-dark p-0">
                     <div className='border-bottom border-dark'>
                         <p className='pt-3'>SỐ ĐƠN HÀNG: </p>
-                        <p className='text-danger'>{data?.indexRow}</p>
+                        <p className='text-danger'>{data?.itemQuantity + data.subPackages.length}</p>
                     </div>
                     <div>
                         <p>MÃ NHẬN HÀNG: </p>
-                        <div className='d-flex barcodeCSS'>
+                        <div className='d-flex barcodeCSS justify-content-center'>
                             <Barcode
-                                value={`A24MDM.91.3-5377-DH${data?.indexRow}`} 
+                                value={`${dayjs().year().toString().slice(-2)}-${data.receiverProvince.code}-${data?.id}`} 
                                 // height={100}
                                 displayValue={false}
                             />
                         </div>
-                        <p className='text-danger'>A24MDM.91.3-5377-DH{data?.indexRow}</p>
+                        <p className='text-danger'>{dayjs().year().toString().slice(-2)}-{data.receiverProvince.code}-{data?.id}</p>
                     </div>
                 </div>
             </div>

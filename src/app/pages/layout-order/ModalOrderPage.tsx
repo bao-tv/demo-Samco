@@ -49,10 +49,7 @@ const ModalOrderPage = (props: Props) => {
     showModalOrder,
     rowDataSubPackage,
     setShowModalSubPackage,
-    setRowDataSubPackage,
-    gridRefSubPackage,
   } = usePageData()
-  // console.log('bao showModalOrder: ', showModalOrder);
 
   const {
     control,
@@ -66,7 +63,7 @@ const ModalOrderPage = (props: Props) => {
     mode: 'all',
     defaultValues: {
       id: showModalOrder.id || 0,
-      receiptCode: showModalOrder.receiptCode || `CODE${showModalOrder.id}`,
+      receiptCode: showModalOrder.id,
       billStatus: showModalOrder.billStatus || 'CREATED',
       settlementStatus: showModalOrder.settlementStatus || 'PENDING',
       subPackages: showModalOrder.subPackages || [],
@@ -107,6 +104,8 @@ const ModalOrderPage = (props: Props) => {
   const [packagingServiceData, setPackagingServiceData] = useState<any[]>(
     showModalOrder?.packagingServices || []
   )
+
+  console.log('bao show: ', showModalOrder);
 
   const handleShowPreImport: any = () => {
     const dataForm: any = getValues()
